@@ -508,6 +508,7 @@ GameObject:
   m_Component:
   - component: {fileID: 370708809}
   - component: {fileID: 370708812}
+  - component: {fileID: 370708814}
   - component: {fileID: 370708811}
   - component: {fileID: 370708813}
   - component: {fileID: 370708810}
@@ -585,6 +586,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgAudio: {fileID: 859051876}
   uiAudio: {fileID: 1186576861}
+--- !u!114 &370708814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 370708808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4ea91afcb87734e982b8c49cfbbb05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &465226013 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1948650442204070, guid: 8ea5d9485c68f6a4087034b78fb8894d,

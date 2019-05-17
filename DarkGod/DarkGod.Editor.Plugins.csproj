@@ -284,6 +284,12 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
+    <Reference Include="PESocket">
+      <HintPath>Assets/Scripts/Net/PESocket.dll</HintPath>
+    </Reference>
+    <Reference Include="PEProtocol">
+      <HintPath>Assets/Scripts/Net/PEProtocol.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Plugins\Editor\ScriptsInfoRecoder.cs" />

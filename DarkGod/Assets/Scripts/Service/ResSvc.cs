@@ -22,7 +22,7 @@ public class ResSvc : MonoBehaviour {
     public void InitSvc() {
         Instance = this;
         InitRanName();
-        Debug.Log("Init ResSvc..");
+        PECommon.Log("Init ResSvc..");
     }
 
     /// <summary>
@@ -96,7 +96,7 @@ public class ResSvc : MonoBehaviour {
         // 读取 xml 文件
         TextAsset xml = Resources.Load<TextAsset>(PathDefine.RanNameCfg);
         if (!xml) {
-            Debug.Log(PathDefine.RanNameCfg + "不存在");
+            PECommon.Log(PathDefine.RanNameCfg + "不存在",LogType.Error);
         }
         else {
             // 读取 xml 文件

@@ -13,14 +13,12 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -235,16 +233,24 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
+    <Reference Include="PESocket">
+      <HintPath>Assets/Scripts/Net/PESocket.dll</HintPath>
+    </Reference>
+    <Reference Include="PEProtocol">
+      <HintPath>Assets/Scripts/Net/PEProtocol.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Common\Constants.cs" />
     <Compile Include="Assets\Scripts\Common\LoopDragonAni.cs" />
-    <Compile Include="Assets\Scripts\Common\PETools.cs" />
     <Compile Include="Assets\Scripts\Common\PathDefine.cs" />
+    <Compile Include="Assets\Scripts\Common\PETools.cs" />
     <Compile Include="Assets\Scripts\Common\SystemRoot.cs" />
     <Compile Include="Assets\Scripts\Common\WindowRoot.cs" />
     <Compile Include="Assets\Scripts\GameRoot.cs" />
+    <Compile Include="Assets\Scripts\Net\ClientSession.cs" />
     <Compile Include="Assets\Scripts\Service\AudioSvc.cs" />
+    <Compile Include="Assets\Scripts\Service\NetSvc.cs" />
     <Compile Include="Assets\Scripts\Service\ResSvc.cs" />
     <Compile Include="Assets\Scripts\System\LoginSys.cs" />
     <Compile Include="Assets\Scripts\UIWindow\CreateWnd.cs" />

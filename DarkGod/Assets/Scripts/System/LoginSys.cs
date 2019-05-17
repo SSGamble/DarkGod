@@ -17,7 +17,7 @@ public class LoginSys : SystemRoot {
     public override void InitSys() {
         base.InitSys();
         Instance = this;
-        Debug.Log("Init LoginSys..");
+        PECommon.Log("Init LoginSys..");
     }
 
     /// <summary>
