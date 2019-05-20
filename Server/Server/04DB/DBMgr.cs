@@ -54,7 +54,15 @@ public class DBMgr {
                         exp = reader.GetInt32("exp"),
                         power = reader.GetInt32("power"),
                         coin = reader.GetInt32("coin"),
-                        diamond = reader.GetInt32("diamond")
+                        diamond = reader.GetInt32("diamond"),
+                        hp = reader.GetInt32("hp"),
+                        ad = reader.GetInt32("ad"),
+                        ap = reader.GetInt32("ap"),
+                        addef = reader.GetInt32("addef"),
+                        apdef = reader.GetInt32("apdef"),
+                        dodge = reader.GetInt32("dodge"),
+                        pierce = reader.GetInt32("pierce"),
+                        critical = reader.GetInt32("critical")
                     };
                 }
             }
@@ -75,7 +83,15 @@ public class DBMgr {
                     exp = 0,
                     power = 0,
                     coin = 0,
-                    diamond = 0
+                    diamond = 0,
+                    hp = 2000,
+                    ad = 275,
+                    ap = 265,
+                    addef = 67,
+                    apdef = 43,
+                    dodge = 7,
+                    pierce = 5,
+                    critical = 2,
                 };
                 playerData.id = InsAcct(acct, pwd, playerData); // 赋予插入数据的 id
             }
@@ -88,8 +104,9 @@ public class DBMgr {
     /// </summary>
     private int InsAcct(string acct, string pwd, PlayerData pd) {
         int id = -1;
+        string sql = "insert into account set acct=@acct,pwd =@pwd,name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical";
         try {
-            MySqlCommand cmd = new MySqlCommand("insert into account set acct=@acct,pwd =@pwd,name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond", conn);
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("acct", acct);
             cmd.Parameters.AddWithValue("pwd", pwd);
             cmd.Parameters.AddWithValue("name", pd.name);
@@ -98,6 +115,14 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("power", pd.power);
             cmd.Parameters.AddWithValue("coin", pd.coin);
             cmd.Parameters.AddWithValue("diamond", pd.diamond);
+            cmd.Parameters.AddWithValue("hp", pd.hp);
+            cmd.Parameters.AddWithValue("ad", pd.ad);
+            cmd.Parameters.AddWithValue("ap", pd.ap);
+            cmd.Parameters.AddWithValue("addef", pd.addef);
+            cmd.Parameters.AddWithValue("apdef", pd.apdef);
+            cmd.Parameters.AddWithValue("dodge", pd.dodge);
+            cmd.Parameters.AddWithValue("pierce", pd.pierce);
+            cmd.Parameters.AddWithValue("critical", pd.critical);
 
             cmd.ExecuteNonQuery();
             id = (int)cmd.LastInsertedId; // 新插入数据的主键
@@ -143,8 +168,8 @@ public class DBMgr {
     /// <returns></returns>
     public bool UpdataPlayerData(int id, PlayerData playerData) {
         try {
-            MySqlCommand cmd = new MySqlCommand(
-    "update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond where id =@id", conn);
+            string sql = "update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical where id =@id";
+            MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("name", playerData.name);
             cmd.Parameters.AddWithValue("level", playerData.lv);
@@ -152,8 +177,14 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("power", playerData.power);
             cmd.Parameters.AddWithValue("coin", playerData.coin);
             cmd.Parameters.AddWithValue("diamond", playerData.diamond);
-
-            //TOADD Others
+            cmd.Parameters.AddWithValue("hp", playerData.hp);
+            cmd.Parameters.AddWithValue("ad", playerData.ad);
+            cmd.Parameters.AddWithValue("ap", playerData.ap);
+            cmd.Parameters.AddWithValue("addef", playerData.addef);
+            cmd.Parameters.AddWithValue("apdef", playerData.apdef);
+            cmd.Parameters.AddWithValue("dodge", playerData.dodge);
+            cmd.Parameters.AddWithValue("pierce", playerData.pierce);
+            cmd.Parameters.AddWithValue("critical", playerData.critical);
             cmd.ExecuteNonQuery();
         }
         catch (System.Exception e) {

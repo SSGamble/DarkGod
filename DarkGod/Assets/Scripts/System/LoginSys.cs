@@ -48,6 +48,7 @@ public class LoginSys : SystemRoot {
         }
         else {
             // 进入主城
+            MainCitySys.Instance.EnterMainCity();
         }
         //关闭登录界面
         loginWnd.SetWndState(false);
@@ -59,10 +60,8 @@ public class LoginSys : SystemRoot {
     /// <param name="msg"></param>
     public void RspRename(GameMsg msg) {
         GameRoot.Instance.SetPlayerName(msg.rspRename.name);
-        // 跳转场景，进入主城
-
-        //打开主城的界面
-
+        //跳转场景，进入主城
+        MainCitySys.Instance.EnterMainCity();
         //关闭创建界面
         createWnd.SetWndState(false);
     }

@@ -6,6 +6,7 @@
 *****************************************************/
 
 using PENet;
+using PEProtocol;
 
 /// <summary>
 /// 日志类型
@@ -30,6 +31,23 @@ public class PECommon {
     public static void Log(string msg = "", LogType tp = LogType.Log) {
         LogLevel lv = (LogLevel)tp;
         PETool.LogMsg(msg, lv);
+    }
+
+    /// <summary>
+    /// 获取角色的战斗力
+    /// </summary>
+    /// <returns></returns>
+    public static int GetFightByProps(PlayerData pd) {
+        // 通过对玩家的属性进行计算，得出角色的战斗力
+        return pd.lv * 100 + pd.ad + pd.ap + pd.addef + pd.apdef;
+    }
+
+    /// <summary>
+    /// 获取体力上限
+    /// </summary>
+    /// <returns></returns>
+    public static int GetPowerLimit(PlayerData pd) {
+        return ((pd.lv - 1) / 10) * 150 + 150;
     }
 
 }

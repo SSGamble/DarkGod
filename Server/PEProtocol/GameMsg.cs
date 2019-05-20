@@ -55,8 +55,6 @@ namespace PEProtocol {
         public RspRename rspRename;
     }
 
-    #region 登录相关
-
     /// <summary>
     /// 玩家信息
     /// </summary>
@@ -69,8 +67,17 @@ namespace PEProtocol {
         public int power; // 体力
         public int coin; // 金币
         public int diamond; // 钻石
+        public int hp;
+        public int ad;
+        public int ap;
+        public int addef; // ad 防御
+        public int apdef; // /ap 防御
+        public int dodge;//闪避概率
+        public int pierce;//穿透比率
+        public int critical;//暴击概率
     }
 
+    #region 登录相关
     /// <summary>
     /// 客户端请求登录
     /// </summary>
