@@ -36,6 +36,8 @@
     <Compile Include="01Service\01NetSvc\NetSvc.cs" />
     <Compile Include="01Service\01NetSvc\ServerSession.cs" />
     <Compile Include="02System\01LoginSys\LoginSys.cs" />
+    <Compile Include="03Cache\CacheSvc.cs" />
+    <Compile Include="04DB\DBMgr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="00Common\ServerRoot.cs" />
     <Compile Include="00Common\SreverStart.cs" />
@@ -50,9 +52,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.8.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Tools\PhpStudy\phpStudy\MySQL\Assemblies\v4.5\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="PESocket">
       <HintPath>..\Libs\PESocket.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

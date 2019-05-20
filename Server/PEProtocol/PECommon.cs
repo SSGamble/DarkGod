@@ -7,7 +7,9 @@
 
 using PENet;
 
-// 日志类型
+/// <summary>
+/// 日志类型
+/// </summary>
 public enum LogType {
     Log = 0,
     Warn = 1,
@@ -15,6 +17,9 @@ public enum LogType {
     Info = 3
 }
 
+/// <summary>
+/// 客户端服务端共用工具类
+/// </summary>
 public class PECommon {
 
     /// <summary>
@@ -26,4 +31,5 @@ public class PECommon {
         LogLevel lv = (LogLevel)tp;
         PETool.LogMsg(msg, lv);
     }
+
 }

@@ -5,16 +5,16 @@
 	功能：游戏的启动入口，初始化各个系统，保存核心数据
 *****************************************************/
 
+using PEProtocol;
 using UnityEngine;
 
 public class GameRoot : MonoBehaviour {
 
     // 单例
     public static GameRoot Instance = null;
-    // 加载进度界面
-    public LoadingWnd loadingWnd;
+    
+    public LoadingWnd loadingWnd; // 加载进度界面
     public DynamicWnd dynamicWnd;
-
 
     private void Start() {
         Instance = this;
@@ -24,6 +24,9 @@ public class GameRoot : MonoBehaviour {
         Init();
     }
 
+    /// <summary>
+    /// 初始化 UI 窗口
+    /// </summary>
     private void ClearUIRoot() {
         Transform canvas = transform.Find("Canvas");
         // 遍历 Canvas 下的所有子物体
@@ -60,5 +63,28 @@ public class GameRoot : MonoBehaviour {
     /// <param name="tips">tips 内容</param>
     public static void AddTips(string tips) {
         Instance.dynamicWnd.EnqTips(tips);
+    }
+
+    // 玩家数据
+    private PlayerData playerData = null;
+    public PlayerData PlayerData {
+        get {
+            return playerData;
+        }
+    }
+
+    /// <summary>
+    /// 设置 PlayerData
+    /// </summary>
+    public void SetPlayerData(RspLogin data) {
+        playerData = data.playerData;
+    }
+
+    /// <summary>
+    /// 更新玩家的名字 
+    /// </summary>
+    /// <param name="name"></param>
+    public void SetPlayerName(string name) {
+        PlayerData.name = name;
     }
 }

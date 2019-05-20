@@ -17,11 +17,25 @@ public class ServerRoot {
         }
     }
 
+    /// <summary>
+    /// 初始化各个层级
+    /// </summary>
     public void Init() {
         // 数据层
+        DBMgr.Instance.Init();
+
         // 服务层
-        NetSvc.Instance.Init();
+        CacheSvc.Instance.Init(); // 缓存
+        NetSvc.Instance.Init(); // 网络
+
         // 业务系统层
-        LoginSys.Instance.Init();
+        LoginSys.Instance.Init(); // 登录
+    }
+
+    /// <summary>
+    /// 驱动网络消息的检测
+    /// </summary>
+    public void Update() {
+        NetSvc.Instance.Update();
     }
 }

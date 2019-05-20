@@ -263,6 +263,12 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="PEProtocol">
+      <HintPath>Assets/Scripts/Net/PEProtocol.dll</HintPath>
+    </Reference>
+    <Reference Include="PESocket">
+      <HintPath>Assets/Scripts/Net/PESocket.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Advertisements">
       <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
@@ -284,19 +290,16 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
-    <Reference Include="PESocket">
-      <HintPath>Assets/Scripts/Net/PESocket.dll</HintPath>
-    </Reference>
-    <Reference Include="PEProtocol">
-      <HintPath>Assets/Scripts/Net/PEProtocol.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Plugins\Editor\ScriptsInfoRecoder.cs" />
     <Compile Include="Assets\Plugins\Editor\UnityToSVN.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Compond\MakeChar\Shader\MogoFakeLight.shader" />
+    <None Include="Assets\Compond\MakeScene\SceneShader\MogoTransparentDiffuse.shader" />
     <None Include="Assets\Compond\Shader\MogoSkybox.shader" />
+    <None Include="Assets\Compond\Shader\Mul-skybox.shader" />
     <None Include="Assets\Resources\ResCfgs\rdname.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

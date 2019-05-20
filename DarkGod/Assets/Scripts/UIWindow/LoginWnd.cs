@@ -5,6 +5,7 @@
 	功能：登录注册界面
 *****************************************************/
 
+using PEProtocol;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,16 +36,24 @@ public class LoginWnd : WindowRoot {
     /// </summary>
     public void ClickEnterButton() {
         audioSvc.PlayUIAudio(Constants.UILoginBtn);
-        string acct = iptAcct.text;
-        string pwd = iptPwd.text;
+        string mAcct = iptAcct.text;
+        string mPwd = iptPwd.text;
         // 输入合法
-        if (acct != "" && pwd != "") {
+        if (mAcct != "" && mPwd != "") {
             //更新本地存储的账号和密码
-            PlayerPrefs.SetString("Acct", acct);
-            PlayerPrefs.SetString("Pwd", pwd);
+            PlayerPrefs.SetString("Acct", mAcct);
+            PlayerPrefs.SetString("Pwd", mPwd);
 
-            //TODO 发送网络消息，请求登录
-            LoginSys.Instance.RspLogin();
+            // 发送网络消息，请求登录
+            GameMsg msg = new GameMsg {
+                cmd = (int)CMD.ReqLogin,
+                reqLogin = new ReqLogin {
+                    acct = mAcct,
+                    pwd = mPwd
+                }
+            };
+            // 发送消息给服务器
+            netSvc.SendMsg(msg);
         }
         // 输入不合法
         else {

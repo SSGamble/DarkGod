@@ -5,6 +5,7 @@
 	功能：角色创建界面
 *****************************************************/
 
+using PEProtocol;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,8 +34,14 @@ public class CreateWnd : WindowRoot {
     public void ClickEnterBtn() {
         audioSvc.PlayUIAudio(Constants.UILoginBtn);
         if (iptName.text != "") {
-            //TODO
-            //发送名字数据到服务器，登录主城
+            // 发送名字数据到服务器，登录主城
+            GameMsg msg = new GameMsg {
+                cmd = (int)CMD.ReqRename,
+                reqRename = new ReqRename {
+                    name = iptName.text
+                }
+            };
+            netSvc.SendMsg(msg); 
         }
         else {
             GameRoot.AddTips("当前名字不符合规范");

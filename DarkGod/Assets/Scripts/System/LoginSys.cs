@@ -6,6 +6,7 @@
 *****************************************************/
 
 using System;
+using PEProtocol;
 using UnityEngine;
 
 public class LoginSys : SystemRoot {
@@ -25,7 +26,7 @@ public class LoginSys : SystemRoot {
     /// </summary>
     public void EnterLogin() {
         // 异步的加载登录场景
-        resSvc.AsyncLoadScene(Constants.SceneLogin,()=> {
+        resSvc.AsyncLoadScene(Constants.SceneLogin, () => {
             // 加载完成后再打开注册登录界面
             loginWnd.SetWndState();
             // 播放背景音乐
@@ -34,13 +35,35 @@ public class LoginSys : SystemRoot {
     }
 
     /// <summary>
-    /// 客户端登录相应
+    /// 客户端登录响应
     /// </summary>
-    public void RspLogin() {
+    public void RspLogin(GameMsg msg) {
         GameRoot.AddTips("登录成功");
-        //打开角色创建窗口
-        createWnd.SetWndState();
+        // 保存接收到的玩家数据
+        GameRoot.Instance.SetPlayerData(msg.rspLogin);
+
+        if (msg.rspLogin.playerData.name == "") {
+            // 打开角色创建窗口
+            createWnd.SetWndState();
+        }
+        else {
+            // 进入主城
+        }
         //关闭登录界面
         loginWnd.SetWndState(false);
+    }
+
+    /// <summary>
+    /// 改名响应
+    /// </summary>
+    /// <param name="msg"></param>
+    public void RspRename(GameMsg msg) {
+        GameRoot.Instance.SetPlayerName(msg.rspRename.name);
+        // 跳转场景，进入主城
+
+        //打开主城的界面
+
+        //关闭创建界面
+        createWnd.SetWndState(false);
     }
 }

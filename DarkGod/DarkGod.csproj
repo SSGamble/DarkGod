@@ -221,6 +221,12 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>D:/Unity/2017.3.1p4/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="PEProtocol">
+      <HintPath>Assets/Scripts/Net/PEProtocol.dll</HintPath>
+    </Reference>
+    <Reference Include="PESocket">
+      <HintPath>Assets/Scripts/Net/PESocket.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Advertisements">
       <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
@@ -232,12 +238,6 @@
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="PESocket">
-      <HintPath>Assets/Scripts/Net/PESocket.dll</HintPath>
-    </Reference>
-    <Reference Include="PEProtocol">
-      <HintPath>Assets/Scripts/Net/PEProtocol.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -259,7 +259,10 @@
     <Compile Include="Assets\Scripts\UIWindow\LoginWnd.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Compond\MakeChar\Shader\MogoFakeLight.shader" />
+    <None Include="Assets\Compond\MakeScene\SceneShader\MogoTransparentDiffuse.shader" />
     <None Include="Assets\Compond\Shader\MogoSkybox.shader" />
+    <None Include="Assets\Compond\Shader\Mul-skybox.shader" />
     <None Include="Assets\Resources\ResCfgs\rdname.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

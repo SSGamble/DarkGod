@@ -9,21 +9,25 @@ using PEProtocol;
 
 public class ServerSession :PESession<GameMsg>{
 
+    /// <summary>
+    /// 客户端连接
+    /// </summary>
     protected override void OnConnected() {
-        PECommon.Log("Client Connect");
-        SendMsg(new GameMsg {
-            text = "Welcome to connect"
-        });
+        PECommon.Log("客户端连接成功");
     }
 
+    /// <summary>
+    /// 接收到客户端发来的信息
+    /// </summary>
     protected override void OnReciveMsg(GameMsg msg) {
-        PECommon.Log("Client Req: " + msg.text);
-        SendMsg(new GameMsg {
-            text = "SrvRsp: " + msg.text
-        });
+        PECommon.Log("接收到客户端发来的数据，操作码为： " + ((CMD)msg.cmd).ToString());
+        NetSvc.Instance.AddMsgQue(new MsgPack(this, msg)); // 把消息交给 网络服务 解决，需要把 session 也传过去，因为处理完业务后需要给客户端响应
     }
 
+    /// <summary>
+    /// 客户端断开连接
+    /// </summary>
     protected override void OnDisConnected() {
-        PECommon.Log("Client DisConnect");
+        PECommon.Log("客户端断开连接");
     }
 }

@@ -5,6 +5,9 @@
 	功能：网络服务
 *****************************************************/
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using PENet;
 using PEProtocol;
 using UnityEngine;
@@ -14,7 +17,12 @@ public class NetSvc : MonoBehaviour {
     public static NetSvc Instance = null;
 
     PESocket<ClientSession, GameMsg> client = null;
+    // 消息队列
+    private Queue<GameMsg> msgQue = new Queue<GameMsg>();
 
+    /// <summary>
+    /// 初始化服务
+    /// </summary>
     public void InitSvc() {
         Instance = this;
 
@@ -46,11 +54,76 @@ public class NetSvc : MonoBehaviour {
         PECommon.Log("Init NetSvc...");
     }
 
+    /// <summary>
+    /// 给服务器端发送消息
+    /// </summary>
+    public void SendMsg(GameMsg msg) {
+        if (client.session != null) {
+            client.session.SendMsg(msg);
+        }
+        else { // 说明网络服务的连接有问题
+            GameRoot.AddTips("没有连接服务器");
+            InitSvc(); // 重新初始化一次服务
+        }
+    }
+
+    // 锁
+    public static readonly string obj = "lock";
+
+    /// <summary>
+    /// 加入到消息队列
+    /// </summary>
+    /// <param name="msg"></param>
+    public void AddNetPkg(GameMsg msg) {
+        lock (obj) { // 因为是异步多线程的网络库，所以需要加锁
+            msgQue.Enqueue(msg);
+        }
+    }
+
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            client.session.SendMsg(new GameMsg {
-                text = "hello unity"
-            });
+        if (msgQue.Count > 0) { // 当前队列里是否有数据
+            lock (obj) {
+                GameMsg msg = msgQue.Dequeue(); // 取出一条数据
+                ProcessMsg(msg); // 处理数据
+            }
+        }
+    }
+
+    /// <summary>
+    /// 处理数据，分发
+    /// </summary>
+    /// <param name="msg"></param>
+    private void ProcessMsg(GameMsg msg) {
+        // 接收到了错误码
+        if (msg.err != (int)ErrorCode.None) {
+            switch ((ErrorCode)msg.err) {
+                case ErrorCode.UpdateDBError:
+                    PECommon.Log("数据库更新异常", LogType.Error);
+                    GameRoot.AddTips("网络不稳定");
+                    break;
+                case ErrorCode.WrongPwd:
+                    GameRoot.AddTips("密码错误");
+                    break;
+                case ErrorCode.NameIsExist:
+                    GameRoot.AddTips("用户名已存在");
+                    break;
+                default:
+                    break;
+            }
+            return;
+        }
+        // 分发处理接收消息
+        switch ((CMD)msg.cmd) {
+            // 登录回应
+            case CMD.RspLogin:
+                LoginSys.Instance.RspLogin(msg);
+                break;
+            // 改名回应
+            case CMD.RspRename:
+                LoginSys.Instance.RspRename(msg);
+                break;
+            default:
+                break;
         }
     }
 }

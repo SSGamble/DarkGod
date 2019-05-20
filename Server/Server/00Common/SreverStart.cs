@@ -6,11 +6,12 @@
 *****************************************************/
 class SreverStart {
     static void Main(string[] args) {
+
         ServerRoot.Instance.Init();
 
         // 防止进程退出
         while (true) {
-
+            ServerRoot.Instance.Update();
         }
     }
 }
