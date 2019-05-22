@@ -7,6 +7,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class WindowRoot : MonoBehaviour {
@@ -86,6 +87,34 @@ public class WindowRoot : MonoBehaviour {
     }
     protected void SetActive(Text txt, bool state = true) {
         txt.transform.gameObject.SetActive(state);
+    }
+    #endregion
+
+    /// <summary>
+    /// 为物体添加组件，如果已有该组件就获取
+    /// where: T 必须要是组件的子类才能被添加
+    /// </summary>
+    protected T GetOrAddComponect<T>(GameObject go) where T : Component {
+        T t = go.GetComponent<T>();
+        if (t == null) {
+            t = go.AddComponent<T>();
+        }
+        return t;
+    }
+
+    #region Click Evts
+    // 为指定物体添加事件监听脚本并设置回调
+    protected void OnClickDown(GameObject go, Action<PointerEventData> cb) {
+        PEListener listener = GetOrAddComponect<PEListener>(go);
+        listener.onClickDown = cb;
+    }
+    protected void OnClickUp(GameObject go, Action<PointerEventData> cb) {
+        PEListener listener = GetOrAddComponect<PEListener>(go);
+        listener.onClickUp = cb;
+    }
+    protected void OnClickDrag(GameObject go, Action<PointerEventData> cb) {
+        PEListener listener = GetOrAddComponect<PEListener>(go);
+        listener.onDrag = cb;
     }
     #endregion
 }

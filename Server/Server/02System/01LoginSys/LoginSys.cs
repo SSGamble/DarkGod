@@ -93,4 +93,11 @@ public class LoginSys {
         // 发送回应给客户端
         pack.session.SendMsg(msg);
     }
+
+    /// <summary>
+    /// 玩家线下，清除缓存
+    /// </summary>
+    public void ClearOfflineData(ServerSession session) {
+        cacheSvc.AcctOffLine(session);
+    }
 }

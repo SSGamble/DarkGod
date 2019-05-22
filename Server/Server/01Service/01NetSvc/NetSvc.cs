@@ -63,7 +63,7 @@ public class NetSvc {
     /// </summary>
     public void Update() {
         if (msgPackQue.Count>0) { // 当前队列里是否有数据
-            PECommon.Log("当前队列里要需要处理的数据包数量：" + msgPackQue.Count);
+            //PECommon.Log("当前队列里要需要处理的数据包数量：" + msgPackQue.Count);
             lock (obj) {
                 MsgPack pack = msgPackQue.Dequeue(); // 取出一条数据
                 HandOutMsg(pack); // 处理数据
@@ -78,7 +78,7 @@ public class NetSvc {
     private void HandOutMsg(MsgPack pack) {
         // 将消息分发到各个业务系统里面
         switch ((CMD)pack.msg.cmd) {
-            // 登录响应，交给登录系统
+            // 登录响应，交给登录系统  
             case CMD.ReqLogin:
                 LoginSys.Instance.ReqLogin(pack);
                 break;

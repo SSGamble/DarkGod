@@ -10,7 +10,13 @@ using System.Collections;
 public class PathDefine {
 
     #region Configs
-    //随机名字
+    // 随机名字
     public const string RanNameCfg = "ResCfgs/rdname";
+    // 地图
+    public const string MapCfg = "ResCfgs/map";
+    #endregion
+
+    #region Player
+    public const string AssissnCityPlayerPrefab = "PrefabPlayer/AssassinCity";
     #endregion
 }

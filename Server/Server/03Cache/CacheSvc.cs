@@ -28,9 +28,13 @@ public class CacheSvc {
         PECommon.Log("CacheSvc Init Done.");
     }
 
-    // 当前已在线的账号
+    /// <summary>
+    /// 当前已在线的账号
+    /// </summary>
     private Dictionary<string, ServerSession> onLineAcctDic = new Dictionary<string, ServerSession>();
-    // 连接客户端和玩家数据
+    /// <summary>
+    /// 连接客户端和玩家数据
+    /// </summary>
     private Dictionary<ServerSession, PlayerData> onLineSessionDic = new Dictionary<ServerSession, PlayerData>();
 
     /// <summary>
@@ -45,14 +49,14 @@ public class CacheSvc {
     /// </summary>
     public PlayerData GetPlayerData(string acct, string pwd) {
         // 从数据库获取
-        return dbMgr.QueryPlayerData(acct,pwd);
+        return dbMgr.QueryPlayerData(acct, pwd);
     }
 
 
     /// <summary>
     /// 玩家登录后添加信息到缓存
     /// </summary>
-    public void AcctOnLine(string acct,ServerSession session,PlayerData playerData) {
+    public void AcctOnLine(string acct, ServerSession session, PlayerData playerData) {
         onLineAcctDic.Add(acct, session);
         onLineSessionDic.Add(session, playerData);
     }
@@ -70,7 +74,7 @@ public class CacheSvc {
     /// <param name="session"></param>
     /// <returns></returns>
     public PlayerData GetPlayerDataBySession(ServerSession session) {
-        if (onLineSessionDic.TryGetValue(session,out PlayerData playerData)) {
+        if (onLineSessionDic.TryGetValue(session, out PlayerData playerData)) {
             return playerData;
         }
         else {
@@ -84,7 +88,22 @@ public class CacheSvc {
     /// <param name="id"></param>
     /// <param name="playerData"></param>
     /// <returns></returns>
-    public bool UpdatePlayerData(int id,PlayerData playerData) {
-        return dbMgr.UpdataPlayerData(id,playerData);
+    public bool UpdatePlayerData(int id, PlayerData playerData) {
+        return dbMgr.UpdataPlayerData(id, playerData);
+    }
+
+    /// <summary>
+    /// 用户下线
+    /// </summary>
+    public void AcctOffLine(ServerSession session) {
+        // 清除缓存
+        foreach (var item in onLineAcctDic) {
+            if (item.Value == session) {
+                onLineAcctDic.Remove(item.Key);
+                break;
+            }
+        }
+        bool succ = onLineSessionDic.Remove(session);
+        PECommon.Log("玩家下线：" + session.sessionID + " " + succ);
     }
 }

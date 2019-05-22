@@ -21,8 +21,13 @@ public class ResSvc : MonoBehaviour {
     /// </summary>
     public void InitSvc() {
         Instance = this;
-        InitRanName();
+        InitRanName(PathDefine.RanNameCfg);
+        InitMapCfg(PathDefine.MapCfg);
         PECommon.Log("Init ResSvc..");
+    }
+
+    internal MapCfg GetMapCfgData(object mainCityMapID) {
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -86,17 +91,39 @@ public class ResSvc : MonoBehaviour {
         return ac;
     }
 
+    // 预制体缓存
+    public Dictionary<string, GameObject> goDic = new Dictionary<string, GameObject>();
+    /// <summary>
+    /// 加载预制体
+    /// </summary>
+    public GameObject LoadPrefab(string path, bool cache = false) {
+        GameObject prefab = null;
+        if (!goDic.TryGetValue(path,out prefab)) {
+            prefab = Resources.Load<GameObject>(path);
+            if (cache) {
+                goDic.Add(path, prefab);
+            }
+        }
+        GameObject go = null;
+        if (prefab!=null) {
+            go = Instantiate(prefab);
+        }
+        return go;
+    }
+
+    #region 加载配置文件
+
     #region 加载随机名字的配置文件
 
     private List<string> surnameLst = new List<string>();
     private List<string> manLst = new List<string>();
     private List<string> womanLst = new List<string>();
 
-    private void InitRanName() {
+    private void InitRanName(string path) {
         // 读取 xml 文件
-        TextAsset xml = Resources.Load<TextAsset>(PathDefine.RanNameCfg);
+        TextAsset xml = Resources.Load<TextAsset>(path);
         if (!xml) {
-            PECommon.Log(PathDefine.RanNameCfg + "不存在",LogType.Error);
+            PECommon.Log(path + "不存在", LogType.Error);
         }
         else {
             // 读取 xml 文件
@@ -151,4 +178,85 @@ public class ResSvc : MonoBehaviour {
         return ranName;
     }
     #endregion
+
+    #region 地图
+
+    private Dictionary<int, MapCfg> mapCfgDataDic = new Dictionary<int, MapCfg>();
+
+    private void InitMapCfg(string path) {
+        // 读取 xml 文件
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (!xml) {
+            PECommon.Log(path + "不存在", LogType.Error);
+        }
+        else {
+            // 读取 xml 文件
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+
+            // 解析 xml 文件
+            // 获取根节点下的所有子节点的 List
+            XmlNodeList nodeList = doc.SelectSingleNode("root").ChildNodes;
+            // 遍历子节点
+            for (int i = 0; i < nodeList.Count; i++) {
+                // 将某一个节点转化为一个 XmlElement
+                XmlElement ele = nodeList[i] as XmlElement;
+                if (ele.GetAttributeNode("ID") == null) {
+                    continue;
+                }
+                // 从 XmlElement 里获取名称为 “ID” 的数据
+                int id = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+                MapCfg mc = new MapCfg {
+                    id = id
+                };
+                // 遍历每一个 item 里的数据项
+                foreach (XmlElement e in nodeList[i].ChildNodes) {
+                    switch (e.Name) {
+                        case "mapName":
+                            mc.mapName = e.InnerText;
+                            break;
+                        case "sceneName":
+                            mc.sceneName = e.InnerText;
+                            break;
+                        case "mainCamPos": {
+                                string[] valArr = e.InnerText.Split(',');
+                                mc.mainCamPos = new Vector3(float.Parse(valArr[0]), float.Parse(valArr[1]), float.Parse(valArr[2]));
+                            }
+                            break;
+                        case "mainCamRote": {
+                                string[] valArr = e.InnerText.Split(',');
+                                mc.mainCamRote = new Vector3(float.Parse(valArr[0]), float.Parse(valArr[1]), float.Parse(valArr[2]));
+                            }
+                            break;
+                        case "playerBornPos": {
+                                string[] valArr = e.InnerText.Split(',');
+                                mc.playerBornPos = new Vector3(float.Parse(valArr[0]), float.Parse(valArr[1]), float.Parse(valArr[2]));
+                            }
+                            break;
+                        case "playerBornRote": {
+                                string[] valArr = e.InnerText.Split(',');
+                                mc.playerBornRote = new Vector3(float.Parse(valArr[0]), float.Parse(valArr[1]), float.Parse(valArr[2]));
+                            }
+                            break;
+                    }
+                }
+                mapCfgDataDic.Add(id, mc); // 将地图数据添加到字典里
+            }
+        }
+    }
+
+    /// <summary>
+    /// 获取地图数据
+    /// </summary>
+    public MapCfg GetMapCfgData(int id) {
+        MapCfg data;
+        if (mapCfgDataDic.TryGetValue(id,out data)) {
+            return data;
+        }
+        return null;
+    }
+    #endregion
+
+    #endregion
+
 }

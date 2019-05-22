@@ -46,8 +46,17 @@ public class PECommon {
     /// 获取体力上限
     /// </summary>
     /// <returns></returns>
-    public static int GetPowerLimit(PlayerData pd) {
-        return ((pd.lv - 1) / 10) * 150 + 150;
+    public static int GetPowerLimit(int lv) {
+        return ((lv - 1) / 10) * 150 + 150;
+    }
+
+    /// <summary>
+    /// 获取当前升级需要的经验值
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns></returns>
+    public static int GetExpUpValByLv(int lv) {
+        return 100 * lv * lv;
     }
 
 }

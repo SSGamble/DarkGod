@@ -107,6 +107,9 @@ public class NetSvc : MonoBehaviour {
                 case ErrorCode.NameIsExist:
                     GameRoot.AddTips("用户名已存在");
                     break;
+                case ErrorCode.AcctIsOnLine:
+                    GameRoot.AddTips("用户已在线");
+                    break;
                 default:
                     break;
             }
