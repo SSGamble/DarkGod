@@ -23,6 +23,7 @@ public class ResSvc : MonoBehaviour {
         Instance = this;
         InitRanName(PathDefine.RanNameCfg);
         InitMapCfg(PathDefine.MapCfg);
+        InitGuideCfg(PathDefine.GuideCfg);
         PECommon.Log("Init ResSvc..");
     }
 
@@ -91,6 +92,22 @@ public class ResSvc : MonoBehaviour {
         return ac;
     }
 
+    // 精灵缓存
+    private Dictionary<string, Sprite> spDic = new Dictionary<string, Sprite>();
+    /// <summary>
+    /// 加载图片
+    /// </summary>
+    public Sprite LoadSprite(string path, bool cache = false) {
+        Sprite sp = null;
+        if (!spDic.TryGetValue(path, out sp)) {
+            sp = Resources.Load<Sprite>(path);
+            if (cache) {
+                spDic.Add(path, sp);
+            }
+        }
+        return sp;
+    }
+
     // 预制体缓存
     public Dictionary<string, GameObject> goDic = new Dictionary<string, GameObject>();
     /// <summary>
@@ -98,14 +115,14 @@ public class ResSvc : MonoBehaviour {
     /// </summary>
     public GameObject LoadPrefab(string path, bool cache = false) {
         GameObject prefab = null;
-        if (!goDic.TryGetValue(path,out prefab)) {
+        if (!goDic.TryGetValue(path, out prefab)) {
             prefab = Resources.Load<GameObject>(path);
             if (cache) {
                 goDic.Add(path, prefab);
             }
         }
         GameObject go = null;
-        if (prefab!=null) {
+        if (prefab != null) {
             go = Instantiate(prefab);
         }
         return go;
@@ -250,8 +267,64 @@ public class ResSvc : MonoBehaviour {
     /// </summary>
     public MapCfg GetMapCfgData(int id) {
         MapCfg data;
-        if (mapCfgDataDic.TryGetValue(id,out data)) {
+        if (mapCfgDataDic.TryGetValue(id, out data)) {
             return data;
+        }
+        return null;
+    }
+    #endregion
+
+    #region 自动引导
+    private Dictionary<int, AutoGuideCfg> guideTaskDic = new Dictionary<int, AutoGuideCfg>();
+    private void InitGuideCfg(string path) {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (!xml) {
+            PECommon.Log("xml file:" + path + " not exist", LogType.Error);
+        }
+        else {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+
+            XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+            for (int i = 0; i < nodLst.Count; i++) {
+                XmlElement ele = nodLst[i] as XmlElement;
+
+                if (ele.GetAttributeNode("ID") == null) {
+                    continue;
+                }
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+                AutoGuideCfg mc = new AutoGuideCfg {
+                    id = ID
+                };
+
+                foreach (XmlElement e in nodLst[i].ChildNodes) {
+                    switch (e.Name) {
+                        case "npcID":
+                            mc.npcID = int.Parse(e.InnerText);
+                            break;
+                        case "dilogArr":
+                            mc.dilogArr = e.InnerText;
+                            break;
+                        case "actID":
+                            mc.actID = int.Parse(e.InnerText);
+                            break;
+                        case "coin":
+                            mc.coin = int.Parse(e.InnerText);
+                            break;
+                        case "exp":
+                            mc.exp = int.Parse(e.InnerText);
+                            break;
+                    }
+                }
+                guideTaskDic.Add(ID, mc);
+            }
+        }
+    }
+    public AutoGuideCfg GetAutoGuideData(int id) {
+        AutoGuideCfg agc = null;
+        if (guideTaskDic.TryGetValue(id, out agc)) {
+            return agc;
         }
         return null;
     }

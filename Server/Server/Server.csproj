@@ -33,7 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="00Common\Demo.cs" />
     <Compile Include="01Service\01NetSvc\NetSvc.cs" />
     <Compile Include="01Service\01NetSvc\ServerSession.cs" />
     <Compile Include="02System\01LoginSys\LoginSys.cs" />

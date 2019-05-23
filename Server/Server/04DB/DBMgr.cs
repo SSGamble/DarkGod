@@ -62,7 +62,8 @@ public class DBMgr {
                         apdef = reader.GetInt32("apdef"),
                         dodge = reader.GetInt32("dodge"),
                         pierce = reader.GetInt32("pierce"),
-                        critical = reader.GetInt32("critical")
+                        critical = reader.GetInt32("critical"),
+                        guideid = reader.GetInt32("guideid")
                     };
                 }
             }
@@ -92,6 +93,7 @@ public class DBMgr {
                     dodge = 7,
                     pierce = 5,
                     critical = 2,
+                    guideid=1001
                 };
                 playerData.id = InsAcct(acct, pwd, playerData); // 赋予插入数据的 id
             }
@@ -104,7 +106,9 @@ public class DBMgr {
     /// </summary>
     private int InsAcct(string acct, string pwd, PlayerData pd) {
         int id = -1;
-        string sql = "insert into account set acct=@acct,pwd =@pwd,name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical";
+        string sql = "insert into account set acct=@acct,pwd =@pwd,name=@name,level=@level,exp=@exp,power=@power,coin=@coin," +
+            "diamond=@diamond,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce," +
+            "critical=@critical,guideid=@guideid";
         try {
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("acct", acct);
@@ -123,6 +127,7 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("dodge", pd.dodge);
             cmd.Parameters.AddWithValue("pierce", pd.pierce);
             cmd.Parameters.AddWithValue("critical", pd.critical);
+            cmd.Parameters.AddWithValue("guideid", pd.guideid);
 
             cmd.ExecuteNonQuery();
             id = (int)cmd.LastInsertedId; // 新插入数据的主键
@@ -168,7 +173,9 @@ public class DBMgr {
     /// <returns></returns>
     public bool UpdataPlayerData(int id, PlayerData playerData) {
         try {
-            string sql = "update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical where id =@id";
+            string sql = "update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,hp=@hp," +
+                "ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical," +
+                "guideid=@guideid where id =@id";
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("name", playerData.name);
@@ -185,6 +192,7 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("dodge", playerData.dodge);
             cmd.Parameters.AddWithValue("pierce", playerData.pierce);
             cmd.Parameters.AddWithValue("critical", playerData.critical);
+            cmd.Parameters.AddWithValue("guideid", playerData.guideid);
             cmd.ExecuteNonQuery();
         }
         catch (System.Exception e) {

@@ -5,6 +5,7 @@
 	功能：主城界面
 *****************************************************/
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using PEProtocol;
@@ -13,6 +14,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MainCityWnd : WindowRoot {
+
     #region UIDefine
     public Animation menuAni;
     public Transform expPrgTrans;
@@ -29,9 +31,12 @@ public class MainCityWnd : WindowRoot {
     public Text txtExpPrg;
 
     public Button btnMenu;
+    public Button btnGuide;
 
     private bool menuState = true; // 菜单的打开与关闭状态
     #endregion
+
+    private AutoGuideCfg curtTaskData; // 当前引导任务 ID
 
     #region MainFunctions
     protected override void InitWnd() {
@@ -53,7 +58,49 @@ public class MainCityWnd : WindowRoot {
         imgPowerPrg.fillAmount = pd.power * 1.0f / PECommon.GetPowerLimit(pd.lv);
         SetText(txtLv, pd.lv);
         SetText(txtName, pd.name);
+        ExpPrg(pd);
 
+        // 设置自动任务图比
+        curtTaskData = resSvc.GetAutoGuideData(pd.guideid);
+        if (curtTaskData != null) {
+            SetGuideBtnIcon(curtTaskData.npcID);
+        }
+        else {
+            SetGuideBtnIcon(-1);
+        }
+    }
+
+    /// <summary>
+    /// 更改任务引导的图标
+    /// </summary>
+    private void SetGuideBtnIcon(int npcID) {
+        // 拿到对应的图片路径
+        string spPath = "";
+        Image img = btnGuide.GetComponent<Image>();
+        switch (npcID) {
+            case Constants.NPCWiseMan:
+                spPath = PathDefine.WiseManHead;
+                break;
+            case Constants.NPCGeneral:
+                spPath = PathDefine.GeneralHead;
+                break;
+            case Constants.NPCArtisan:
+                spPath = PathDefine.ArtisanHead;
+                break;
+            case Constants.NPCTrader:
+                spPath = PathDefine.TraderHead;
+                break;
+            default:
+                break;
+        }
+        // 加载图片
+        SetSprite(img, spPath);
+    }
+
+    /// <summary>
+    /// 分段经验条屏幕适配和显示
+    /// </summary>
+    private void ExpPrg(PlayerData pd) {
         // 分段经验条屏幕适配
         GridLayoutGroup grid = expPrgTrans.GetComponent<GridLayoutGroup>();
         // 当前屏幕的缩放比例，因为是使用高度进行缩放的，所以，此处要使用高度进行计算
@@ -85,6 +132,18 @@ public class MainCityWnd : WindowRoot {
     #endregion
 
     #region ClickEvts
+    /// <summary>
+    /// 引导按钮，
+    /// </summary>
+    public void ClickGuideBtn() {
+        audioSvc.PlayUIAudio(Constants.UIClickBtn);
+        if (curtTaskData!=null) {
+            MainCitySys.Instance.RunTask(curtTaskData);
+        }
+        else {
+            GameRoot.AddTips("引导任务已经完成");
+        }
+    }
     /// <summary>
     /// 主菜单按钮点击事件，播放相应的动画
     /// </summary>
@@ -149,5 +208,5 @@ public class MainCityWnd : WindowRoot {
         });
     }
     #endregion
-    
+
 }

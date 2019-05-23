@@ -25,8 +25,6 @@ public class Constants {
     public const string UIExtenBtn = "uiExtenBtn"; // 主界面菜单
     public const string UIOpenPage = "uiOpenPage"; // 打开窗口
 
-
-
     // --------------- 移动速度 ----------------
     public const int PlayerMoveSpeed = 8; // 角色
     public const int MonsterMoveSpeed = 8; // 怪物
@@ -45,4 +43,9 @@ public class Constants {
     public const int BlendIdle = 0;
     public const int BlendWalk = 1;
 
+    // 自动引导的 NPC ID
+    public const int NPCWiseMan = 0;
+    public const int NPCGeneral = 1;
+    public const int NPCArtisan = 2;
+    public const int NPCTrader = 3;
 }

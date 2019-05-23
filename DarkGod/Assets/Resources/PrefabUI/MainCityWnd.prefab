@@ -1347,7 +1347,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114577701462256076}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114214350971900410}
+        m_MethodName: ClickGuideBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114189582842554342
@@ -1414,6 +1425,7 @@ MonoBehaviour:
   txtName: {fileID: 114333125998542532}
   txtExpPrg: {fileID: 114632972439226840}
   btnMenu: {fileID: 114116893042794624}
+  btnGuide: {fileID: 114158668255253648}
 --- !u!114 &114229795833265522
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -25,3 +25,16 @@ public class MapCfg : BaseData<MapCfg> {
     public Vector3 playerBornPos;
     public Vector3 playerBornRote;
 }
+
+/// <summary>
+/// 自动引导
+/// </summary>
+public class AutoGuideCfg : BaseData<AutoGuideCfg> {
+    public int npcID; // 触发任务目标 NPC 索引号
+    public string dilogArr; // 对话数据
+    public int actID; // 目标任务 ID
+    public int coin; // 金币奖励
+    public int exp; // 经验奖励
+}
+
+

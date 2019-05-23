@@ -75,6 +75,7 @@ namespace PEProtocol {
         public int dodge;//闪避概率
         public int pierce;//穿透比率
         public int critical;//暴击概率
+        public int guideid;//当前进行的引导id
     }
 
     #region 登录相关

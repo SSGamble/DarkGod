@@ -91,6 +91,14 @@ public class WindowRoot : MonoBehaviour {
     #endregion
 
     /// <summary>
+    /// 设置图片
+    /// </summary>
+    protected void SetSprite(Image img, string path) {
+        Sprite sp = resSvc.LoadSprite(path, true);
+        img.sprite = sp;
+    }
+
+    /// <summary>
     /// 为物体添加组件，如果已有该组件就获取
     /// where: T 必须要是组件的子类才能被添加
     /// </summary>
