@@ -47,6 +47,8 @@ public class MainCitySys : SystemRoot {
         });
     }
 
+    #region 角色
+
     private PlayerController playerCtrl;
 
     /// <summary>
@@ -65,6 +67,8 @@ public class MainCitySys : SystemRoot {
 
         playerCtrl = player.GetComponent<PlayerController>();
         playerCtrl.Init();
+
+        nav = player.GetComponent<NavMeshAgent>(); 
     }
 
     /// <summary>
@@ -72,6 +76,7 @@ public class MainCitySys : SystemRoot {
     /// </summary>
     /// <param name="dir"></param>
     public void SetMoveDir(Vector2 dir) {
+        StopNavTask();
         // 动画
         if (dir == Vector2.zero) {
             playerCtrl.SetBlend(Constants.BlendIdle);
@@ -82,11 +87,15 @@ public class MainCitySys : SystemRoot {
         // 方向
         playerCtrl.Dir = dir;
     }
+    #endregion
+
+    #region 角色信息窗口
 
     /// <summary>
     /// 打开角色信息窗口
     /// </summary>
     public void OpenInfoWnd() {
+        StopNavTask();
         if (charCamTrans == null) {
             charCamTrans = GameObject.FindGameObjectWithTag("CharShowCam").transform;
         }
@@ -109,25 +118,35 @@ public class MainCitySys : SystemRoot {
         }
     }
 
-    private float startRoate = 0; // 默认开始旋转角度
+    /// <summary>
+    /// 默认开始旋转角度
+    /// </summary>
+    private float startRoate = 0; 
+
     /// <summary>
     /// 设置角色开始的旋转角度
     /// </summary>
     public void SetStartRoate() {
         startRoate = playerCtrl.transform.localEulerAngles.y;
     }
+
     /// <summary>
     /// 设置角色的旋转
     /// </summary>
     public void SetPlayerRoate(float roate) {
         playerCtrl.transform.localEulerAngles = new Vector3(0, startRoate + roate, 0);
     }
+    #endregion
 
     #region 任务引导
     private AutoGuideCfg curtTaskData; // 任务数据
     private Transform[] npcPosTrans;
-    private NavMeshAgent nav;
-    private bool isNavGuide = false;
+    private NavMeshAgent nav; // 导航组件 
+    private bool isNavGuide = false; // 是否在导航
+
+    public AutoGuideCfg GetCurtTaskData() {
+        return curtTaskData;
+    }
 
     /// <summary>
     /// 执行任务
@@ -141,11 +160,11 @@ public class MainCitySys : SystemRoot {
         //解析任务数据
         nav.enabled = true;
         if (curtTaskData.npcID != -1) {
-            float dis = Vector3.Distance(playerCtrl.transform.position, npcPosTrans[agc.npcID].position);
-            if (dis < 0.5f) {
+            float dis = Vector3.Distance(playerCtrl.transform.position, npcPosTrans[agc.npcID].position); // 当前主角和目标 npc 的距离
+            if (dis < 0.5f) { // 已找到目标 npc ，停止导航
                 isNavGuide = false;
                 nav.isStopped = true;
-                playerCtrl.SetBlend(Constants.BlendIdle);
+                playerCtrl.SetBlend(Constants.BlendIdle); //动画
                 nav.enabled = false;
 
                 OpenGuideWnd();
@@ -154,8 +173,8 @@ public class MainCitySys : SystemRoot {
                 isNavGuide = true;
                 nav.enabled = true;
                 nav.speed = Constants.PlayerMoveSpeed;
-                nav.SetDestination(npcPosTrans[agc.npcID].position);
-                playerCtrl.SetBlend(Constants.BlendWalk);
+                nav.SetDestination(npcPosTrans[agc.npcID].position); // 目标 npc 的位置
+                playerCtrl.SetBlend(Constants.BlendWalk); // 动画
             }
         }
         else {
@@ -164,12 +183,16 @@ public class MainCitySys : SystemRoot {
     }
 
     private void Update() {
+        // 自动导航的时候，更新相机的移动
         if (isNavGuide) {
             IsArriveNavPos();
-            //playerCtrl.SetCam();
+            playerCtrl.SetCam(); // 相机跟随
         }
     }
 
+    /// <summary>
+    /// 是否到达目标位置
+    /// </summary>
     private void IsArriveNavPos() {
         float dis = Vector3.Distance(playerCtrl.transform.position, npcPosTrans[curtTaskData.npcID].position);
         if (dis < 0.5f) {
@@ -182,10 +205,12 @@ public class MainCitySys : SystemRoot {
         }
     }
 
+    /// <summary>
+    /// 中断导航
+    /// </summary>
     private void StopNavTask() {
         if (isNavGuide) {
             isNavGuide = false;
-
             nav.isStopped = true;
             nav.enabled = false;
             playerCtrl.SetBlend(Constants.BlendIdle);
@@ -197,11 +222,10 @@ public class MainCitySys : SystemRoot {
     /// </summary>
     private void OpenGuideWnd() {
         //guideWnd.SetWndState();
+        print("导航结束");
     }
 
-    public AutoGuideCfg GetCurtTaskData() {
-        return curtTaskData;
-    }
+    
 
     //public void RspGuide(GameMsg msg) {
     //    RspGuide data = msg.rspGuide;
