@@ -15,6 +15,7 @@ public class MainCitySys : SystemRoot {
 
     public MainCityWnd mainCityWnd;
     public InfoWnd infoWnd;
+    public GuideWnd guideWnd;
 
     private Transform charCamTrans; // 拍摄主角的相机位置
 
@@ -221,8 +222,7 @@ public class MainCitySys : SystemRoot {
     /// 打开引导界面
     /// </summary>
     private void OpenGuideWnd() {
-        //guideWnd.SetWndState();
-        print("导航结束");
+        guideWnd.SetWndState();
     }
 
     
