@@ -6,6 +6,7 @@
 *****************************************************/
 
 using System;
+using PEProtocol;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -225,35 +226,37 @@ public class MainCitySys : SystemRoot {
         guideWnd.SetWndState();
     }
 
-    
+    /// <summary>
+    /// 服务器回应
+    /// </summary>
+    /// <param name="msg"></param>
+    public void RspGuide(GameMsg msg) {
+        RspGuide data = msg.rspGuide;
 
-    //public void RspGuide(GameMsg msg) {
-    //    RspGuide data = msg.rspGuide;
+        GameRoot.AddTips(Constants.Color("任务奖励 金币+" + curtTaskData.coin + "  经验+" + curtTaskData.exp, TxtColor.Blue));
 
-    //    GameRoot.AddTips(Constants.Color("任务奖励 金币+" + curtTaskData.coin + "  经验+" + curtTaskData.exp, TxtColor.Blue));
-
-    //    switch (curtTaskData.actID) {
-    //        case 0:
-    //            //与智者对话
-    //            break;
-    //        case 1:
-    //            //TODO 进入副本
-    //            break;
-    //        case 2:
-    //            //TODO 进入强化界面
-    //            break;
-    //        case 3:
-    //            //TODO 进入体力购买
-    //            break;
-    //        case 4:
-    //            //TODO 进入金币铸造
-    //            break;
-    //        case 5:
-    //            //TODO 进入世界聊天
-    //            break;
-    //    }
-    //    GameRoot.Instance.SetPlayerDataByGuide(data);
-    //    maincityWnd.RefreshUI();
-    //}
+        switch (curtTaskData.actID) {
+            case 0:
+                //与智者对话
+                break;
+            case 1:
+                //TODO 进入副本
+                break;
+            case 2:
+                //TODO 进入强化界面
+                break;
+            case 3:
+                //TODO 进入体力购买
+                break;
+            case 4:
+                //TODO 进入金币铸造
+                break;
+            case 5:
+                //TODO 进入世界聊天
+                break;
+        }
+        GameRoot.Instance.SetPlayerDataByGuide(data);
+        mainCityWnd.RefreshUI();
+    }
     #endregion
 }

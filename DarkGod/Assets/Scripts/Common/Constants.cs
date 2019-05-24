@@ -7,7 +7,47 @@
 
 using UnityEngine;
 
+/// <summary>
+/// 文字颜色
+/// </summary>
+public enum TxtColor {
+    Red,
+    Green,
+    Blue,
+    Yellow
+}
+
 public class Constants {
+    #region 颜色
+
+    private const string ColorRed = "<color=#FF0000FF>";
+    private const string ColorGreen = "<color=#00FF00FF>";
+    private const string ColorBlue = "<color=#00B4FFFF>";
+    private const string ColorYellow = "<color=#FFFF00FF>";
+    private const string ColorEnd = "</color>";
+
+    /// <summary>
+    /// 设置颜色
+    /// </summary>
+    public static string Color(string str, TxtColor c) {
+        string result = "";
+        switch (c) {
+            case TxtColor.Red:
+                result = ColorRed + str + ColorEnd;
+                break;
+            case TxtColor.Green:
+                result = ColorGreen + str + ColorEnd;
+                break;
+            case TxtColor.Blue:
+                result = ColorBlue + str + ColorEnd;
+                break;
+            case TxtColor.Yellow:
+                result = ColorYellow + str + ColorEnd;
+                break;
+        }
+        return result;
+    }
+    #endregion
 
     // --------------- 场景名称/ID ----------------
     public const string SceneLogin = "SceneLogin";

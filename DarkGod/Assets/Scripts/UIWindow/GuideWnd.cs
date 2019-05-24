@@ -78,15 +78,15 @@ public class GuideWnd : WindowRoot
         index += 1;
         // 对话结束
         if (index == dialogArr.Length) {
-            //TODO 发送任务引导完成信息
-            //GameMsg msg = new GameMsg {
-            //    cmd = (int)CMD.ReqGuide,
-            //    reqGuide = new ReqGuide {
-            //        guideid = curtTaskData.ID
-            //    }
-            //};
+            // 发送任务引导完成信息
+            GameMsg msg = new GameMsg {
+                cmd = (int)CMD.ReqGuide,
+                reqGuide = new ReqGuide {
+                    guideid = curtTaskData.id
+                }
+            };
 
-            //netSvc.SendMsg(msg);
+            netSvc.SendMsg(msg);
             SetWndState(false);
         }
         else {

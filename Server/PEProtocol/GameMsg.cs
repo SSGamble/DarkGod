@@ -29,7 +29,10 @@ namespace PEProtocol {
         RspLogin = 102, // 回应
         // 改名
         ReqRename = 103,
-        RspRename = 104
+        RspRename = 104,
+        //主城相关 200
+        ReqGuide = 200,
+        RspGuide = 201,
     }
 
     /// <summary>
@@ -41,6 +44,7 @@ namespace PEProtocol {
         WrongPwd=102, // 密码错误
         NameIsExist = 103, // 用户名已经存在
         UpdateDBError = 104, // 更新数据库出错
+        ServerDataError = 105, // 数据异常，客户端和服务器端不一致
     }
 
     /// <summary>
@@ -53,6 +57,9 @@ namespace PEProtocol {
 
         public ReqRename reqRename;
         public RspRename rspRename;
+
+        public ReqGuide reqGuide;
+        public RspGuide rspGuide;
     }
 
     /// <summary>
@@ -108,6 +115,22 @@ namespace PEProtocol {
     [Serializable]
     public class RspRename {
         public string name;
+    }
+
+    #endregion
+
+    #region 引导相关
+    [Serializable]
+    public class ReqGuide {
+        public int guideid; // 当前已完成的任务 ID
+    }
+
+    [Serializable]
+    public class RspGuide {
+        public int guideid;
+        public int coin;
+        public int lv; // 经验值奖励可能会导致等级的变化
+        public int exp;
     }
 
     #endregion

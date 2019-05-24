@@ -35,7 +35,9 @@
   <ItemGroup>
     <Compile Include="01Service\01NetSvc\NetSvc.cs" />
     <Compile Include="01Service\01NetSvc\ServerSession.cs" />
+    <Compile Include="01Service\02CfgSvc\CfgSvc.cs" />
     <Compile Include="02System\01LoginSys\LoginSys.cs" />
+    <Compile Include="02System\02GuideSys\GuideSys.cs" />
     <Compile Include="03Cache\CacheSvc.cs" />
     <Compile Include="04DB\DBMgr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +63,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

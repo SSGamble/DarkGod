@@ -101,6 +101,10 @@ public class NetSvc : MonoBehaviour {
                     PECommon.Log("数据库更新异常", LogType.Error);
                     GameRoot.AddTips("网络不稳定");
                     break;
+                case ErrorCode.ServerDataError:
+                    PECommon.Log("客户端和服务器数据不一致", LogType.Error);
+                    GameRoot.AddTips("网络不稳定");
+                    break;
                 case ErrorCode.WrongPwd:
                     GameRoot.AddTips("密码错误");
                     break;
@@ -124,6 +128,10 @@ public class NetSvc : MonoBehaviour {
             // 改名回应
             case CMD.RspRename:
                 LoginSys.Instance.RspRename(msg);
+                break;
+            // 引导任务
+            case CMD.RspGuide:
+                MainCitySys.Instance.RspGuide(msg);
                 break;
             default:
                 break;

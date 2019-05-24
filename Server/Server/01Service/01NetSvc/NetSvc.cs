@@ -16,7 +16,7 @@ using PEProtocol;
 public class MsgPack {
     public ServerSession session;
     public GameMsg msg;
-    public MsgPack(ServerSession session,GameMsg msg) {
+    public MsgPack(ServerSession session, GameMsg msg) {
         this.session = session;
         this.msg = msg;
     }
@@ -62,7 +62,7 @@ public class NetSvc {
     /// 从消息队列里取出数据进行处理
     /// </summary>
     public void Update() {
-        if (msgPackQue.Count>0) { // 当前队列里是否有数据
+        if (msgPackQue.Count > 0) { // 当前队列里是否有数据
             //PECommon.Log("当前队列里要需要处理的数据包数量：" + msgPackQue.Count);
             lock (obj) {
                 MsgPack pack = msgPackQue.Dequeue(); // 取出一条数据
@@ -85,6 +85,10 @@ public class NetSvc {
             // 取名响应
             case CMD.ReqRename:
                 LoginSys.Instance.ReqRename(pack);
+                break;
+            // 引导任务
+            case CMD.ReqGuide:
+                GuideSys.Instance.ReqGuide(pack);
                 break;
             default:
                 break;

@@ -91,6 +91,7 @@ public class MainCityWnd : WindowRoot {
                 spPath = PathDefine.TraderHead;
                 break;
             default:
+                spPath = PathDefine.TaskHead; // 默认图标
                 break;
         }
         // 加载图片

@@ -25,11 +25,13 @@ public class ServerRoot {
         DBMgr.Instance.Init();
 
         // 服务层
+        CfgSvc.Instance.Init(); // 配置文件的读取
         CacheSvc.Instance.Init(); // 缓存
         NetSvc.Instance.Init(); // 网络
 
         // 业务系统层
         LoginSys.Instance.Init(); // 登录
+        GuideSys.Instance.Init();
     }
 
     /// <summary>
