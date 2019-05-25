@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: f1dad6681d93b3647a42ae0f95ba3ccb
-timeCreated: 1557633960
+guid: 088f2c89397c5234f9f61c2c4845ded1
+timeCreated: 1543519766
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
@@ -45,9 +45,8 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 140, y: 30, z: 140, w: 88}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 131, y: 30, z: 131, w: 91}
-  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -68,16 +67,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
   - buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-  - buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1

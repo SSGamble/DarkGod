@@ -38,7 +38,9 @@ public class CfgSvc {
     private void InitGuideCfg() {
         // 解析 xml 文件
         XmlDocument doc = new XmlDocument();
-        doc.Load(@"G:\UnityDocuments\DarkGod\DarkGod\Assets\Resources\ResCfgs\guide.xml");
+        
+        doc.Load(@"C:\guide.xml");
+        //doc.Load(@"G:\UnityDocuments\DarkGod\DarkGod\Assets\Resources\ResCfgs\guide.xml");
 
         XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
 

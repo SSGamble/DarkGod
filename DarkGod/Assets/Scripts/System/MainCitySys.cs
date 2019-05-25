@@ -17,6 +17,7 @@ public class MainCitySys : SystemRoot {
     public MainCityWnd mainCityWnd;
     public InfoWnd infoWnd;
     public GuideWnd guideWnd;
+    public StrongWnd strongWnd;
 
     private Transform charCamTrans; // 拍摄主角的相机位置
 
@@ -70,7 +71,7 @@ public class MainCitySys : SystemRoot {
         playerCtrl = player.GetComponent<PlayerController>();
         playerCtrl.Init();
 
-        nav = player.GetComponent<NavMeshAgent>(); 
+        nav = player.GetComponent<NavMeshAgent>();
     }
 
     /// <summary>
@@ -123,7 +124,7 @@ public class MainCitySys : SystemRoot {
     /// <summary>
     /// 默认开始旋转角度
     /// </summary>
-    private float startRoate = 0; 
+    private float startRoate = 0;
 
     /// <summary>
     /// 设置角色开始的旋转角度
@@ -257,6 +258,15 @@ public class MainCitySys : SystemRoot {
         }
         GameRoot.Instance.SetPlayerDataByGuide(data);
         mainCityWnd.RefreshUI();
+    }
+    #endregion
+
+    #region 强化
+    /// <summary>
+    /// 打开强化界面
+    /// </summary>
+    public void OpenStrongWnd() {
+        strongWnd.SetWndState();
     }
     #endregion
 }

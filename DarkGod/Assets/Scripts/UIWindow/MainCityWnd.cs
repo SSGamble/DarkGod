@@ -168,6 +168,14 @@ public class MainCityWnd : WindowRoot {
         audioSvc.PlayUIAudio(Constants.UIOpenPage);
         MainCitySys.Instance.OpenInfoWnd();
     }
+
+    /// <summary>
+    /// 强化
+    /// </summary>
+    public void ClickStrongBtn() {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenStrongWnd();
+    }
     #endregion
 
     #region 摇杆

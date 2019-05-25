@@ -16,6 +16,7 @@ public class WindowRoot : MonoBehaviour {
     protected AudioSvc audioSvc = null;
     protected NetSvc netSvc = null;
 
+    #region 窗口处理
     /// <summary>
     /// 设置窗口的激活状态
     /// </summary>
@@ -52,6 +53,8 @@ public class WindowRoot : MonoBehaviour {
         audioSvc = null;
         netSvc = null;
     }
+
+    #endregion
 
     #region 设置 Text 组件的文字
     protected void SetText(Text txt, string context = "") {
@@ -90,6 +93,33 @@ public class WindowRoot : MonoBehaviour {
     }
     #endregion
 
+    #region 点击事件
+    // 为指定物体添加事件监听脚本并设置回调
+    protected void OnClickDown(GameObject go, Action<PointerEventData> cb) {
+        PEListener listener = GetOrAddComponect<PEListener>(go);
+        listener.onClickDown = cb;
+    }
+    protected void OnClickUp(GameObject go, Action<PointerEventData> cb) {
+        PEListener listener = GetOrAddComponect<PEListener>(go);
+        listener.onClickUp = cb;
+    }
+    protected void OnClickDrag(GameObject go, Action<PointerEventData> cb) {
+        PEListener listener = GetOrAddComponect<PEListener>(go);
+        listener.onDrag = cb;
+    }
+    /// <summary>
+    /// 带参数点击
+    /// </summary>
+    /// <param name="go">响应物体</param>
+    /// <param name="cb">回调</param>
+    /// <param name="args">传递参数</param>
+    protected void OnClick(GameObject go, Action<object> cb, object args) {
+        PEListener listener = GetOrAddComponect<PEListener>(go);
+        listener.onClick = cb;
+        listener.args = args;
+    }
+    #endregion
+
     /// <summary>
     /// 设置图片
     /// </summary>
@@ -109,20 +139,4 @@ public class WindowRoot : MonoBehaviour {
         }
         return t;
     }
-
-    #region Click Evts
-    // 为指定物体添加事件监听脚本并设置回调
-    protected void OnClickDown(GameObject go, Action<PointerEventData> cb) {
-        PEListener listener = GetOrAddComponect<PEListener>(go);
-        listener.onClickDown = cb;
-    }
-    protected void OnClickUp(GameObject go, Action<PointerEventData> cb) {
-        PEListener listener = GetOrAddComponect<PEListener>(go);
-        listener.onClickUp = cb;
-    }
-    protected void OnClickDrag(GameObject go, Action<PointerEventData> cb) {
-        PEListener listener = GetOrAddComponect<PEListener>(go);
-        listener.onDrag = cb;
-    }
-    #endregion
 }
