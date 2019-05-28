@@ -24,6 +24,7 @@ public class ResSvc : MonoBehaviour {
         InitRanName(PathDefine.RanNameCfg);
         InitMapCfg(PathDefine.MapCfg);
         InitGuideCfg(PathDefine.GuideCfg);
+        InitStrongCfg(PathDefine.StrongCfg);
         PECommon.Log("Init ResSvc..");
     }
 
@@ -72,7 +73,6 @@ public class ResSvc : MonoBehaviour {
 
     //缓存已加载的音乐
     private Dictionary<string, AudioClip> acDic = new Dictionary<string, AudioClip>();
-
     /// <summary>
     /// 加载声音资源
     /// </summary>
@@ -327,6 +327,113 @@ public class ResSvc : MonoBehaviour {
             return agc;
         }
         return null;
+    }
+    #endregion
+
+    #region 强化升级
+    private Dictionary<int, Dictionary<int, StrongCfg>> strongDic = new Dictionary<int, Dictionary<int, StrongCfg>>();
+    private void InitStrongCfg(string path) {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (!xml) {
+            PECommon.Log("xml file:" + path + " not exist", LogType.Error);
+        }
+        else {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+
+            XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+            for (int i = 0; i < nodLst.Count; i++) {
+                XmlElement ele = nodLst[i] as XmlElement;
+
+                if (ele.GetAttributeNode("ID") == null) {
+                    continue;
+                }
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+                StrongCfg sd = new StrongCfg {
+                    id = ID
+                };
+
+                foreach (XmlElement e in nodLst[i].ChildNodes) {
+                    int val = int.Parse(e.InnerText);
+                    switch (e.Name) {
+                        case "pos":
+                            sd.pos = val;
+                            break;
+                        case "starlv":
+                            sd.startlv = val;
+                            break;
+                        case "addhp":
+                            sd.addhp = val;
+                            break;
+                        case "addhurt":
+                            sd.addhurt = val;
+                            break;
+                        case "adddef":
+                            sd.adddef = val;
+                            break;
+                        case "minlv":
+                            sd.minlv = val;
+                            break;
+                        case "coin":
+                            sd.coin = val;
+                            break;
+                        case "crystal":
+                            sd.crystal = val;
+                            break;
+                    }
+                }
+
+                Dictionary<int, StrongCfg> dic = null;
+                if (strongDic.TryGetValue(sd.pos, out dic)) {
+                    dic.Add(sd.startlv, sd);
+                }
+                else {
+                    dic = new Dictionary<int, StrongCfg>();
+                    dic.Add(sd.startlv, sd);
+
+                    strongDic.Add(sd.pos, dic);
+                }
+            }
+        }
+    }
+
+    public StrongCfg GetStrongData(int pos, int starlv) {
+        StrongCfg sd = null;
+        Dictionary<int, StrongCfg> dic = null;
+        if (strongDic.TryGetValue(pos, out dic)) {
+            if (dic.ContainsKey(starlv)) {
+                sd = dic[starlv];
+            }
+        }
+        return sd;
+    }
+
+    /// <summary>
+    /// 获取当前星级和之前星级的属性和
+    /// </summary>
+    public int GetPropAddValPreLv(int pos, int starlv, int type) {
+        Dictionary<int, StrongCfg> posDic = null;
+        int val = 0;
+        if (strongDic.TryGetValue(pos, out posDic)) {
+            for (int i = 0; i < starlv; i++) {
+                StrongCfg sd;
+                if (posDic.TryGetValue(i, out sd)) {
+                    switch (type) {
+                        case 1: //hp
+                            val += sd.addhp;
+                            break;
+                        case 2: //hurt
+                            val += sd.addhurt;
+                            break;
+                        case 3: //def
+                            val += sd.adddef;
+                            break;
+                    }
+                }
+            }
+        }
+        return val;
     }
     #endregion
 

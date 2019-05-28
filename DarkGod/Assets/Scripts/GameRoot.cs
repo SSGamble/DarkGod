@@ -1,4 +1,4 @@
-/****************************************************
+ /****************************************************
     文件：GameRoot.cs
 	作者：CaptainYun
     日期：2019/5/12 21:43:13
@@ -98,5 +98,35 @@ public class GameRoot : MonoBehaviour {
         PlayerData.lv = data.lv;
         PlayerData.exp = data.exp;
         PlayerData.guideid = data.guideid;
+    }
+
+    /// <summary>
+    /// 强化后，更新数据
+    /// </summary>
+    public void SetPlayerDataByStrong(RspStrong data) {
+        PlayerData.coin = data.coin;
+        PlayerData.crystal = data.crystal;
+        PlayerData.hp = data.hp;
+        PlayerData.ad = data.ad;
+        PlayerData.ap = data.ap;
+        PlayerData.addef = data.addef;
+        PlayerData.apdef = data.apdef;
+        PlayerData.strongArr = data.strongArr;
+    }
+
+    /// <summary>
+    /// 购买后，修改数据
+    /// </summary>
+    public void SetPlayerDataByBuy(RspBuy data) {
+        PlayerData.diamond = data.dimond;
+        PlayerData.coin = data.coin;
+        PlayerData.power = data.power;
+    }
+
+    /// <summary>
+    /// 设置玩家体力值
+    /// </summary>
+    public void SetPlayerDataByPower(PshPower data) {
+        PlayerData.power = data.power;
     }
 }

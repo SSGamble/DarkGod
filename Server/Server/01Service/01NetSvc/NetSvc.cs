@@ -90,6 +90,18 @@ public class NetSvc {
             case CMD.ReqGuide:
                 GuideSys.Instance.ReqGuide(pack);
                 break;
+            // 强化
+            case CMD.ReqStrong:
+                StrongSys.Instance.ReqStrong(pack);
+                break;
+            // 聊天
+            case CMD.SndChat:
+                ChatSys.Instance.SndChat(pack);
+                break;
+            // 交易
+            case CMD.ReqBuy:
+                BuySys.Instance.ReqBuy(pack);
+                break;
             default:
                 break;
         }

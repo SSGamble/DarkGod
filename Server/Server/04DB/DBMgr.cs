@@ -55,6 +55,7 @@ public class DBMgr {
                         power = reader.GetInt32("power"),
                         coin = reader.GetInt32("coin"),
                         diamond = reader.GetInt32("diamond"),
+                        crystal = reader.GetInt32("crystal"),
                         hp = reader.GetInt32("hp"),
                         ad = reader.GetInt32("ad"),
                         ap = reader.GetInt32("ap"),
@@ -65,6 +66,25 @@ public class DBMgr {
                         critical = reader.GetInt32("critical"),
                         guideid = reader.GetInt32("guideid")
                     };
+                    #region 解析 Strong
+                    // 数据库里存的字符串，拿出来再进行分割
+                    // 数据示意：1#2#2#4#3#7#                        
+                    string[] strongStrArr = reader.GetString("strong").Split('#');
+
+                    int[] _strongArr = new int[6];
+                    for (int i = 0; i < strongStrArr.Length; i++) {
+                        if (strongStrArr[i] == "") {
+                            continue;
+                        }
+                        if (int.TryParse(strongStrArr[i], out int starLv)) {
+                            _strongArr[i] = starLv;
+                        }
+                        else {
+                            PECommon.Log("Parse Strong Data Error", LogType.Error);
+                        }
+                    }
+                    playerData.strongArr = _strongArr;
+                    #endregion
                 }
             }
         }
@@ -80,11 +100,12 @@ public class DBMgr {
                 playerData = new PlayerData {
                     id = -1,
                     name = "",
-                    lv = 0,
+                    lv = 1,
                     exp = 0,
-                    power = 0,
-                    coin = 0,
-                    diamond = 0,
+                    power = 150,
+                    coin = 5000,
+                    diamond = 500,
+                    crystal = 500,
                     hp = 2000,
                     ad = 275,
                     ap = 265,
@@ -93,7 +114,8 @@ public class DBMgr {
                     dodge = 7,
                     pierce = 5,
                     critical = 2,
-                    guideid=1001
+                    guideid=1001,
+                    strongArr = new int[6],
                 };
                 playerData.id = InsAcct(acct, pwd, playerData); // 赋予插入数据的 id
             }
@@ -107,8 +129,8 @@ public class DBMgr {
     private int InsAcct(string acct, string pwd, PlayerData pd) {
         int id = -1;
         string sql = "insert into account set acct=@acct,pwd =@pwd,name=@name,level=@level,exp=@exp,power=@power,coin=@coin," +
-            "diamond=@diamond,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce," +
-            "critical=@critical,guideid=@guideid";
+            "diamond=@diamond,crystal=@crystal,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce," +
+            "critical=@critical,guideid=@guideid,strong=@strong";
         try {
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("acct", acct);
@@ -119,6 +141,7 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("power", pd.power);
             cmd.Parameters.AddWithValue("coin", pd.coin);
             cmd.Parameters.AddWithValue("diamond", pd.diamond);
+            cmd.Parameters.AddWithValue("crystal", pd.crystal);
             cmd.Parameters.AddWithValue("hp", pd.hp);
             cmd.Parameters.AddWithValue("ad", pd.ad);
             cmd.Parameters.AddWithValue("ap", pd.ap);
@@ -128,7 +151,12 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("pierce", pd.pierce);
             cmd.Parameters.AddWithValue("critical", pd.critical);
             cmd.Parameters.AddWithValue("guideid", pd.guideid);
-
+            string strongInfo = "";
+            for (int i = 0; i < pd.strongArr.Length; i++) {
+                strongInfo += pd.strongArr[i];
+                strongInfo += "#";
+            }
+            cmd.Parameters.AddWithValue("strong", strongInfo);
             cmd.ExecuteNonQuery();
             id = (int)cmd.LastInsertedId; // 新插入数据的主键
         }
@@ -173,9 +201,10 @@ public class DBMgr {
     /// <returns></returns>
     public bool UpdataPlayerData(int id, PlayerData playerData) {
         try {
-            string sql = "update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,hp=@hp," +
-                "ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical," +
-                "guideid=@guideid where id =@id";
+            string sql = "update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,crystal=@crystal," +
+                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical," +
+                "guideid=@guideid,strong=@strong" +
+                " where id =@id";
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("id", id);
             cmd.Parameters.AddWithValue("name", playerData.name);
@@ -184,6 +213,7 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("power", playerData.power);
             cmd.Parameters.AddWithValue("coin", playerData.coin);
             cmd.Parameters.AddWithValue("diamond", playerData.diamond);
+            cmd.Parameters.AddWithValue("crystal", playerData.crystal);
             cmd.Parameters.AddWithValue("hp", playerData.hp);
             cmd.Parameters.AddWithValue("ad", playerData.ad);
             cmd.Parameters.AddWithValue("ap", playerData.ap);
@@ -193,6 +223,12 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("pierce", playerData.pierce);
             cmd.Parameters.AddWithValue("critical", playerData.critical);
             cmd.Parameters.AddWithValue("guideid", playerData.guideid);
+            string strongInfo = "";
+            for (int i = 0; i < playerData.strongArr.Length; i++) {
+                strongInfo += playerData.strongArr[i];
+                strongInfo += "#";
+            }
+            cmd.Parameters.AddWithValue("strong", strongInfo);
             cmd.ExecuteNonQuery();
         }
         catch (System.Exception e) {

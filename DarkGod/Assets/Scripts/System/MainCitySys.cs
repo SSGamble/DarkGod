@@ -18,6 +18,8 @@ public class MainCitySys : SystemRoot {
     public InfoWnd infoWnd;
     public GuideWnd guideWnd;
     public StrongWnd strongWnd;
+    public ChatWnd chatWnd;
+    public BuyWnd buyWnd;
 
     private Transform charCamTrans; // 拍摄主角的相机位置
 
@@ -50,7 +52,7 @@ public class MainCitySys : SystemRoot {
         });
     }
 
-    #region 角色
+    #region 角色控制
 
     private PlayerController playerCtrl;
 
@@ -267,6 +269,54 @@ public class MainCitySys : SystemRoot {
     /// </summary>
     public void OpenStrongWnd() {
         strongWnd.SetWndState();
+    }
+
+    /// <summary>
+    /// 强化的服务器回应
+    /// </summary>
+    public void RspStrong(GameMsg msg) {
+        int fightPre = PECommon.GetFightByProps(GameRoot.Instance.PlayerData); // 之前的战力
+        GameRoot.Instance.SetPlayerDataByStrong(msg.rspStrong);
+        int fightNow = PECommon.GetFightByProps(GameRoot.Instance.PlayerData); // 新的战力，强化后
+        GameRoot.AddTips(Constants.Color("战力提升 " + (fightNow - fightPre), TxtColor.Blue));
+        strongWnd.UpdateUI();
+        mainCityWnd.RefreshUI();
+    }
+    #endregion
+
+    #region 聊天
+    public void OpenChatWnd() {
+        chatWnd.SetWndState();
+    }
+    /// <summary>
+    /// 服务器推送
+    /// </summary>
+    /// <param name="msg"></param>
+    public void PshChat(GameMsg msg) {
+        chatWnd.AddChatMsg(msg.pshChat.name, msg.pshChat.chat);
+    }
+    #endregion
+
+    #region 购买
+    public void OpenBuyWnd(int type) {
+        buyWnd.SetBuyType(type);
+        buyWnd.SetWndState();
+    }
+
+    public void RspBuy(GameMsg msg) {
+        RspBuy data = msg.rspBuy;
+        GameRoot.Instance.SetPlayerDataByBuy(data);
+        GameRoot.AddTips("购买成功");
+        mainCityWnd.RefreshUI();
+        buyWnd.SetWndState(false);
+    }
+
+    public void PshPower(GameMsg msg) {
+        PshPower data = msg.pshPower;
+        GameRoot.Instance.SetPlayerDataByPower(data);
+        if (mainCityWnd.gameObject.activeSelf) {
+            mainCityWnd.RefreshUI();
+        }
     }
     #endregion
 }

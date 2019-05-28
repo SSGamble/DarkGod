@@ -45,6 +45,18 @@ public class CacheSvc {
     }
 
     /// <summary>
+    /// 获取所有在线的客户端，用于聊天广播
+    /// </summary>
+    /// <returns></returns>
+    public List<ServerSession> GetOnlineServerSessions() {
+        List<ServerSession> lst = new List<ServerSession>();
+        foreach (var item in onLineSessionDic) {
+            lst.Add(item.Key);
+        }
+        return lst;
+    }
+
+    /// <summary>
     /// 根据账号密码范湖对应的账号数据，密码错误，返回 null，账号不存在，则默认创建新的账号
     /// </summary>
     public PlayerData GetPlayerData(string acct, string pwd) {
@@ -71,8 +83,6 @@ public class CacheSvc {
     /// <summary>
     /// 得到缓存中的玩家数据
     /// </summary>
-    /// <param name="session"></param>
-    /// <returns></returns>
     public PlayerData GetPlayerDataBySession(ServerSession session) {
         if (onLineSessionDic.TryGetValue(session, out PlayerData playerData)) {
             return playerData;
@@ -85,9 +95,6 @@ public class CacheSvc {
     /// <summary>
     /// 更新玩家数据
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="playerData"></param>
-    /// <returns></returns>
     public bool UpdatePlayerData(int id, PlayerData playerData) {
         return dbMgr.UpdataPlayerData(id, playerData);
     }

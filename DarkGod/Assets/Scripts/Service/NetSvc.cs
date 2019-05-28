@@ -114,6 +114,18 @@ public class NetSvc : MonoBehaviour {
                 case ErrorCode.AcctIsOnLine:
                     GameRoot.AddTips("用户已在线");
                     break;
+                case ErrorCode.LackLevel:
+                    GameRoot.AddTips("角色等级不够");
+                    break;
+                case ErrorCode.LackCoin:
+                    GameRoot.AddTips("金币数量不够");
+                    break;
+                case ErrorCode.LackCrystal:
+                    GameRoot.AddTips("水晶数量不够");
+                    break;
+                case ErrorCode.LackDiamond:
+                    GameRoot.AddTips("钻石数量不够");
+                    break;
                 default:
                     break;
             }
@@ -133,6 +145,21 @@ public class NetSvc : MonoBehaviour {
             case CMD.RspGuide:
                 MainCitySys.Instance.RspGuide(msg);
                 break;
+            // 强化
+            case CMD.RspStrong:
+                MainCitySys.Instance.RspStrong(msg);
+                break;
+            // 聊天
+            case CMD.PshChat:
+                MainCitySys.Instance.PshChat(msg);
+                break;
+            // 交易
+            case CMD.RspBuy:
+                MainCitySys.Instance.RspBuy(msg);
+                break;
+            //case CMD.PshPower:
+            //    MainCitySys.Instance.PshPower(msg);
+            //    break;
             default:
                 break;
         }

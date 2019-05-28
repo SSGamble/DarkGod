@@ -139,4 +139,11 @@ public class WindowRoot : MonoBehaviour {
         }
         return t;
     }
+
+    /// <summary>
+    /// 判断当前物体是否激活
+    /// </summary>
+    protected bool GetWndState() {
+        return gameObject.activeSelf;
+    }
 }

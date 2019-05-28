@@ -30,9 +30,20 @@ namespace PEProtocol {
         // 改名
         ReqRename = 103,
         RspRename = 104,
-        //主城相关 200
+        // 主城相关 200
         ReqGuide = 200,
         RspGuide = 201,
+        // 强化
+        ReqStrong = 203,
+        RspStrong = 204,
+        // 聊天
+        SndChat = 205,
+        PshChat = 206,
+        // 交易
+        ReqBuy = 207,
+        RspBuy = 208,
+
+        PshPower = 209,
     }
 
     /// <summary>
@@ -41,10 +52,14 @@ namespace PEProtocol {
     public enum ErrorCode {
         None = 0,
         AcctIsOnLine = 101, // 账号已在线
-        WrongPwd=102, // 密码错误
+        WrongPwd = 102, // 密码错误
         NameIsExist = 103, // 用户名已经存在
         UpdateDBError = 104, // 更新数据库出错
         ServerDataError = 105, // 数据异常，客户端和服务器端不一致
+        LackLevel, // 等级不够
+        LackCoin, // 金币不够
+        LackCrystal, // 水晶不够
+        LackDiamond, // 钻石不够
     }
 
     /// <summary>
@@ -60,6 +75,17 @@ namespace PEProtocol {
 
         public ReqGuide reqGuide;
         public RspGuide rspGuide;
+
+        public ReqStrong reqStrong;
+        public RspStrong rspStrong;
+
+        public SndChat sndChat;
+        public PshChat pshChat;
+
+        public ReqBuy reqBuy;
+        public RspBuy rspBuy;
+
+        public PshPower pshPower;
     }
 
     /// <summary>
@@ -74,15 +100,17 @@ namespace PEProtocol {
         public int power; // 体力
         public int coin; // 金币
         public int diamond; // 钻石
+        public int crystal;
         public int hp;
         public int ad;
         public int ap;
         public int addef; // ad 防御
-        public int apdef; // /ap 防御
-        public int dodge;//闪避概率
-        public int pierce;//穿透比率
-        public int critical;//暴击概率
-        public int guideid;//当前进行的引导id
+        public int apdef; // ap 防御
+        public int dodge; // 闪避概率
+        public int pierce; // 穿透比率
+        public int critical; // 暴击概率
+        public int guideid; // 当前进行的引导 id
+        public int[] strongArr; // 索引号：第一个位置，值：星级
     }
 
     #region 登录相关
@@ -135,4 +163,62 @@ namespace PEProtocol {
 
     #endregion
 
+    #region 强化相关
+    [Serializable]
+    public class ReqStrong {
+        public int pos;
+    }
+    [Serializable]
+    public class RspStrong {
+        public int coin;
+        public int crystal;
+        public int hp;
+        public int ad;
+        public int ap;
+        public int addef;
+        public int apdef;
+        public int[] strongArr;
+    }
+    #endregion
+
+    #region 聊天相关
+    /// <summary>
+    /// 客户端发送
+    /// </summary>
+    [Serializable]
+    public class SndChat {
+        public string chat;
+    }
+
+    /// <summary>
+    /// 服务器广播
+    /// </summary>
+    [Serializable]
+    public class PshChat {
+        public string name;
+        public string chat;
+    }
+    #endregion
+
+    #region 资源交易相关
+    [Serializable]
+    public class ReqBuy {
+        public int type;
+        public int cost;
+    }
+
+    [Serializable]
+    public class RspBuy {
+        public int type;
+        public int dimond;
+        public int coin;
+        public int power;
+    }
+
+    [Serializable]
+    public class PshPower {
+        public int power;
+    }
+
+    #endregion
 }

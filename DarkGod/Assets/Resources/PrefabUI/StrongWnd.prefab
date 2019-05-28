@@ -1450,23 +1450,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ea8bb032a58da4c84e868f1fece7c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imgCurtPos: {fileID: 0}
-  txtStartLv: {fileID: 0}
-  starTransGrp: {fileID: 0}
-  propHP1: {fileID: 0}
-  propHurt1: {fileID: 0}
-  propDef1: {fileID: 0}
-  propHP2: {fileID: 0}
-  propHurt2: {fileID: 0}
-  propDef2: {fileID: 0}
-  propArr1: {fileID: 0}
-  propArr2: {fileID: 0}
-  propArr3: {fileID: 0}
-  txtNeedLv: {fileID: 0}
-  txtCostCoin: {fileID: 0}
-  txtCostCrystal: {fileID: 0}
-  costTransRoot: {fileID: 0}
-  txtCoin: {fileID: 0}
+  imgCurtPos: {fileID: 114779055638503328}
+  txtStartLv: {fileID: 114284798896569986}
+  starTransGrp: {fileID: 224379809929106012}
+  propHP1: {fileID: 114969360049102960}
+  propHurt1: {fileID: 114877021520224720}
+  propDef1: {fileID: 114715629511274196}
+  propHP2: {fileID: 114227610119580468}
+  propHurt2: {fileID: 114892217999281844}
+  propDef2: {fileID: 114947037607066450}
+  propArr1: {fileID: 114546347192476786}
+  propArr2: {fileID: 114263266183673006}
+  propArr3: {fileID: 114137046000690218}
+  txtNeedLv: {fileID: 114330126205045716}
+  txtCostCoin: {fileID: 114890601320523716}
+  txtCostCrystal: {fileID: 114111313839110000}
+  costTransRoot: {fileID: 224970702904131050}
+  txtCoin: {fileID: 114161059825592620}
   posBtnTrans: {fileID: 224900997208703720}
 --- !u!114 &114035893952730784
 MonoBehaviour:

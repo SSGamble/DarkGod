@@ -132,7 +132,7 @@ public class MainCityWnd : WindowRoot {
     }
     #endregion
 
-    #region ClickEvts
+    #region 点击事件
     /// <summary>
     /// 引导按钮，
     /// </summary>
@@ -145,6 +145,7 @@ public class MainCityWnd : WindowRoot {
             GameRoot.AddTips("引导任务已经完成");
         }
     }
+     
     /// <summary>
     /// 主菜单按钮点击事件，播放相应的动画
     /// </summary>
@@ -175,6 +176,30 @@ public class MainCityWnd : WindowRoot {
     public void ClickStrongBtn() {
         audioSvc.PlayUIAudio(Constants.UIOpenPage);
         MainCitySys.Instance.OpenStrongWnd();
+    }
+
+    /// <summary>
+    /// 聊天
+    /// </summary>
+    public void ClickChatBtn() {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenChatWnd();
+    }
+
+    /// <summary>
+    /// 购买体力
+    /// </summary>
+    public void ClickBuyPowerBtn() {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenBuyWnd(0);
+    }
+
+    /// <summary>
+    /// 铸造金币
+    /// </summary>
+    public void ClickMKCoinBtn() {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenBuyWnd(1);
     }
     #endregion
 

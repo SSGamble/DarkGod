@@ -13,6 +13,7 @@ public class PathDefine {
     public const string RanNameCfg = "ResCfgs/rdname"; // 随机名字
     public const string MapCfg = "ResCfgs/map";  // 地图
     public const string GuideCfg = "ResCfgs/guide"; // 自动引导
+    public const string StrongCfg = "ResCfgs/strong"; // 强化
     #endregion
 
     #region 自动任务引导
@@ -38,9 +39,10 @@ public class PathDefine {
     public const string ItemArrorBG = "ResImages/btnstrong";
     public const string ItemPlatBG = "ResImages/charbg3";
 
-    public const string ItemToukui = "ResImages/toukui";
+    // 分类图片
+    public const string ItemHelmet = "ResImages/toukui";
     public const string ItemBody = "ResImages/body";
-    public const string ItemYaobu = "ResImages/yaobu";
+    public const string ItemWaist = "ResImages/yaobu";
     public const string ItemHand = "ResImages/hand";
     public const string ItemLeg = "ResImages/leg";
     public const string ItemFoot = "ResImages/foot";

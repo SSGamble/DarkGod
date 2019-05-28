@@ -64,6 +64,7 @@ public class Constants {
     public const string UIClickBtn = "uiClickBtn"; // 按钮点击音效
     public const string UIExtenBtn = "uiExtenBtn"; // 主界面菜单
     public const string UIOpenPage = "uiOpenPage"; // 打开窗口
+    public const string FBItemEnter = "fbitem";
 
     // --------------- 移动速度 ----------------
     public const int PlayerMoveSpeed = 8; // 角色

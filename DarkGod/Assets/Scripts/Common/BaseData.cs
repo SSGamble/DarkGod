@@ -37,4 +37,18 @@ public class AutoGuideCfg : BaseData<AutoGuideCfg> {
     public int exp; // 经验奖励
 }
 
+/// <summary>
+/// 强化升级
+/// </summary>
+public class StrongCfg : BaseData<StrongCfg> {
+    public int pos; // 位置，在 UI 界面，左侧分类列表的位置
+    public int startlv;
+    public int addhp;
+    public int addhurt;
+    public int adddef;
+    public int minlv;
+    public int coin;
+    public int crystal;
+}
+
 

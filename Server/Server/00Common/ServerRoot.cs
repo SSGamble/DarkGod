@@ -31,7 +31,10 @@ public class ServerRoot {
 
         // 业务系统层
         LoginSys.Instance.Init(); // 登录
-        GuideSys.Instance.Init();
+        GuideSys.Instance.Init(); // 任务引导
+        StrongSys.Instance.Init(); //强化
+        ChatSys.Instance.Init(); // 聊天
+        BuySys.Instance.Init(); // 交易
     }
 
     /// <summary>
