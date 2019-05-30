@@ -15,8 +15,8 @@ public class WindowRoot : MonoBehaviour {
     protected ResSvc resSvc = null;
     protected AudioSvc audioSvc = null;
     protected NetSvc netSvc = null;
+    protected TimerSvc timerSvc = null;
 
-    #region 窗口处理
     /// <summary>
     /// 设置窗口的激活状态
     /// </summary>
@@ -43,6 +43,7 @@ public class WindowRoot : MonoBehaviour {
         resSvc = ResSvc.Instance;
         audioSvc = AudioSvc.Instance;
         netSvc = NetSvc.Instance;
+        timerSvc = TimerSvc.Instance;
     }
 
     /// <summary>
@@ -52,9 +53,9 @@ public class WindowRoot : MonoBehaviour {
         resSvc = null;
         audioSvc = null;
         netSvc = null;
+        timerSvc = null;
     }
 
-    #endregion
 
     #region 设置 Text 组件的文字
     protected void SetText(Text txt, string context = "") {

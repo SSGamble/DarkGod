@@ -28,6 +28,7 @@ public class ServerRoot {
         CfgSvc.Instance.Init(); // 配置文件的读取
         CacheSvc.Instance.Init(); // 缓存
         NetSvc.Instance.Init(); // 网络
+        TimerSvc.Instance.Init(); // 定时
 
         // 业务系统层
         LoginSys.Instance.Init(); // 登录
@@ -35,13 +36,18 @@ public class ServerRoot {
         StrongSys.Instance.Init(); //强化
         ChatSys.Instance.Init(); // 聊天
         BuySys.Instance.Init(); // 交易
+
+        //TimerSvc.Instance.AddTimeTask((int tid) => {
+        //    PECommon.Log("XXX");
+        //}, 1000, PETimeUnit.Millisecond, 0);
     }
 
     /// <summary>
-    /// 驱动网络消息的检测
+    /// 驱动消息的检测
     /// </summary>
     public void Update() {
-        NetSvc.Instance.Update();
+        NetSvc.Instance.Update(); // 网络消息
+        TimerSvc.Instance.Update(); // 定时任务
     }
 
     private int SessionID = 0;

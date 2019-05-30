@@ -92,15 +92,17 @@ public class ChatWnd : WindowRoot {
                 netSvc.SendMsg(msg);
                 canSend = false;
 
-                //timerSvc.AddTimeTask((int tid) => {
-                //    canSend = true;
-                //}, 5, PETimeUnit.Second);
+                // 定时任务
+                timerSvc.AddTimeTask((int tid) => {
+                    canSend = true;
+                }, 5, PETimeUnit.Second);
             }
         }
         else {
             GameRoot.AddTips("尚未输入聊天信息");
         }
     }
+
     public void ClickWorldBtn() {
         audioSvc.PlayUIAudio(Constants.UIClickBtn);
         chatType = 0;

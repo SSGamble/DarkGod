@@ -1,8 +1,8 @@
- /****************************************************
-    文件：GameRoot.cs
-	作者：CaptainYun
-    日期：2019/5/12 21:43:13
-	功能：游戏的启动入口，初始化各个系统，保存核心数据
+/****************************************************
+   文件：GameRoot.cs
+   作者：CaptainYun
+   日期：2019/5/12 21:43:13
+   功能：游戏的启动入口，初始化各个系统，保存核心数据
 *****************************************************/
 
 using PEProtocol;
@@ -12,7 +12,7 @@ public class GameRoot : MonoBehaviour {
 
     // 单例
     public static GameRoot Instance = null;
-    
+
     public LoadingWnd loadingWnd; // 加载进度界面
     public DynamicWnd dynamicWnd;
 
@@ -48,6 +48,8 @@ public class GameRoot : MonoBehaviour {
         res.InitSvc();
         AudioSvc audio = GetComponent<AudioSvc>();
         audio.InitSvc();
+        TimerSvc timer = GetComponent<TimerSvc>();
+        timer.InitSvc();
 
         // 业务模块初始化
         LoginSys login = GetComponent<LoginSys>();

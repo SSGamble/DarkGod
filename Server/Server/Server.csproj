@@ -33,9 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="00Common\ServerStart.cs" />
     <Compile Include="01Service\01NetSvc\NetSvc.cs" />
     <Compile Include="01Service\01NetSvc\ServerSession.cs" />
     <Compile Include="01Service\02CfgSvc\CfgSvc.cs" />
+    <Compile Include="01Service\03TimerSvc\PETimer.cs" />
+    <Compile Include="01Service\03TimerSvc\TimerSvc.cs" />
     <Compile Include="02System\01LoginSys\LoginSys.cs" />
     <Compile Include="02System\02GuideSys\GuideSys.cs" />
     <Compile Include="02System\03StrongSys\StrongSys.cs" />
@@ -45,7 +48,6 @@
     <Compile Include="04DB\DBMgr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="00Common\ServerRoot.cs" />
-    <Compile Include="00Common\SreverStart.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
