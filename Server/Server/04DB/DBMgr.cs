@@ -4,6 +4,7 @@
 	日期：2019/05/19 14:54   	
 	功能：数据库管理类
 *****************************************************/
+using System;
 using MySql.Data.MySqlClient;
 using PEProtocol;
 
@@ -64,9 +65,10 @@ public class DBMgr {
                         dodge = reader.GetInt32("dodge"),
                         pierce = reader.GetInt32("pierce"),
                         critical = reader.GetInt32("critical"),
-                        guideid = reader.GetInt32("guideid")
+                        guideid = reader.GetInt32("guideid"),
+                        time = reader.GetInt64("time"),
                     };
-                    #region 解析 Strong
+                    #region 解析 Strong Arr
                     // 数据库里存的字符串，拿出来再进行分割
                     // 数据示意：1#2#2#4#3#7#                        
                     string[] strongStrArr = reader.GetString("strong").Split('#');
@@ -84,6 +86,24 @@ public class DBMgr {
                         }
                     }
                     playerData.strongArr = _strongArr;
+                    #endregion
+
+                    #region 解析 Task Arr
+                    // 数据示意：1|1|0#2|1|0#3|1|0#4|1|0#5|1|0#6|1|0#
+                    // 任务的 ID 号|进度|奖励有没有被领取
+                    string[] taskStrArr = reader.GetString("task").Split('#');
+                    playerData.taskArr = new string[6]; // 6 个任务
+                    for (int i = 0; i < taskStrArr.Length; i++) {
+                        if (taskStrArr[i] == "") {
+                            continue;
+                        }
+                        else if (taskStrArr[i].Length >= 5) { // 1|1|0 => 至少是 5 个长度
+                            playerData.taskArr[i] = taskStrArr[i];
+                        }
+                        else {
+                            throw new Exception("DataError");
+                        }
+                    }
                     #endregion
                 }
             }
@@ -114,9 +134,17 @@ public class DBMgr {
                     dodge = 7,
                     pierce = 5,
                     critical = 2,
-                    guideid=1001,
+                    guideid = 1001,
                     strongArr = new int[6],
+                    time = TimerSvc.Instance.GetNowTime(),
+                    taskArr = new string[6],
                 };
+                // 初始化任务奖励数据
+                // 数据示意：1|0|0#2|0|0#3|0|0#4|0|0#5|0|0#6|0|0#
+                for (int i = 0; i < playerData.taskArr.Length; i++) {
+                    playerData.taskArr[i] = (i + 1) + "|0|0";
+                }
+
                 playerData.id = InsAcct(acct, pwd, playerData); // 赋予插入数据的 id
             }
         }
@@ -130,7 +158,7 @@ public class DBMgr {
         int id = -1;
         string sql = "insert into account set acct=@acct,pwd =@pwd,name=@name,level=@level,exp=@exp,power=@power,coin=@coin," +
             "diamond=@diamond,crystal=@crystal,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce," +
-            "critical=@critical,guideid=@guideid,strong=@strong";
+            "critical=@critical,guideid=@guideid,strong=@strong,time=@time,task=@task";
         try {
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("acct", acct);
@@ -151,12 +179,22 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("pierce", pd.pierce);
             cmd.Parameters.AddWithValue("critical", pd.critical);
             cmd.Parameters.AddWithValue("guideid", pd.guideid);
+            cmd.Parameters.AddWithValue("time", pd.time);
+            // strong
             string strongInfo = "";
             for (int i = 0; i < pd.strongArr.Length; i++) {
                 strongInfo += pd.strongArr[i];
                 strongInfo += "#";
             }
             cmd.Parameters.AddWithValue("strong", strongInfo);
+            // task，1|0|0#1|0|0#1|0|0#1|0|0#1|0|0#
+            string taskInfo = "";
+            for (int i = 0; i < pd.taskArr.Length; i++) {
+                taskInfo += pd.taskArr[i];
+                taskInfo += "#";
+            }
+            cmd.Parameters.AddWithValue("task", taskInfo);
+
             cmd.ExecuteNonQuery();
             id = (int)cmd.LastInsertedId; // 新插入数据的主键
         }
@@ -203,7 +241,7 @@ public class DBMgr {
         try {
             string sql = "update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,crystal=@crystal," +
                 "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical," +
-                "guideid=@guideid,strong=@strong" +
+                "guideid=@guideid,strong=@strong,time=@time,task=@task" +
                 " where id =@id";
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("id", id);
@@ -223,12 +261,22 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("pierce", playerData.pierce);
             cmd.Parameters.AddWithValue("critical", playerData.critical);
             cmd.Parameters.AddWithValue("guideid", playerData.guideid);
+            cmd.Parameters.AddWithValue("time", playerData.time);
+            // strong
             string strongInfo = "";
             for (int i = 0; i < playerData.strongArr.Length; i++) {
                 strongInfo += playerData.strongArr[i];
                 strongInfo += "#";
             }
             cmd.Parameters.AddWithValue("strong", strongInfo);
+            // task
+            string taskInfo = "";
+            for (int i = 0; i < playerData.taskArr.Length; i++) {
+                taskInfo += playerData.taskArr[i];
+                taskInfo += "#";
+            }
+            cmd.Parameters.AddWithValue("task", taskInfo);
+
             cmd.ExecuteNonQuery();
         }
         catch (System.Exception e) {

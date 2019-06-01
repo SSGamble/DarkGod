@@ -28,6 +28,23 @@ public class StrongCfg : BaseData<StrongCfg> {
     public int crystal;
 }
 
+/// <summary>
+/// 任务奖励
+/// </summary>
+public class TaskRewardCfg : BaseData<TaskRewardCfg> {
+    public int count; // 任务计数
+    public int exp;
+    public int coin;
+}
+
+/// <summary>
+/// 任务进度
+/// </summary>
+public class TaskRewardData : BaseData<TaskRewardData> {
+    public int prgs; // 进度
+    public bool taked; // 是否已经被领取奖励
+}
+
 public class CfgSvc {
     private static CfgSvc instance = null;
     public static CfgSvc Instance {
@@ -42,6 +59,7 @@ public class CfgSvc {
     public void Init() {
         InitGuideCfg();
         InitStrongCfg();
+        InitTaskRewrdCfg();
         PECommon.Log("CfgSvc Init Done.");
     }
 
@@ -167,6 +185,53 @@ public class CfgSvc {
             }
         }
         return sd;
+    }
+    #endregion
+
+    #region 任务奖励配置
+    private Dictionary<int, TaskRewardCfg> taskRewardDic = new Dictionary<int, TaskRewardCfg>();
+    private void InitTaskRewrdCfg() {
+        XmlDocument doc = new XmlDocument();
+        //doc.Load(@"C:\taskreward.xml");
+        doc.Load(@"G:\UnityDocuments\DarkGod\DarkGod\Assets\Resources\ResCfgs\taskreward.xml");
+
+        XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+        for (int i = 0; i < nodLst.Count; i++) {
+            XmlElement ele = nodLst[i] as XmlElement;
+
+            if (ele.GetAttributeNode("ID") == null) {
+                continue;
+            }
+            int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+            TaskRewardCfg trc = new TaskRewardCfg {
+                id = ID
+            };
+
+            foreach (XmlElement e in nodLst[i].ChildNodes) {
+                switch (e.Name) {
+                    case "count":
+                        trc.count = int.Parse(e.InnerText);
+                        break;
+                    case "exp":
+                        trc.exp = int.Parse(e.InnerText);
+                        break;
+                    case "coin":
+                        trc.coin = int.Parse(e.InnerText);
+                        break;
+                }
+            }
+            taskRewardDic.Add(ID, trc);
+        }
+        PECommon.Log("TaskRewardCfg Init Done.");
+
+    }
+    public TaskRewardCfg GetTaskRewardCfg(int id) {
+        TaskRewardCfg trc = null;
+        if (taskRewardDic.TryGetValue(id, out trc)) {
+            return trc;
+        }
+        return null;
     }
     #endregion
 }

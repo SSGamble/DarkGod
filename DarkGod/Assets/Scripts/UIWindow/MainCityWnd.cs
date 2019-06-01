@@ -61,7 +61,7 @@ public class MainCityWnd : WindowRoot {
         ExpPrg(pd);
 
         // 设置自动任务图比
-        curtTaskData = resSvc.GetAutoGuideData(pd.guideid);
+        curtTaskData = resSvc.GetAutoGuideCfg(pd.guideid);
         if (curtTaskData != null) {
             SetGuideBtnIcon(curtTaskData.npcID);
         }
@@ -200,6 +200,14 @@ public class MainCityWnd : WindowRoot {
     public void ClickMKCoinBtn() {
         audioSvc.PlayUIAudio(Constants.UIOpenPage);
         MainCitySys.Instance.OpenBuyWnd(1);
+    }
+
+    /// <summary>
+    /// 任务界面
+    /// </summary>
+    public void ClickTaskBtn() {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenTaskRewardWnd();
     }
     #endregion
 

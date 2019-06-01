@@ -59,4 +59,29 @@ public class PECommon {
         return 100 * lv * lv;
     }
 
+    // 体力增加的间隙
+    public const int PowerAddSpace = 5; // 分钟
+    public const int PowerAddCount = 2; // 增长的体力
+
+    /// <summary>
+    /// 计算经验值，因为经验奖励可能会影响到级别
+    /// </summary>
+    public static void CalcExp(PlayerData pd, int addExp) {
+        int curtLv = pd.lv;
+        int curtExp = pd.exp;
+        int addRestExp = addExp;
+        while (true) {
+            int upNeedExp = GetExpUpValByLv(curtLv) - curtExp;
+            if (addRestExp >= upNeedExp) {
+                curtLv += 1;
+                curtExp = 0;
+                addRestExp -= upNeedExp;
+            }
+            else {
+                pd.lv = curtLv;
+                pd.exp = curtExp + addRestExp;
+                break;
+            }
+        }
+    }
 }

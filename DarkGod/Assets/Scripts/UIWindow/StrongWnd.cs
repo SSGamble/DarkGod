@@ -141,7 +141,7 @@ public class StrongWnd : WindowRoot {
         SetText(propHurt1, "伤害  +" + sumAddHurt);
         SetText(propDef1, "防御  +" + sumAddDef);
 
-        nextSd = resSvc.GetStrongData(currentIndex, nextStartLv);
+        nextSd = resSvc.GetStrongCfg(currentIndex, nextStartLv);
         if (nextSd != null) {
             SetActive(propHP2);
             SetActive(propHurt2);

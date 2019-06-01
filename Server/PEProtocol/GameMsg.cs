@@ -15,7 +15,6 @@ namespace PEProtocol {
     public class SrvCfg {
         public const string srvIP = "127.0.0.1";
         public const int srvPort = 17666;
-
     }
 
     /// <summary>
@@ -42,8 +41,12 @@ namespace PEProtocol {
         // 交易
         ReqBuy = 207,
         RspBuy = 208,
-
+        // 体力
         PshPower = 209,
+        // 任务奖励
+        ReqTakeTaskReward = 210,
+        RspTakeTaskReward = 211,
+        PshTaskPrgs = 212,
     }
 
     /// <summary>
@@ -60,6 +63,7 @@ namespace PEProtocol {
         LackCoin, // 金币不够
         LackCrystal, // 水晶不够
         LackDiamond, // 钻石不够
+        ClientDataError, // 客户端数据异常
     }
 
     /// <summary>
@@ -86,6 +90,9 @@ namespace PEProtocol {
         public RspBuy rspBuy;
 
         public PshPower pshPower;
+
+        public ReqTakeTaskReward reqTakeTaskReward;
+        public RspTakeTaskReward rspTakeTaskReward;
     }
 
     /// <summary>
@@ -111,6 +118,8 @@ namespace PEProtocol {
         public int critical; // 暴击概率
         public int guideid; // 当前进行的引导 id
         public int[] strongArr; // 索引号：第一个位置，值：星级
+        public long time; // 玩家最后一次在线的时间
+        public string[] taskArr;
     }
 
     #region 登录相关
@@ -214,11 +223,32 @@ namespace PEProtocol {
         public int coin;
         public int power;
     }
+    #endregion
 
+    #region 体力系统
     [Serializable]
     public class PshPower {
         public int power;
     }
+    #endregion
 
+    #region 任务奖励相关
+    [Serializable]
+    public class ReqTakeTaskReward {
+        public int rid;
+    }
+
+    [Serializable]
+    public class RspTakeTaskReward {
+        public int coin;
+        public int lv; // 获取经验奖励后，可能会有等级的变化
+        public int exp;
+        public string[] taskArr;
+    }
+
+    [Serializable]
+    public class PshTaskPrgs {
+        public string[] taskArr;
+    }
     #endregion
 }

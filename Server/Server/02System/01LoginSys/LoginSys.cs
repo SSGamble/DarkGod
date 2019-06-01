@@ -21,9 +21,11 @@ public class LoginSys {
     }
 
     private CacheSvc cacheSvc = null;
+    private TimerSvc timerSvc = null;
 
     public void Init() {
         cacheSvc = CacheSvc.Instance;
+        timerSvc = TimerSvc.Instance;
         PECommon.Log("LoginSys Init Done.");
     }
 
@@ -49,7 +51,26 @@ public class LoginSys {
                 msg.err = (int)ErrorCode.WrongPwd;
             }
             else { // 登录成功
-                msg.rspLogin = new RspLogin { // 响应客户端的数据
+                // 计算离线体力增长
+                int power = pd.power; // 当前体力
+                long now = timerSvc.GetNowTime();
+                long milliseconds = now - pd.time; // 距离上一次下线的时间间隔
+                int addPower = (int)(milliseconds / (1000 * 60 * PECommon.PowerAddSpace)) * PECommon.PowerAddCount; // 需要增加的体力值
+                if (addPower > 0) {
+                    int powerMax = PECommon.GetPowerLimit(pd.lv);
+                    if (pd.power < powerMax) {
+                        pd.power += addPower;
+                        if (pd.power > powerMax) {
+                            pd.power = powerMax;
+                        }
+                    }
+                }
+
+                if (power != pd.power) {
+                    cacheSvc.UpdatePlayerData(pd.id, pd);
+                }
+                // 响应客户端的数据
+                msg.rspLogin = new RspLogin {
                     playerData = pd // 返回玩家数据
                 };
                 // 缓存账号数据
@@ -79,7 +100,7 @@ public class LoginSys {
             playerData.name = data.name;
 
             // 更新失败
-            if (!cacheSvc.UpdatePlayerData(playerData.id,playerData)) {
+            if (!cacheSvc.UpdatePlayerData(playerData.id, playerData)) {
                 msg.err = (int)ErrorCode.UpdateDBError;
             }
             // 更新成功
@@ -95,9 +116,17 @@ public class LoginSys {
     }
 
     /// <summary>
-    /// 玩家线下，清除缓存
+    /// 玩家线下
     /// </summary>
     public void ClearOfflineData(ServerSession session) {
-        cacheSvc.AcctOffLine(session);
+        // 更新下线时间
+        PlayerData pd = cacheSvc.GetPlayerDataBySession(session);
+        if (pd != null) {
+            pd.time = timerSvc.GetNowTime();
+            if (!cacheSvc.UpdatePlayerData(pd.id, pd)) {
+                PECommon.Log("更新下线时间错误..", LogType.Error);
+            }
+            cacheSvc.AcctOffLine(session); // 清除缓存
+        }
     }
 }

@@ -36,10 +36,8 @@ public class ServerRoot {
         StrongSys.Instance.Init(); //强化
         ChatSys.Instance.Init(); // 聊天
         BuySys.Instance.Init(); // 交易
-
-        //TimerSvc.Instance.AddTimeTask((int tid) => {
-        //    PECommon.Log("XXX");
-        //}, 1000, PETimeUnit.Millisecond, 0);
+        PowerSys.Instance.Init(); // 体力恢复
+        TaskSys.Instance.Init(); // 任务奖励
     }
 
     /// <summary>

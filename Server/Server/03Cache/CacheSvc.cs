@@ -64,7 +64,6 @@ public class CacheSvc {
         return dbMgr.QueryPlayerData(acct, pwd);
     }
 
-
     /// <summary>
     /// 玩家登录后添加信息到缓存
     /// </summary>
@@ -112,5 +111,12 @@ public class CacheSvc {
         }
         bool succ = onLineSessionDic.Remove(session);
         PECommon.Log("玩家下线：" + session.sessionID + " " + succ);
+    }
+
+    /// <summary>
+    /// 在线玩家
+    /// </summary>
+    public Dictionary<ServerSession, PlayerData> GetOnlineCache() {
+        return onLineSessionDic;
     }
 }

@@ -126,6 +126,9 @@ public class NetSvc : MonoBehaviour {
                 case ErrorCode.LackDiamond:
                     GameRoot.AddTips("钻石数量不够");
                     break;
+                case ErrorCode.ClientDataError:
+                    GameRoot.AddTips("客户端数据异常");
+                    break;
                 default:
                     break;
             }
@@ -157,9 +160,10 @@ public class NetSvc : MonoBehaviour {
             case CMD.RspBuy:
                 MainCitySys.Instance.RspBuy(msg);
                 break;
-            //case CMD.PshPower:
-            //    MainCitySys.Instance.PshPower(msg);
-            //    break;
+            // 体力增长
+            case CMD.PshPower:
+                MainCitySys.Instance.PshPower(msg);
+                break;
             default:
                 break;
         }

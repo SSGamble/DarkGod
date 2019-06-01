@@ -20,6 +20,7 @@ public class MainCitySys : SystemRoot {
     public StrongWnd strongWnd;
     public ChatWnd chatWnd;
     public BuyWnd buyWnd;
+    public TaskWnd taskWnd;
 
     private Transform charCamTrans; // 拍摄主角的相机位置
 
@@ -33,7 +34,7 @@ public class MainCitySys : SystemRoot {
     /// 进入主城
     /// </summary>
     public void EnterMainCity() {
-        MapCfg mapData = resSvc.GetMapCfgData(Constants.MainCityMapID);
+        MapCfg mapData = resSvc.GetMapCfg(Constants.MainCityMapID);
         resSvc.AsyncLoadScene(mapData.sceneName, () => {
             // 加载主角
             LoadPlayer(mapData);
@@ -310,7 +311,12 @@ public class MainCitySys : SystemRoot {
         mainCityWnd.RefreshUI();
         buyWnd.SetWndState(false);
     }
+    #endregion
 
+    #region 体力系统
+    /// <summary>
+    /// 体力增长
+    /// </summary>
     public void PshPower(GameMsg msg) {
         PshPower data = msg.pshPower;
         GameRoot.Instance.SetPlayerDataByPower(data);
@@ -318,5 +324,28 @@ public class MainCitySys : SystemRoot {
             mainCityWnd.RefreshUI();
         }
     }
+    #endregion
+
+    #region 任务窗口
+    public void OpenTaskRewardWnd() {
+        StopNavTask();
+        taskWnd.SetWndState();
+    }
+    //public void RspTakeTaskReward(GameMsg msg) {
+    //    RspTakeTaskReward data = msg.rspTakeTaskReward;
+    //    GameRoot.Instance.SetPlayerDataByTask(data);
+
+    //    taskWnd.RefreshUI();
+    //    maincityWnd.RefreshUI();
+    //}
+
+    //public void PshTaskPrgs(GameMsg msg) {
+    //    PshTaskPrgs data = msg.pshTaskPrgs;
+    //    GameRoot.Instance.SetPlayerDataByTaskPsh(data);
+
+    //    if (taskWnd.GetWndState()) {
+    //        taskWnd.RefreshUI();
+    //    }
+    //}
     #endregion
 }

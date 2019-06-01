@@ -306,6 +306,7 @@
     <None Include="Assets\Resources\ResCfgs\map.xml" />
     <None Include="Assets\Resources\ResCfgs\rdname.xml" />
     <None Include="Assets\Resources\ResCfgs\strong.xml" />
+    <None Include="Assets\Resources\ResCfgs\taskreward.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -51,4 +51,22 @@ public class StrongCfg : BaseData<StrongCfg> {
     public int crystal;
 }
 
+/// <summary>
+/// 任务奖励
+/// </summary>
+public class TaskRewardCfg : BaseData<TaskRewardCfg> {
+    public string taskName;
+    public int count; // 任务计数
+    public int exp;
+    public int coin;
+}
+
+/// <summary>
+/// 任务进度
+/// </summary>
+public class TaskRewardData : BaseData<TaskRewardData> {
+    public int prgs; // 进度
+    public bool taked; // 是否已经被领取奖励
+}
+
 

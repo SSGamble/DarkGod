@@ -14,6 +14,7 @@ public class PathDefine {
     public const string MapCfg = "ResCfgs/map";  // 地图
     public const string GuideCfg = "ResCfgs/guide"; // 自动引导
     public const string StrongCfg = "ResCfgs/strong"; // 强化
+    public const string TaskRewardCfg = "ResCfgs/taskreward"; // 任务奖励
     #endregion
 
     #region 自动任务引导
@@ -49,5 +50,9 @@ public class PathDefine {
 
     public const string SpStar1 = "ResImages/star1";
     public const string SpStar2 = "ResImages/star2";
+    #endregion
+
+    #region 任务奖励
+    public const string TaskItemPrefab = "PrefabUI/ItemTask";
     #endregion
 }

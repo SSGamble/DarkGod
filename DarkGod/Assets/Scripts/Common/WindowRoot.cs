@@ -147,4 +147,18 @@ public class WindowRoot : MonoBehaviour {
     protected bool GetWndState() {
         return gameObject.activeSelf;
     }
+
+    /// <summary>
+    /// 查找指定父物体下的子物体
+    /// </summary>
+    /// <param name="trans">父物体</param>
+    /// <param name="name">要查找的子物体的名字</param>
+    protected Transform GetTrans(Transform trans, string name) {
+        if (trans != null) {
+            return trans.Find(name);
+        }
+        else {
+            return transform.Find(name);
+        }
+    }
 }

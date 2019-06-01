@@ -77,6 +77,7 @@ public class GameRoot : MonoBehaviour {
         }
     }
 
+    #region 修改数据
     /// <summary>
     /// 设置 PlayerData
     /// </summary>
@@ -131,4 +132,7 @@ public class GameRoot : MonoBehaviour {
     public void SetPlayerDataByPower(PshPower data) {
         PlayerData.power = data.power;
     }
+
+    #endregion
+
 }

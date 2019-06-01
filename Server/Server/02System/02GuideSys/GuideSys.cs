@@ -42,7 +42,7 @@ public class GuideSys {
 
             //更新玩家数据
             pd.coin += gc.coin;
-            CalcExp(pd, gc.exp);
+            PECommon.CalcExp(pd, gc.exp);
 
             // 更新到数据库
             if (!cacheSvc.UpdatePlayerData(pd.id, pd)) {
@@ -63,28 +63,4 @@ public class GuideSys {
         pack.session.SendMsg(msg);
     }
 
-    /// <summary>
-    /// 计算经验值，因为经验奖励可能会影响到级别
-    /// </summary>
-    private void CalcExp(PlayerData pd, int addExp) {
-        int curtLv = pd.lv;
-        int curtExp = pd.exp;
-        int addRestExp = addExp;
-        while (true) {
-            // 升级所需的经验
-            int upNeedExp = PECommon.GetExpUpValByLv(curtLv) - curtExp;
-            // 升级
-            if (addRestExp >= upNeedExp) { 
-                curtLv += 1;
-                curtExp = 0;
-                addRestExp -= upNeedExp;
-            }
-            // 不够升级了
-            else {
-                pd.lv = curtLv;
-                pd.exp = curtExp + addRestExp;
-                break;
-            }
-        }
-    }
 }

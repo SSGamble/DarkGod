@@ -1084,7 +1084,6 @@ GameObject:
   - component: {fileID: 1608075251}
   - component: {fileID: 1608075250}
   - component: {fileID: 1608075249}
-  - component: {fileID: 1608075248}
   m_Layer: 0
   m_Name: charShowCam
   m_TagString: CharShowCam
@@ -1092,13 +1091,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1608075248
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1608075247}
-  m_Enabled: 1
 --- !u!124 &1608075249
 Behaviour:
   m_ObjectHideFlags: 0
