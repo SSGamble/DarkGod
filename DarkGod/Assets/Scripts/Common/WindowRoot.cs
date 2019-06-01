@@ -144,7 +144,7 @@ public class WindowRoot : MonoBehaviour {
     /// <summary>
     /// 判断当前物体是否激活
     /// </summary>
-    protected bool GetWndState() {
+    public bool GetWndState() {
         return gameObject.activeSelf;
     }
 

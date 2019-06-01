@@ -56,6 +56,10 @@ public class GameRoot : MonoBehaviour {
         login.InitSys();
         MainCitySys mainCity = GetComponent<MainCitySys>();
         mainCity.InitSys();
+        DungeonSys dungeonSys = GetComponent<DungeonSys>();
+        dungeonSys.InitSys();
+        BattleSys battleSys = GetComponent<BattleSys>();
+        battleSys.InitSys();
 
         // 进入登录场景并加载相应 UI
         login.EnterLogin();
@@ -133,6 +137,31 @@ public class GameRoot : MonoBehaviour {
         PlayerData.power = data.power;
     }
 
+    /// <summary>
+    /// 领取任务奖励后
+    /// </summary>
+    public void SetPlayerDataByTask(RspTakeTaskReward data) {
+        PlayerData.coin = data.coin;
+        PlayerData.lv = data.lv;
+        PlayerData.exp = data.exp;
+        PlayerData.taskArr = data.taskArr;
+    }
+
+    /// <summary>
+    /// 更改任务进度
+    /// </summary>
+    /// <param name="data"></param>
+    public void SetPlayerDataByTaskPsh(PshTaskPrgs data) {
+        PlayerData.taskArr = data.taskArr;
+    }
+
+    /// <summary>
+    /// 进入副本后的体力变化
+    /// </summary>
+    /// <param name="data"></param>
+    public void SetPlayerDataByDungeonStart(RspDungeonFight data) {
+        PlayerData.power = data.power;
+    }
     #endregion
 
 }

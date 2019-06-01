@@ -8,6 +8,7 @@ using System.Xml;
 using System.Collections.Generic;
 using System;
 
+#region 实体类
 public class BaseData<T> {
     public int id;
 }
@@ -45,6 +46,14 @@ public class TaskRewardData : BaseData<TaskRewardData> {
     public bool taked; // 是否已经被领取奖励
 }
 
+/// <summary>
+/// 地图
+/// </summary>
+public class MapCfg : BaseData<MapCfg> {
+    public int power;
+}
+#endregion
+
 public class CfgSvc {
     private static CfgSvc instance = null;
     public static CfgSvc Instance {
@@ -60,6 +69,7 @@ public class CfgSvc {
         InitGuideCfg();
         InitStrongCfg();
         InitTaskRewrdCfg();
+        InitMapCfg();
         PECommon.Log("CfgSvc Init Done.");
     }
 
@@ -230,6 +240,47 @@ public class CfgSvc {
         TaskRewardCfg trc = null;
         if (taskRewardDic.TryGetValue(id, out trc)) {
             return trc;
+        }
+        return null;
+    }
+    #endregion
+
+    #region 地图配置
+    private Dictionary<int, MapCfg> mapDic = new Dictionary<int, MapCfg>();
+    private void InitMapCfg() {
+        XmlDocument doc = new XmlDocument();
+        //doc.Load(@"C:\map.xml");
+        doc.Load(@"G:\UnityDocuments\DarkGod\DarkGod\Assets\Resources\ResCfgs\map.xml");
+
+        XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+        for (int i = 0; i < nodLst.Count; i++) {
+            XmlElement ele = nodLst[i] as XmlElement;
+
+            if (ele.GetAttributeNode("ID") == null) {
+                continue;
+            }
+            int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+            MapCfg mc = new MapCfg {
+                id = ID
+            };
+
+            foreach (XmlElement e in nodLst[i].ChildNodes) {
+                switch (e.Name) {
+                    case "power":
+                        mc.power = int.Parse(e.InnerText);
+                        break;
+                }
+            }
+            mapDic.Add(ID, mc);
+        }
+        PECommon.Log("MapCfg Init Done.");
+
+    }
+    public MapCfg GetMapCfg(int id) {
+        MapCfg mc = null;
+        if (mapDic.TryGetValue(id, out mc)) {
+            return mc;
         }
         return null;
     }

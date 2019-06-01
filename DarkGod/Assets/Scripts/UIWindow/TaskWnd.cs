@@ -81,17 +81,22 @@ public class TaskWnd : WindowRoot {
             });
 
             Transform transComp = GetTrans(go.transform, "imgComp");
+            Image imgIcon = btnTake.GetComponent<Image>(); // 宝箱图标
             if (trd.taked) { // 被领取了
+                imgIcon.color = new Color32(167, 167, 167, 140);
                 btnTake.interactable = false;
                 SetActive(transComp);
             }
             else {
                 SetActive(transComp, false);
-                if (trd.prgs == trf.count) {
+                if (trd.prgs == trf.count) { // 已达条件，但还未领取
                     btnTake.interactable = true;
+                    SetSprite(imgIcon, PathDefine.TaskRewardIcon);
+                    imgIcon.color = new Color32(255, 255, 255, 255);
                 }
-                else {
+                else { // 没到条件
                     btnTake.interactable = false;
+                    imgIcon.color = new Color32(255, 255, 255, 255);
                 }
             }
 
@@ -99,6 +104,7 @@ public class TaskWnd : WindowRoot {
     }
 
     private void ClickTakeBtn(string name) {
+        PECommon.Log("点击");
         string[] nameArr = name.Split('_'); // go.name = "taskItem_" + i;
         int index = int.Parse(nameArr[1]); // 点击了哪一个
 

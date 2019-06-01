@@ -106,6 +106,10 @@ public class NetSvc {
             case CMD.ReqTakeTaskReward:
                 TaskSys.Instance.ReqTakeTaskReward(pack);
                 break;
+            // 副本
+            case CMD.ReqDungeonFight:
+                DungeonSys.Instance.ReqDungeonFight(pack);
+                break;
             default:
                 break;
         }

@@ -119,4 +119,19 @@ public class CacheSvc {
     public Dictionary<ServerSession, PlayerData> GetOnlineCache() {
         return onLineSessionDic;
     }
+
+    /// <summary>
+    /// 根据当前 id 获取连接的客户端
+    /// </summary>
+    /// <param name="id">玩家 id</param>
+    public ServerSession GetOnlineServersession(int id) {
+        ServerSession session = null;
+        foreach (var item in onLineSessionDic) {
+            if (item.Value.id == id) {
+                session = item.Key;
+                break;
+            }
+        }
+        return session;
+    }
 }

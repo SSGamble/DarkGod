@@ -38,6 +38,7 @@ public class ServerRoot {
         BuySys.Instance.Init(); // 交易
         PowerSys.Instance.Init(); // 体力恢复
         TaskSys.Instance.Init(); // 任务奖励
+        DungeonSys.Instance.Init(); // 副本
     }
 
     /// <summary>

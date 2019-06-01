@@ -54,5 +54,6 @@ public class PathDefine {
 
     #region 任务奖励
     public const string TaskItemPrefab = "PrefabUI/ItemTask";
+    public const string TaskRewardIcon = "ResImages/box2";
     #endregion
 }

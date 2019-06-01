@@ -85,7 +85,7 @@ public class TaskSys {
     }
 
     /// <summary>
-    /// 更新任务进度数据
+    /// 更新 任务进度 Arr，更新到 PlayerData 里面
     /// </summary>
     public void CalcTaskArr(PlayerData pd, TaskRewardData trd) {
         string result = trd.id + "|" + trd.prgs + '|' + (trd.taked ? 1 : 0);
@@ -100,42 +100,53 @@ public class TaskSys {
         pd.taskArr[index] = result;
     }
 
-    //public void CalcTaskPrgs(PlayerData pd, int tid) {
-    //    TaskRewardData trd = CalcTaskRewardData(pd, tid);
-    //    TaskRewardCfg trc = cfgSvc.GetTaskRewardCfg(tid);
+    /// <summary>
+    /// 计算任务进度
+    /// </summary>
+    /// <param name="pd"></param>
+    /// <param name="tid">任务 ID</param>
+    public void CalcTaskPrgs(PlayerData pd, int tid) {
+        TaskRewardData trd = CalcTaskRewardData(pd, tid);
+        TaskRewardCfg trc = cfgSvc.GetTaskRewardCfg(tid);
+        // 若超过任务条件，就不处理了
+        if (trd.prgs < trc.count) {
+            trd.prgs += 1;
+            // 更新任务进度
+            CalcTaskArr(pd, trd);
 
-    //    if (trd.prgs < trc.count) {
-    //        trd.prgs += 1;
-    //        // 更新任务进度
-    //        CalcTaskArr(pd, trd);
+            ServerSession session = cacheSvc.GetOnlineServersession(pd.id);
+            if (session != null) {
+                session.SendMsg(new GameMsg {
+                    cmd = (int)CMD.PshTaskPrgs,
+                    pshTaskPrgs = new PshTaskPrgs {
+                        taskArr = pd.taskArr
+                    }
+                });
+            }
+        }
+    }
 
-    //        ServerSession session = cacheSvc.GetOnlineServersession(pd.id);
-    //        if (session != null) {
-    //            session.SendMsg(new GameMsg {
-    //                cmd = (int)CMD.PshTaskPrgs,
-    //                pshTaskPrgs = new PshTaskPrgs {
-    //                    taskArr = pd.taskArr
-    //                }
-    //            });
-    //        }
-    //    }
-    //}
+    /// <summary>
+    /// 计算任务进度，网络并包流量优化
+    /// </summary>
+    /// <param name="pd"></param>
+    /// <param name="tid"></param>
+    /// <returns></returns>
+    public PshTaskPrgs GetTaskPrgs(PlayerData pd, int tid) {
+        TaskRewardData trd = CalcTaskRewardData(pd, tid);
+        TaskRewardCfg trc = cfgSvc.GetTaskRewardCfg(tid);
 
-    //public PshTaskPrgs GetTaskPrgs(PlayerData pd, int tid) {
-    //    TaskRewardData trd = CalcTaskRewardData(pd, tid);
-    //    TaskRewardCfg trc = cfgSvc.GetTaskRewardCfg(tid);
+        if (trd.prgs < trc.count) {
+            trd.prgs += 1;
+            //更新任务进度
+            CalcTaskArr(pd, trd);
 
-    //    if (trd.prgs < trc.count) {
-    //        trd.prgs += 1;
-    //        //更新任务进度
-    //        CalcTaskArr(pd, trd);
-
-    //        return new PshTaskPrgs {
-    //            taskArr = pd.taskArr
-    //        };
-    //    }
-    //    else {
-    //        return null;
-    //    }
-    //}
+            return new PshTaskPrgs {
+                taskArr = pd.taskArr
+            };
+        }
+        else {
+            return null;
+        }
+    }
 }

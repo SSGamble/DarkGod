@@ -46,6 +46,7 @@
     <Compile Include="02System\05BuySys\BuySys.cs" />
     <Compile Include="02System\06PowerSys\PowerSys.cs" />
     <Compile Include="02System\07TaskSys\TaskSys.cs" />
+    <Compile Include="02System\08DungeonSys\DungeonSys.cs" />
     <Compile Include="03Cache\CacheSvc.cs" />
     <Compile Include="04DB\DBMgr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

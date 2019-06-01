@@ -35,12 +35,16 @@ public class BuySys {
         }
         else {
             pd.diamond -= data.cost;
+            PshTaskPrgs pshTaskPrgs = null;
             switch (data.type) {
                 case 0:
                     pd.power += 100;
+                    //TaskSys.Instance.GetTaskPrgs(pd, 4); // 不让他发送了，网络并包流量优化
+                    pshTaskPrgs = TaskSys.Instance.GetTaskPrgs(pd, 4); // 任务进度数据更新
                     break;
                 case 1:
                     pd.coin += 1000;
+                    pshTaskPrgs = TaskSys.Instance.GetTaskPrgs(pd, 5); // 任务进度数据更新
                     break;
             }
             if (!cacheSvc.UpdatePlayerData(pd.id, pd)) {
@@ -54,8 +58,10 @@ public class BuySys {
                     power = pd.power
                 };
                 msg.rspBuy = rspBuy;
+                // 并包处理
+                msg.pshTaskPrgs = pshTaskPrgs;
             }
         }
-        pack.session.SendMsg(msg);
+        pack.session.SendMsg(msg); // 发送的就是合并后的两个包
     }
 }

@@ -46,7 +46,11 @@ namespace PEProtocol {
         // 任务奖励
         ReqTakeTaskReward = 210,
         RspTakeTaskReward = 211,
+        // 任务进度
         PshTaskPrgs = 212,
+        // 副本
+        ReqDungeonFight = 301,
+        RspDungeonFight = 302,
     }
 
     /// <summary>
@@ -64,6 +68,7 @@ namespace PEProtocol {
         LackCrystal, // 水晶不够
         LackDiamond, // 钻石不够
         ClientDataError, // 客户端数据异常
+        LackPower, // 体力不足
     }
 
     /// <summary>
@@ -93,6 +98,11 @@ namespace PEProtocol {
 
         public ReqTakeTaskReward reqTakeTaskReward;
         public RspTakeTaskReward rspTakeTaskReward;
+
+        public PshTaskPrgs pshTaskPrgs;
+
+        public ReqDungeonFight reqDungeonFight;
+        public RspDungeonFight rspDungeonFight;
     }
 
     /// <summary>
@@ -120,6 +130,7 @@ namespace PEProtocol {
         public int[] strongArr; // 索引号：第一个位置，值：星级
         public long time; // 玩家最后一次在线的时间
         public string[] taskArr;
+        public int dungeon; // 打到了哪一关
     }
 
     #region 登录相关
@@ -246,9 +257,24 @@ namespace PEProtocol {
         public string[] taskArr;
     }
 
+    /// <summary>
+    /// 推送任务进度
+    /// </summary>
     [Serializable]
     public class PshTaskPrgs {
         public string[] taskArr;
+    }
+    #endregion
+
+    #region 副本战斗相关
+    [Serializable]
+    public class ReqDungeonFight {
+        public int dungeonId;
+    }
+    [Serializable]
+    public class RspDungeonFight {
+        public int dungeonId;
+        public int power;
     }
     #endregion
 }

@@ -129,6 +129,9 @@ public class NetSvc : MonoBehaviour {
                 case ErrorCode.ClientDataError:
                     GameRoot.AddTips("客户端数据异常");
                     break;
+                case ErrorCode.LackPower:
+                    GameRoot.AddTips("体力不足");
+                    break;
                 default:
                     break;
             }
@@ -163,6 +166,18 @@ public class NetSvc : MonoBehaviour {
             // 体力增长
             case CMD.PshPower:
                 MainCitySys.Instance.PshPower(msg);
+                break;
+            // 任务奖励
+            case CMD.RspTakeTaskReward:
+                MainCitySys.Instance.RspTakeTaskReward(msg);
+                break;
+            // 推送任务进度
+            case CMD.PshTaskPrgs:
+                MainCitySys.Instance.PshTaskPrgs(msg);
+                break;
+            // 副本
+            case CMD.RspDungeonFight:
+                DungeonSys.Instance.RspDungeonFight(msg);
                 break;
             default:
                 break;

@@ -241,22 +241,27 @@ public class MainCitySys : SystemRoot {
 
         switch (curtTaskData.actID) {
             case 0:
-                //与智者对话
+                // 与智者对话
                 break;
             case 1:
-                //TODO 进入副本
+                // 进入副本
+                EnterDungeon();
                 break;
             case 2:
-                //TODO 进入强化界面
+                // 进入强化界面
+                OpenStrongWnd();
                 break;
             case 3:
-                //TODO 进入体力购买
+                // 进入体力购买
+                OpenBuyWnd(0);
                 break;
             case 4:
-                //TODO 进入金币铸造
+                // 进入金币铸造
+                OpenBuyWnd(1);
                 break;
             case 5:
-                //TODO 进入世界聊天
+                // 进入世界聊天
+                OpenChatWnd();
                 break;
         }
         GameRoot.Instance.SetPlayerDataByGuide(data);
@@ -269,6 +274,7 @@ public class MainCitySys : SystemRoot {
     /// 打开强化界面
     /// </summary>
     public void OpenStrongWnd() {
+        StopNavTask(); // 停止导航
         strongWnd.SetWndState();
     }
 
@@ -300,16 +306,24 @@ public class MainCitySys : SystemRoot {
 
     #region 购买
     public void OpenBuyWnd(int type) {
+        StopNavTask(); // 停止导航
         buyWnd.SetBuyType(type);
         buyWnd.SetWndState();
     }
 
     public void RspBuy(GameMsg msg) {
-        RspBuy data = msg.rspBuy;
-        GameRoot.Instance.SetPlayerDataByBuy(data);
+        RspBuy rspBuy = msg.rspBuy;
+        GameRoot.Instance.SetPlayerDataByBuy(rspBuy);
         GameRoot.AddTips("购买成功");
         mainCityWnd.RefreshUI();
         buyWnd.SetWndState(false);
+        // 检查是否存在 推送任务进度的响应
+        if (msg.pshTaskPrgs != null) {
+            GameRoot.Instance.SetPlayerDataByTaskPsh(msg.pshTaskPrgs);
+            if (taskWnd.GetWndState()) {
+                taskWnd.RefreshUI();
+            }
+        }
     }
     #endregion
 
@@ -320,7 +334,7 @@ public class MainCitySys : SystemRoot {
     public void PshPower(GameMsg msg) {
         PshPower data = msg.pshPower;
         GameRoot.Instance.SetPlayerDataByPower(data);
-        if (mainCityWnd.gameObject.activeSelf) {
+        if (mainCityWnd.GetWndState()) {
             mainCityWnd.RefreshUI();
         }
     }
@@ -328,24 +342,32 @@ public class MainCitySys : SystemRoot {
 
     #region 任务窗口
     public void OpenTaskRewardWnd() {
-        StopNavTask();
+        StopNavTask(); // 停止导航
         taskWnd.SetWndState();
     }
-    //public void RspTakeTaskReward(GameMsg msg) {
-    //    RspTakeTaskReward data = msg.rspTakeTaskReward;
-    //    GameRoot.Instance.SetPlayerDataByTask(data);
 
-    //    taskWnd.RefreshUI();
-    //    maincityWnd.RefreshUI();
-    //}
+    public void RspTakeTaskReward(GameMsg msg) {
+        RspTakeTaskReward data = msg.rspTakeTaskReward;
+        GameRoot.Instance.SetPlayerDataByTask(data);
 
-    //public void PshTaskPrgs(GameMsg msg) {
-    //    PshTaskPrgs data = msg.pshTaskPrgs;
-    //    GameRoot.Instance.SetPlayerDataByTaskPsh(data);
+        taskWnd.RefreshUI();
+        mainCityWnd.RefreshUI();
+    }
 
-    //    if (taskWnd.GetWndState()) {
-    //        taskWnd.RefreshUI();
-    //    }
-    //}
+    public void PshTaskPrgs(GameMsg msg) {
+        PshTaskPrgs data = msg.pshTaskPrgs;
+        GameRoot.Instance.SetPlayerDataByTaskPsh(data);
+
+        if (taskWnd.GetWndState()) {
+            taskWnd.RefreshUI();
+        }
+    }
+    #endregion
+
+    #region 副本系统，中转
+    public void EnterDungeon() {
+        StopNavTask();
+        DungeonSys.Instance.EnterDungeon();
+    }
     #endregion
 }

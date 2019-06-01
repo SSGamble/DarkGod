@@ -67,6 +67,7 @@ public class DBMgr {
                         critical = reader.GetInt32("critical"),
                         guideid = reader.GetInt32("guideid"),
                         time = reader.GetInt64("time"),
+                        dungeon = reader.GetInt32("dungeon"),
                     };
                     #region 解析 Strong Arr
                     // 数据库里存的字符串，拿出来再进行分割
@@ -138,6 +139,7 @@ public class DBMgr {
                     strongArr = new int[6],
                     time = TimerSvc.Instance.GetNowTime(),
                     taskArr = new string[6],
+                    dungeon = 10001,
                 };
                 // 初始化任务奖励数据
                 // 数据示意：1|0|0#2|0|0#3|0|0#4|0|0#5|0|0#6|0|0#
@@ -158,7 +160,7 @@ public class DBMgr {
         int id = -1;
         string sql = "insert into account set acct=@acct,pwd =@pwd,name=@name,level=@level,exp=@exp,power=@power,coin=@coin," +
             "diamond=@diamond,crystal=@crystal,hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce," +
-            "critical=@critical,guideid=@guideid,strong=@strong,time=@time,task=@task";
+            "critical=@critical,guideid=@guideid,strong=@strong,time=@time,task=@task,dungeon=@dungeon";
         try {
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("acct", acct);
@@ -180,6 +182,7 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("critical", pd.critical);
             cmd.Parameters.AddWithValue("guideid", pd.guideid);
             cmd.Parameters.AddWithValue("time", pd.time);
+            cmd.Parameters.AddWithValue("dungeon", pd.dungeon);
             // strong
             string strongInfo = "";
             for (int i = 0; i < pd.strongArr.Length; i++) {
@@ -240,8 +243,8 @@ public class DBMgr {
     public bool UpdataPlayerData(int id, PlayerData playerData) {
         try {
             string sql = "update account set name=@name,level=@level,exp=@exp,power=@power,coin=@coin,diamond=@diamond,crystal=@crystal," +
-                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical," +
-                "guideid=@guideid,strong=@strong,time=@time,task=@task" +
+                "hp=@hp,ad=@ad,ap=@ap,addef=@addef,apdef=@apdef,dodge=@dodge,pierce=@pierce,critical=@critical,guideid=@guideid,strong=@strong," +
+                "time=@time,task=@task,dungeon=@dungeon" +
                 " where id =@id";
             MySqlCommand cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("id", id);
@@ -262,6 +265,7 @@ public class DBMgr {
             cmd.Parameters.AddWithValue("critical", playerData.critical);
             cmd.Parameters.AddWithValue("guideid", playerData.guideid);
             cmd.Parameters.AddWithValue("time", playerData.time);
+            cmd.Parameters.AddWithValue("dungeon", playerData.dungeon);
             // strong
             string strongInfo = "";
             for (int i = 0; i < playerData.strongArr.Length; i++) {

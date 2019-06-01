@@ -19,6 +19,7 @@ public class MainCityWnd : WindowRoot {
     public Animation menuAni;
     public Transform expPrgTrans;
     public Image imgPowerPrg;
+
     // 轮盘
     public Image imgTouch;
     public Image imgDirBg;
@@ -208,6 +209,14 @@ public class MainCityWnd : WindowRoot {
     public void ClickTaskBtn() {
         audioSvc.PlayUIAudio(Constants.UIOpenPage);
         MainCitySys.Instance.OpenTaskRewardWnd();
+    }
+
+    /// <summary>
+    /// 副本界面
+    /// </summary>
+    public void ClickDungeonBtn() {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.EnterDungeon();
     }
     #endregion
 

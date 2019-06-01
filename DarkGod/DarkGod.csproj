@@ -13,12 +13,14 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -242,6 +244,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\MainCityMap.cs" />
+    <Compile Include="Assets\Scripts\Battle\BattleMgr.cs" />
     <Compile Include="Assets\Scripts\Common\BaseData.cs" />
     <Compile Include="Assets\Scripts\Common\Constants.cs" />
     <Compile Include="Assets\Scripts\Common\LoopDragonAni.cs" />
@@ -257,12 +260,15 @@
     <Compile Include="Assets\Scripts\Service\PETimer.cs" />
     <Compile Include="Assets\Scripts\Service\ResSvc.cs" />
     <Compile Include="Assets\Scripts\Service\TimerSvc.cs" />
+    <Compile Include="Assets\Scripts\System\BattleSys.cs" />
+    <Compile Include="Assets\Scripts\System\DungeonSys.cs" />
     <Compile Include="Assets\Scripts\System\LoginSys.cs" />
     <Compile Include="Assets\Scripts\System\MainCitySys.cs" />
     <Compile Include="Assets\Scripts\Test\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UIWindow\BuyWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\ChatWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\CreateWnd.cs" />
+    <Compile Include="Assets\Scripts\UIWindow\DungeonWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\DynamicWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\GuideWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\InfoWnd.cs" />

@@ -38,7 +38,12 @@ public class GuideSys {
 
         //更新引导 ID
         if (pd.guideid == data.guideid) {
-            pd.guideid += 1; // 如果是连环任务，可以在后面加字段然后回传回去
+            // 检测是否为智者点拨任务
+            if (pd.guideid == 1001) {
+                TaskSys.Instance.CalcTaskPrgs(pd, 1); // 更新任务进度
+            }
+
+            pd.guideid += 1; // 此处直接 +1 就行了，但如果是连环任务，可以在后面加字段然后回传回去
 
             //更新玩家数据
             pd.coin += gc.coin;
