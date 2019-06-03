@@ -15,6 +15,8 @@ public class PathDefine {
     public const string GuideCfg = "ResCfgs/guide"; // 自动引导
     public const string StrongCfg = "ResCfgs/strong"; // 强化
     public const string TaskRewardCfg = "ResCfgs/taskreward"; // 任务奖励
+    public const string SkillCfg = "ResCfgs/skill"; // 技能
+    public const string SkillMoveCfg = "ResCfgs/skillmove"; // 技能
     #endregion
 
     #region 自动任务引导
@@ -34,6 +36,7 @@ public class PathDefine {
 
     #region Player
     public const string AssissnCityPlayerPrefab = "PrefabPlayer/AssassinCity";
+    public const string AssissnBattlePlayerPrefab = "PrefabPlayer/AssassinBattle";
     #endregion
 
     #region 强化

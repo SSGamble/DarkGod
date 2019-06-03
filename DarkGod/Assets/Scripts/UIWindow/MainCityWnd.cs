@@ -42,7 +42,7 @@ public class MainCityWnd : WindowRoot {
     #region MainFunctions
     protected override void InitWnd() {
         base.InitWnd();
-        pointDis = Screen.height * 1.0f / Constants.ScreenStanderHeight * Constants.ScreenOPDis; // 动态计算摇杆距离
+        pointDis = Screen.height * 1.0f / Constants.ScreenStandardHeight * Constants.ScreenOPDis; // 动态计算摇杆距离
         defPos = imgDirBg.transform.position; // 获取轮盘的默认位置
         SetActive(imgDirPoint, false); // 默认不显示轮盘点
         RegisterTouchEvts(); // 注册轮盘的触摸事件
@@ -106,7 +106,7 @@ public class MainCityWnd : WindowRoot {
         // 分段经验条屏幕适配
         GridLayoutGroup grid = expPrgTrans.GetComponent<GridLayoutGroup>();
         // 当前屏幕的缩放比例，因为是使用高度进行缩放的，所以，此处要使用高度进行计算
-        float globalRate = 1.0f * Constants.ScreenStanderHeight / Screen.height;
+        float globalRate = 1.0f * Constants.ScreenStandardHeight / Screen.height;
         // 当前屏幕宽度
         float screenWidth = Screen.width * globalRate;
         // 当前经验块的宽度
@@ -244,7 +244,7 @@ public class MainCityWnd : WindowRoot {
             MainCitySys.Instance.SetMoveDir(Vector2.zero);
         });
         // 抬起
-        OnClickDrag(imgTouch.gameObject, (PointerEventData evt) => {
+        OnDrag(imgTouch.gameObject, (PointerEventData evt) => {
             Vector2 dir = evt.position - startPos; // 方向信息
             float len = dir.magnitude; // 当前滑动的长度
             if (len > pointDis) { // 限制最远距离

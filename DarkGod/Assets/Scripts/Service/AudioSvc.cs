@@ -24,7 +24,7 @@ public class AudioSvc : MonoBehaviour {
     /// </summary>
     /// <param name="name">音乐名</param>
     /// <param name="isLoop">是否循环播放</param>
-    public void PlayBGAudio(string name, bool isLoop = true) {
+    public void PlayBGMusic(string name, bool isLoop = true) {
         AudioClip ac = ResSvc.Instance.LoadAudio("ResAudio/" + name, true);
         // 当前没有音乐或音乐不一样
         if (bgAudio.clip == null || bgAudio.clip.name != ac.name) {

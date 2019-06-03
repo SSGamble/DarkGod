@@ -5,6 +5,7 @@
 	功能：配置数据类
 *****************************************************/
 
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -70,4 +71,23 @@ public class TaskRewardData : BaseData<TaskRewardData> {
     public bool taked; // 是否已经被领取奖励
 }
 
+/// <summary>
+/// 技能
+/// </summary>
+public class SkillCfg : BaseData<SkillCfg> {
+    public string skillName;
+    public int skillTime; // 持续时间
+    public int aniAction; // 动画机控制参数
+    public string fx;
+    public List<int> skillMoveLst; // 技能位移分阶段
+}
+
+/// <summary>
+/// 技能移动
+/// </summary>
+public class SkillMoveCfg : BaseData<SkillMoveCfg> {
+    public int delayTime; // 延迟时间，延迟多久后开始移动
+    public int moveTime; // 移动时间
+    public float moveDis; // 移动距离
+}
 

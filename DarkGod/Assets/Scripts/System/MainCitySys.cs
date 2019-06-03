@@ -41,7 +41,7 @@ public class MainCitySys : SystemRoot {
             // 打开主城界面
             mainCityWnd.SetWndState(true);
             // 播放主城背景音乐
-            audioSvc.PlayBGAudio(Constants.BGMainCity);
+            audioSvc.PlayBGMusic(Constants.BGMainCity);
             // 获取主城地图中的 npc 位置
             GameObject mapRoot = GameObject.FindGameObjectWithTag("MapRoot");
             MainCityMap map = mapRoot.GetComponent<MainCityMap>();
@@ -88,7 +88,7 @@ public class MainCitySys : SystemRoot {
             playerCtrl.SetBlend(Constants.BlendIdle);
         }
         else {
-            playerCtrl.SetBlend(Constants.BlendWalk);
+            playerCtrl.SetBlend(Constants.BlendMove);
         }
         // 方向
         playerCtrl.Dir = dir;
@@ -180,7 +180,7 @@ public class MainCitySys : SystemRoot {
                 nav.enabled = true;
                 nav.speed = Constants.PlayerMoveSpeed;
                 nav.SetDestination(npcPosTrans[agc.npcID].position); // 目标 npc 的位置
-                playerCtrl.SetBlend(Constants.BlendWalk); // 动画
+                playerCtrl.SetBlend(Constants.BlendMove); // 动画
             }
         }
         else {

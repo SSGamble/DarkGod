@@ -30,7 +30,7 @@ public class LoginSys : SystemRoot {
             // 加载完成后再打开注册登录界面
             loginWnd.SetWndState();
             // 播放背景音乐
-            audioSvc.PlayBGAudio(Constants.BGLogin);
+            audioSvc.PlayBGMusic(Constants.BGLogin);
         });
     }
 

@@ -59,7 +59,7 @@ public class InfoWnd : WindowRoot {
             startPos = evt.position;
             MainCitySys.Instance.SetStartRoate();
         });
-        OnClickDrag(imgChar.gameObject, (PointerEventData evt) => {
+        OnDrag(imgChar.gameObject, (PointerEventData evt) => {
             float roate = -(evt.position.x - startPos.x) * 0.4f; // 拖拽时要旋转的数据量
             MainCitySys.Instance.SetPlayerRoate(roate);
         });

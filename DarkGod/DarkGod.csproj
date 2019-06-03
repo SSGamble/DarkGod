@@ -13,14 +13,12 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -243,11 +241,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\MainCityMap.cs" />
-    <Compile Include="Assets\Scripts\Battle\BattleMgr.cs" />
+    <Compile Include="Assets\Scripts\Battle\Controller\Controller.cs" />
+    <Compile Include="Assets\Scripts\Battle\Controller\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Battle\Entity\EntityBase.cs" />
+    <Compile Include="Assets\Scripts\Battle\Entity\EntityPlayer.cs" />
+    <Compile Include="Assets\Scripts\Battle\FSM\IState.cs" />
+    <Compile Include="Assets\Scripts\Battle\FSM\StateAttack.cs" />
+    <Compile Include="Assets\Scripts\Battle\FSM\StateIdle.cs" />
+    <Compile Include="Assets\Scripts\Battle\FSM\StateMove.cs" />
+    <Compile Include="Assets\Scripts\Battle\Manager\BattleMgr.cs" />
+    <Compile Include="Assets\Scripts\Battle\Manager\MapMgr.cs" />
+    <Compile Include="Assets\Scripts\Battle\Manager\SkillMgr.cs" />
+    <Compile Include="Assets\Scripts\Battle\Manager\StateMgr.cs" />
     <Compile Include="Assets\Scripts\Common\BaseData.cs" />
     <Compile Include="Assets\Scripts\Common\Constants.cs" />
     <Compile Include="Assets\Scripts\Common\LoopDragonAni.cs" />
+    <Compile Include="Assets\Scripts\Common\MainCityMap.cs" />
     <Compile Include="Assets\Scripts\Common\PathDefine.cs" />
     <Compile Include="Assets\Scripts\Common\PEListener.cs" />
     <Compile Include="Assets\Scripts\Common\PETools.cs" />
@@ -264,7 +273,7 @@
     <Compile Include="Assets\Scripts\System\DungeonSys.cs" />
     <Compile Include="Assets\Scripts\System\LoginSys.cs" />
     <Compile Include="Assets\Scripts\System\MainCitySys.cs" />
-    <Compile Include="Assets\Scripts\Test\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Test\TestPlayer.cs" />
     <Compile Include="Assets\Scripts\UIWindow\BuyWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\ChatWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\CreateWnd.cs" />
@@ -275,6 +284,7 @@
     <Compile Include="Assets\Scripts\UIWindow\LoadingWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\LoginWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\MainCityWnd.cs" />
+    <Compile Include="Assets\Scripts\UIWindow\PlayerCtrlWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\StrongWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\TaskWnd.cs" />
   </ItemGroup>
@@ -288,6 +298,8 @@
     <None Include="Assets\Resources\ResCfgs\guide.xml" />
     <None Include="Assets\Resources\ResCfgs\map.xml" />
     <None Include="Assets\Resources\ResCfgs\rdname.xml" />
+    <None Include="Assets\Resources\ResCfgs\skill.xml" />
+    <None Include="Assets\Resources\ResCfgs\skillmove.xml" />
     <None Include="Assets\Resources\ResCfgs\strong.xml" />
     <None Include="Assets\Resources\ResCfgs\taskreward.xml" />
   </ItemGroup>
