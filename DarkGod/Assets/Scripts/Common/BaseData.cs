@@ -26,6 +26,7 @@ public class MapCfg : BaseData<MapCfg> {
     public Vector3 mainCamRote;
     public Vector3 playerBornPos;
     public Vector3 playerBornRote;
+    public List<MonsterData> monsterLst; // 怪物批次
 }
 
 /// <summary>
@@ -79,7 +80,19 @@ public class SkillCfg : BaseData<SkillCfg> {
     public int skillTime; // 持续时间
     public int aniAction; // 动画机控制参数
     public string fx;
+    public DamageType dmgType; // 伤害类型
     public List<int> skillMoveLst; // 技能位移分阶段
+    public List<int> skillActionLst; // 伤害点计算，eg：范围伤害，持续伤害
+    public List<int> skillDamageLst; // 伤害
+}
+
+/// <summary>
+/// 技能伤害点
+/// </summary>
+public class SkillActionCfg : BaseData<SkillActionCfg> {
+    public int delayTime; // 延迟多少时间生效
+    public float radius; // 伤害计算范围
+    public int angle; // 伤害有效角度，以自己为圆心点
 }
 
 /// <summary>
@@ -89,5 +102,40 @@ public class SkillMoveCfg : BaseData<SkillMoveCfg> {
     public int delayTime; // 延迟时间，延迟多久后开始移动
     public int moveTime; // 移动时间
     public float moveDis; // 移动距离
+}
+
+/// <summary>
+/// 怪物
+/// </summary>
+public class MonsterCfg : BaseData<MonsterCfg> {
+    public string mName;
+    public string resPath;
+    public BattleProps bps; // 战斗属性
+}
+
+/// <summary>
+/// 怪物批次
+/// </summary>
+public class MonsterData : BaseData<MonsterData> {
+    public int mWave; // 批次
+    public int mIndex; // 序号，批次里面的第几个
+    public MonsterCfg mCfg;
+    public Vector3 mBornPos;
+    public Vector3 mBornRote;
+    public int mLevel; // 怪物等级
+}
+
+/// <summary>
+/// 战斗属性数据
+/// </summary>
+public class BattleProps {
+    public int hp;
+    public int ad;
+    public int ap;
+    public int addef;
+    public int apdef;
+    public int dodge; // 闪避
+    public int pierce; // 穿甲
+    public int critical; // 暴击
 }
 

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Controller : MonoBehaviour {
+    public CharacterController ctrl;
     public Animator ani;
     protected bool isMove = false;
     private Vector2 dir = Vector2.zero;

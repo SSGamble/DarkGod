@@ -12,7 +12,6 @@ public class PlayerController : Controller {
     public GameObject daggeratk1fx; // 特效资源
     private Transform camTrans; // 主摄像机位置
     private Vector3 camOffset; // 相机偏移
-    public CharacterController ctrl;
 
     private float targetBlend; // 目标 Blend值
     private float currentBlend; // 当前 Blend值

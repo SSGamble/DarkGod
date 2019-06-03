@@ -9,14 +9,48 @@ using System;
 using UnityEngine;
 
 public abstract class EntityBase {
-    public bool canControl = true; // 是否能控制角色
-    public AniState currentAniState = AniState.None; // 默认状态
-    public Controller controller = null; // 控制器
     // 管理器
     public StateMgr stateMgr = null; 
     public BattleMgr battleMgr = null;
     public SkillMgr skillMgr = null;
 
+    public Controller controller = null; // 控制器
+    public bool canControl = true; // 是否能控制角色
+    public AniState currentAniState = AniState.None; // 默认状态
+
+    private BattleProps props;  // 战斗属性
+    public BattleProps Props {
+        get {
+            return props;
+        }
+
+        protected set {
+            props = value;
+        }
+    }
+
+    // 当前战斗中的血量变化
+    private int hp;
+    public int HP {
+        get {
+            return hp;
+        }
+
+        set {
+            //通知 UI 层 TODO
+            PECommon.Log("hp change:" + hp + "  to " + value);
+            hp = value;
+        }
+    }
+
+    public virtual void SetBattleProps(BattleProps props) {
+        HP = props.hp;
+        Props = props;
+    }
+
+    public void Born() {
+        stateMgr.ChangeStatus(this, AniState.Born, null);
+    }
     public void Move() {
         stateMgr.ChangeStatus(this, AniState.Move, null);
     }
@@ -76,14 +110,29 @@ public abstract class EntityBase {
     }
 
     /// <summary>
-    /// 攻击特效
+    /// 技能攻击
     /// </summary>
     /// <param name="skillID"></param>
-    public virtual void AttackEffect(int skillID) {
+    public virtual void SkillAttack(int skillID) {
         skillMgr.AttackEffect(this, skillID);
     }
 
+    /// <summary>
+    /// 攻击伤害
+    /// </summary>
+    //public virtual void AttackDamage(int skillID) {
+    //    skillMgr.AttackDamage(this, skillID);
+    //}
+
     public virtual Vector2 GetDirInput() {
         return Vector2.zero;
+    }
+
+    public virtual Vector3 GetPos() {
+        return controller.transform.position;
+    }
+
+    public virtual Transform GetTrans() {
+        return controller.transform;
     }
 }

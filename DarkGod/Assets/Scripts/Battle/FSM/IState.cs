@@ -22,4 +22,5 @@ public enum AniState {
     Idle,
     Move,
     Attack,
+    Born,
 }

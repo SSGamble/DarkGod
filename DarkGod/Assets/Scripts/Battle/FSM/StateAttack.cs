@@ -18,10 +18,8 @@ public class StateAttack : IState {
         PECommon.Log("Exit StateAttack.");
     }
 
-
     public void Process(EntityBase entity, params object[] args) {
-        entity.AttackEffect((int)args[0]);
+        entity.SkillAttack((int)args[0]);
         PECommon.Log("Process StateAttack.");
-        //entity.SetAction(1);
     }
 }

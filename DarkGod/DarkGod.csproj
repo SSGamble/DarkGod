@@ -13,12 +13,14 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -242,11 +244,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Battle\Controller\Controller.cs" />
+    <Compile Include="Assets\Scripts\Battle\Controller\MonsterController.cs" />
     <Compile Include="Assets\Scripts\Battle\Controller\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Battle\Entity\EntityBase.cs" />
+    <Compile Include="Assets\Scripts\Battle\Entity\EntityMonster.cs" />
     <Compile Include="Assets\Scripts\Battle\Entity\EntityPlayer.cs" />
     <Compile Include="Assets\Scripts\Battle\FSM\IState.cs" />
     <Compile Include="Assets\Scripts\Battle\FSM\StateAttack.cs" />
+    <Compile Include="Assets\Scripts\Battle\FSM\StateBorn.cs" />
     <Compile Include="Assets\Scripts\Battle\FSM\StateIdle.cs" />
     <Compile Include="Assets\Scripts\Battle\FSM\StateMove.cs" />
     <Compile Include="Assets\Scripts\Battle\Manager\BattleMgr.cs" />
@@ -297,8 +302,10 @@
     <None Include="Assets\Compond\Shader\Mul-skybox.shader" />
     <None Include="Assets\Resources\ResCfgs\guide.xml" />
     <None Include="Assets\Resources\ResCfgs\map.xml" />
+    <None Include="Assets\Resources\ResCfgs\monster.xml" />
     <None Include="Assets\Resources\ResCfgs\rdname.xml" />
     <None Include="Assets\Resources\ResCfgs\skill.xml" />
+    <None Include="Assets\Resources\ResCfgs\skillaction.xml" />
     <None Include="Assets\Resources\ResCfgs\skillmove.xml" />
     <None Include="Assets\Resources\ResCfgs\strong.xml" />
     <None Include="Assets\Resources\ResCfgs\taskreward.xml" />

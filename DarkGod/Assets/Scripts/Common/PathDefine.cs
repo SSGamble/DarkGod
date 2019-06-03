@@ -16,7 +16,9 @@ public class PathDefine {
     public const string StrongCfg = "ResCfgs/strong"; // 强化
     public const string TaskRewardCfg = "ResCfgs/taskreward"; // 任务奖励
     public const string SkillCfg = "ResCfgs/skill"; // 技能
-    public const string SkillMoveCfg = "ResCfgs/skillmove"; // 技能
+    public const string SkillMoveCfg = "ResCfgs/skillmove"; // 技能位移
+    public const string SkillActionCfg = "ResCfgs/skillaction"; // 技能伤害点
+    public const string MonsterCfg = "ResCfgs/monster"; // 怪物
     #endregion
 
     #region 自动任务引导

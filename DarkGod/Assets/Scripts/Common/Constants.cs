@@ -17,6 +17,15 @@ public enum TxtColor {
     Yellow
 }
 
+/// <summary>
+/// 伤害类型
+/// </summary>
+public enum DamageType {
+    None,
+    AD = 1,
+    AP = 2
+}
+
 public class Constants {
 
     #region 颜色
@@ -80,6 +89,8 @@ public class Constants {
     public const int BlendMove = 1;
     // Action 触发参数
     public const int ActionDefault = -1;
+    public const int ActionBorn = 0;
+    public const int ActionDie = 100;
 
     // --------------- 其他 ----------------
     // 屏幕标准宽高

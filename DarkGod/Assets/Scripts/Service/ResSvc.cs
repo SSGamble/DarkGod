@@ -22,12 +22,14 @@ public class ResSvc : MonoBehaviour {
     public void InitSvc() {
         Instance = this;
         InitRanName(PathDefine.RanNameCfg);
+        InitMonsterCfg(PathDefine.MonsterCfg);
         InitMapCfg(PathDefine.MapCfg);
         InitGuideCfg(PathDefine.GuideCfg);
         InitStrongCfg(PathDefine.StrongCfg);
         InitTaskRewardCfg(PathDefine.TaskRewardCfg);
         InitSkillCfg(PathDefine.SkillCfg);
         InitSkillMoveCfg(PathDefine.SkillMoveCfg);
+        InitSkillActionCfg(PathDefine.SkillActionCfg);
         PECommon.Log("Init ResSvc..");
     }
 
@@ -238,7 +240,8 @@ public class ResSvc : MonoBehaviour {
                 // 从 XmlElement 里获取名称为 “ID” 的数据
                 int id = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
                 MapCfg mc = new MapCfg {
-                    id = id
+                    id = id,
+                    monsterLst = new List<MonsterData>()
                 };
                 // 遍历每一个 item 里的数据项
                 foreach (XmlElement e in nodeList[i].ChildNodes) {
@@ -270,6 +273,32 @@ public class ResSvc : MonoBehaviour {
                         case "playerBornRote": {
                                 string[] valArr = e.InnerText.Split(',');
                                 mc.playerBornRote = new Vector3(float.Parse(valArr[0]), float.Parse(valArr[1]), float.Parse(valArr[2]));
+                            }
+                            break;
+                        case "monsterLst": {
+                                string[] valArr = e.InnerText.Split('#'); // 批次
+                                for (int waveIndex = 0; waveIndex < valArr.Length; waveIndex++) {
+                                    if (waveIndex == 0) {
+                                        continue;
+                                    }
+                                    string[] tempArr = valArr[waveIndex].Split('|'); // 哪个怪物
+                                    for (int j = 0; j < tempArr.Length; j++) {
+                                        if (j == 0) {
+                                            continue;
+                                        }
+                                        string[] arr = tempArr[j].Split(',');
+                                        MonsterData md = new MonsterData {
+                                            id = int.Parse(arr[0]),
+                                            mWave = waveIndex,
+                                            mIndex = j,
+                                            mCfg = GetMonsterCfg(int.Parse(arr[0])),
+                                            mBornPos = new Vector3(float.Parse(arr[1]), float.Parse(arr[2]), float.Parse(arr[3])),
+                                            mBornRote = new Vector3(0, float.Parse(arr[4]), 0),
+                                            mLevel = int.Parse(arr[5])
+                                        };
+                                        mc.monsterLst.Add(md);
+                                    }
+                                }
                             }
                             break;
                     }
@@ -529,7 +558,9 @@ public class ResSvc : MonoBehaviour {
                 int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
                 SkillCfg sc = new SkillCfg {
                     id = ID,
-                    skillMoveLst = new List<int>()
+                    skillMoveLst = new List<int>(),
+                    skillActionLst = new List<int>(),
+                    skillDamageLst = new List<int>()
                 };
 
                 foreach (XmlElement e in nodLst[i].ChildNodes) {
@@ -546,11 +577,38 @@ public class ResSvc : MonoBehaviour {
                         case "fx":
                             sc.fx = e.InnerText;
                             break;
+                        case "dmgType":
+                            if (e.InnerText.Equals("1")) {
+                                sc.dmgType = DamageType.AD;
+                            }
+                            else if (e.InnerText.Equals("2")) {
+                                sc.dmgType = DamageType.AP;
+                            }
+                            else {
+                                PECommon.Log("dmgType ERROR");
+                            }
+                            break;
                         case "skillMoveLst": // 技能位移分阶段，1011|1012
                             string[] skMoveArr = e.InnerText.Split('|');
                             for (int j = 0; j < skMoveArr.Length; j++) {
                                 if (skMoveArr[j] != "") {
                                     sc.skillMoveLst.Add(int.Parse(skMoveArr[j]));
+                                }
+                            }
+                            break;
+                        case "skillActionLst":
+                            string[] skActionArr = e.InnerText.Split('|');
+                            for (int j = 0; j < skActionArr.Length; j++) {
+                                if (skActionArr[j] != "") {
+                                    sc.skillActionLst.Add(int.Parse(skActionArr[j]));
+                                }
+                            }
+                            break;
+                        case "skillDamageLst":
+                            string[] skDamageArr = e.InnerText.Split('|');
+                            for (int j = 0; j < skDamageArr.Length; j++) {
+                                if (skDamageArr[j] != "") {
+                                    sc.skillDamageLst.Add(int.Parse(skDamageArr[j]));
                                 }
                             }
                             break;
@@ -568,7 +626,8 @@ public class ResSvc : MonoBehaviour {
         return null;
     }
 
-    // 技能移动
+
+    #region 技能移动
     private Dictionary<int, SkillMoveCfg> skillMoveDic = new Dictionary<int, SkillMoveCfg>();
     private void InitSkillMoveCfg(string path) {
         TextAsset xml = Resources.Load<TextAsset>(path);
@@ -613,6 +672,129 @@ public class ResSvc : MonoBehaviour {
         SkillMoveCfg smc = null;
         if (skillMoveDic.TryGetValue(id, out smc)) {
             return smc;
+        }
+        return null;
+    }
+    #endregion
+
+    #region 技能伤害点
+    private Dictionary<int, SkillActionCfg> skillActionDic = new Dictionary<int, SkillActionCfg>();
+    private void InitSkillActionCfg(string path) {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (!xml) {
+            PECommon.Log("xml file:" + path + " not exist", LogType.Error);
+        }
+        else {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+
+            XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+            for (int i = 0; i < nodLst.Count; i++) {
+                XmlElement ele = nodLst[i] as XmlElement;
+
+                if (ele.GetAttributeNode("ID") == null) {
+                    continue;
+                }
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+                SkillActionCfg sac = new SkillActionCfg {
+                    id = ID
+                };
+
+                foreach (XmlElement e in nodLst[i].ChildNodes) {
+                    switch (e.Name) {
+                        case "delayTime":
+                            sac.delayTime = int.Parse(e.InnerText);
+                            break;
+                        case "radius":
+                            sac.radius = float.Parse(e.InnerText);
+                            break;
+                        case "angle":
+                            sac.angle = int.Parse(e.InnerText);
+                            break;
+                    }
+                }
+                skillActionDic.Add(ID, sac);
+            }
+        }
+    }
+    public SkillActionCfg GetSkillActionCfg(int id) {
+        SkillActionCfg sac = null;
+        if (skillActionDic.TryGetValue(id, out sac)) {
+            return sac;
+        }
+        return null;
+    }
+    #endregion
+    #endregion
+
+    #region 怪物
+    private Dictionary<int, MonsterCfg> monsterCfgDataDic = new Dictionary<int, MonsterCfg>();
+    private void InitMonsterCfg(string path) {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (!xml) {
+            PECommon.Log("xml file:" + path + " not exist", LogType.Error);
+        }
+        else {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+
+            XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+            for (int i = 0; i < nodLst.Count; i++) {
+                XmlElement ele = nodLst[i] as XmlElement;
+
+                if (ele.GetAttributeNode("ID") == null) {
+                    continue;
+                }
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+                MonsterCfg mc = new MonsterCfg {
+                    id = ID,
+                    bps = new BattleProps()
+                };
+
+                foreach (XmlElement e in nodLst[i].ChildNodes) {
+                    switch (e.Name) {
+                        case "mName":
+                            mc.mName = e.InnerText;
+                            break;
+                        case "resPath":
+                            mc.resPath = e.InnerText;
+                            break;
+                        case "hp":
+                            mc.bps.hp = int.Parse(e.InnerText);
+                            break;
+                        case "ad":
+                            mc.bps.ad = int.Parse(e.InnerText);
+                            break;
+                        case "ap":
+                            mc.bps.ap = int.Parse(e.InnerText);
+                            break;
+                        case "addef":
+                            mc.bps.addef = int.Parse(e.InnerText);
+                            break;
+                        case "apdef":
+                            mc.bps.apdef = int.Parse(e.InnerText);
+                            break;
+                        case "dodge":
+                            mc.bps.dodge = int.Parse(e.InnerText);
+                            break;
+                        case "pierce":
+                            mc.bps.pierce = int.Parse(e.InnerText);
+                            break;
+                        case "critical":
+                            mc.bps.critical = int.Parse(e.InnerText);
+                            break;
+                    }
+                }
+                monsterCfgDataDic.Add(ID, mc);
+            }
+        }
+    }
+    public MonsterCfg GetMonsterCfg(int id) {
+        MonsterCfg data;
+        if (monsterCfgDataDic.TryGetValue(id, out data)) {
+            return data;
         }
         return null;
     }

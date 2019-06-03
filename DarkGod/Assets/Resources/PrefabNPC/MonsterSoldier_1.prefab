@@ -445,6 +445,8 @@ GameObject:
   m_Component:
   - component: {fileID: 400058}
   - component: {fileID: 9500000}
+  - component: {fileID: 143967470476136136}
+  - component: {fileID: 114905073931182284}
   m_Layer: 10
   m_Name: MonsterSoldier_1
   m_TagString: Untagged
@@ -860,8 +862,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100058}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.83, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: 0.99999034, z: -0, w: -0.004394209}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400052}
@@ -870,7 +872,7 @@ Transform:
   - {fileID: 400050}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180.504, z: 0}
 --- !u!95 &9500000
 Animator:
   serializedVersion: 3
@@ -880,7 +882,7 @@ Animator:
   m_GameObject: {fileID: 100058}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4307fa705c2d53244b27e98c1b9eee0f, type: 3}
-  m_Controller: {fileID: 9100000, guid: ad6aba2a7cd4d8240aef39ab9c38ba20, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5bd3c15d166c2c24582c1843fd97c4bb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -966,3 +968,33 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100058}
   m_IsPrefabParent: 1
+--- !u!114 &114905073931182284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e17ee510766b035448d968575dba9d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ctrl: {fileID: 143967470476136136}
+  ani: {fileID: 9500000}
+--- !u!143 &143967470476136136
+CharacterController:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100058}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.49
+  m_Radius: 0.4
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.78, z: 0}

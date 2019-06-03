@@ -304,8 +304,10 @@
     <None Include="Assets\Compond\Shader\Mul-skybox.shader" />
     <None Include="Assets\Resources\ResCfgs\guide.xml" />
     <None Include="Assets\Resources\ResCfgs\map.xml" />
+    <None Include="Assets\Resources\ResCfgs\monster.xml" />
     <None Include="Assets\Resources\ResCfgs\rdname.xml" />
     <None Include="Assets\Resources\ResCfgs\skill.xml" />
+    <None Include="Assets\Resources\ResCfgs\skillaction.xml" />
     <None Include="Assets\Resources\ResCfgs\skillmove.xml" />
     <None Include="Assets\Resources\ResCfgs\strong.xml" />
     <None Include="Assets\Resources\ResCfgs\taskreward.xml" />
