@@ -33,7 +33,6 @@ public class GameRoot : MonoBehaviour {
         for (int i = 0; i < canvas.childCount; i++) {
             canvas.GetChild(i).gameObject.SetActive(false);
         }
-        dynamicWnd.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -61,6 +60,8 @@ public class GameRoot : MonoBehaviour {
         BattleSys battleSys = GetComponent<BattleSys>();
         battleSys.InitSys();
 
+        // 显示动态窗口
+        dynamicWnd.SetWndState();
         // 进入登录场景并加载相应 UI
         login.EnterLogin();
     }

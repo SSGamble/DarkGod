@@ -37,7 +37,7 @@ public abstract class EntityBase {
         }
 
         set {
-            //通知 UI 层 TODO
+            // 通知 UI 层 TODO
             PECommon.Log("hp change:" + hp + "  to " + value);
             hp = value;
         }
@@ -59,6 +59,12 @@ public abstract class EntityBase {
     }
     public void Attack(int skillID) {
         stateMgr.ChangeStatus(this, AniState.Attack, skillID);
+    }
+    public void Die() {
+        stateMgr.ChangeStatus(this, AniState.Die, null);
+    }
+    public void Hit() {
+        stateMgr.ChangeStatus(this, AniState.Hit, null);
     }
 
     /// <summary>
@@ -114,7 +120,7 @@ public abstract class EntityBase {
     /// </summary>
     /// <param name="skillID"></param>
     public virtual void SkillAttack(int skillID) {
-        skillMgr.AttackEffect(this, skillID);
+        skillMgr.SkillAttack(this, skillID);
     }
 
     /// <summary>

@@ -117,8 +117,8 @@ public class BattleMgr : MonoBehaviour {
                 mc.Init();
                 em.controller = mc;
                 m.SetActive(false);
-
                 monsterDic.Add(m.name, em);
+                GameRoot.Instance.dynamicWnd.AddHpItemInfo(m.name, m.transform, em.HP); // 血条
             }
         }
     }

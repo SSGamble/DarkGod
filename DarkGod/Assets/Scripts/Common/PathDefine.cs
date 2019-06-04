@@ -61,4 +61,8 @@ public class PathDefine {
     public const string TaskItemPrefab = "PrefabUI/ItemTask";
     public const string TaskRewardIcon = "ResImages/box2";
     #endregion
+
+    // 血条
+    public const string HPItemPrefab = "PrefabUI/ItemEntityHp";
+
 }

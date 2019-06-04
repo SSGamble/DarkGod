@@ -91,6 +91,9 @@ public class Constants {
     public const int ActionDefault = -1;
     public const int ActionBorn = 0;
     public const int ActionDie = 100;
+    public const int ActionHit = 101;
+    // 死亡动画的长度
+    public const int DieAniLength = 5000;
 
     // --------------- 其他 ----------------
     // 屏幕标准宽高
@@ -105,5 +108,7 @@ public class Constants {
     public const int NPCGeneral = 1;
     public const int NPCArtisan = 2;
     public const int NPCTrader = 3;
+
+    public static float AccelerHPSpeed = 0.3F;
 
 }

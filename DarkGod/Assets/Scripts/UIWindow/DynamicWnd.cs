@@ -12,14 +12,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class DynamicWnd : WindowRoot {
+
+
+    #region Tip
     public Animation tipsAni;
     public Text txtTips;
-
     //用于显示 tips 的队列，按序逐条显示
     private Queue<string> tipsQue = new Queue<string>();
     //是否正在显示 tips
     private bool isTipsShow = false;
+    #endregion
 
+    #region 血条
+    public Transform hpItemRoot;
+    private Dictionary<string, ItemEntityHP> itemDic = new Dictionary<string, ItemEntityHP>();
+    #endregion
+
+    #region Tips
     /// <summary>
     /// 将 Tips 压入栈
     /// </summary>
@@ -80,4 +89,58 @@ public class DynamicWnd : WindowRoot {
             cb();
         }
     }
+    #endregion
+
+    #region 血条
+    public void AddHpItemInfo(string mName, Transform trans, int hp) {
+        ItemEntityHP item = null;
+        if (itemDic.TryGetValue(mName, out item)) {
+            return;
+        }
+        else {
+            GameObject go = resSvc.LoadPrefab(PathDefine.HPItemPrefab, true);
+            go.transform.SetParent(hpItemRoot);
+            go.transform.localPosition = new Vector3(-1000, 0, 0); // 初始化在看不见的地方
+            ItemEntityHP ieh = go.GetComponent<ItemEntityHP>();
+            ieh.InitItemInfo(trans, hp);
+            itemDic.Add(mName, ieh);
+        }
+    }
+
+    public void RmvHpItemInfo(string mName) {
+        ItemEntityHP item = null;
+        if (itemDic.TryGetValue(mName, out item)) {
+            Destroy(item.gameObject);
+            itemDic.Remove(mName);
+        }
+    }
+
+    public void SetDodge(string key) {
+        ItemEntityHP item = null;
+        if (itemDic.TryGetValue(key, out item)) {
+            item.SetDodge();
+        }
+    }
+
+    public void SetCritical(string key, int critical) {
+        ItemEntityHP item = null;
+        if (itemDic.TryGetValue(key, out item)) {
+            item.SetCritical(critical);
+        }
+    }
+
+    public void SetHurt(string key, int hurt) {
+        ItemEntityHP item = null;
+        if (itemDic.TryGetValue(key, out item)) {
+            item.SetHurt(hurt);
+        }
+    }
+
+    public void SetHPVal(string key, int oldVal, int newVal) {
+        ItemEntityHP item = null;
+        if (itemDic.TryGetValue(key, out item)) {
+            item.SetHPVal(oldVal, newVal);
+        }
+    }
+    #endregion
 }

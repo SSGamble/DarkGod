@@ -75,7 +75,7 @@ public class SkillMgr : MonoBehaviour {
     public void SkillAction(EntityBase caster, SkillCfg skillCfg, int index) {
         SkillActionCfg skillActionCfg = resSvc.GetSkillActionCfg(skillCfg.skillActionLst[index]);
         int damage = skillCfg.skillDamageLst[index];
-        // 获取场景里所有的怪物实体，遍历运算
+        // 获取场景里所有的怪物实体，遍历运算，怪物很多的游戏 如 MMO 就不能这样运算
         List<EntityMonster> monsterLst = caster.battleMgr.GetEntityMonsters();
         for (int i = 0; i < monsterLst.Count; i++) {
             EntityMonster target = monsterLst[i];
@@ -163,12 +163,11 @@ public class SkillMgr : MonoBehaviour {
 
         if (target.HP < dmgSum) {
             target.HP = 0;
-            // 目标死亡
-            //target.Die();
+            target.Die(); // 目标死亡
         }
         else {
             target.HP -= dmgSum;
-            //target.Hit();
+            target.Hit();
         }
     }
 
