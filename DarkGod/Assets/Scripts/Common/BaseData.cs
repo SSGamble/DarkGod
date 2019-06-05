@@ -77,9 +77,11 @@ public class TaskRewardData : BaseData<TaskRewardData> {
 /// </summary>
 public class SkillCfg : BaseData<SkillCfg> {
     public string skillName;
+    public int cdTime;
     public int skillTime; // 持续时间
     public int aniAction; // 动画机控制参数
-    public string fx;
+    public string fx; // 特效资源
+    public bool isCombo; // 是否是连招
     public DamageType dmgType; // 伤害类型
     public List<int> skillMoveLst; // 技能位移分阶段
     public List<int> skillActionLst; // 伤害点计算，eg：范围伤害，持续伤害

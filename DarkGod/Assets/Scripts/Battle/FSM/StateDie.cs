@@ -18,7 +18,7 @@ public class StateDie : IState {
     public void Process(EntityBase entity, params object[] args) {
         entity.SetAction(Constants.ActionDie);
         TimerSvc.Instance.AddTimeTask((int tid) => {
-            entity.controller.gameObject.SetActive(false);
+            entity.SetActive(false);
         }, Constants.DieAniLength);
     }
 }

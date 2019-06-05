@@ -13,14 +13,12 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.1p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -243,7 +241,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ItemEntityHP.cs" />
     <Compile Include="Assets\Scripts\Battle\Controller\Controller.cs" />
     <Compile Include="Assets\Scripts\Battle\Controller\MonsterController.cs" />
     <Compile Include="Assets\Scripts\Battle\Controller\PlayerController.cs" />
@@ -289,6 +286,7 @@
     <Compile Include="Assets\Scripts\UIWindow\DynamicWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\GuideWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\InfoWnd.cs" />
+    <Compile Include="Assets\Scripts\UIWindow\ItemEntityHP.cs" />
     <Compile Include="Assets\Scripts\UIWindow\LoadingWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\LoginWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindow\MainCityWnd.cs" />

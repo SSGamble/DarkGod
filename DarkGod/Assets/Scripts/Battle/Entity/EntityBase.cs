@@ -6,15 +6,16 @@
 *****************************************************/
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class EntityBase {
     // 管理器
-    public StateMgr stateMgr = null; 
+    public StateMgr stateMgr = null;
     public BattleMgr battleMgr = null;
     public SkillMgr skillMgr = null;
 
-    public Controller controller = null; // 控制器
+    protected Controller controller = null; // 控制器
     public bool canControl = true; // 是否能控制角色
     public AniState currentAniState = AniState.None; // 默认状态
 
@@ -29,6 +30,18 @@ public abstract class EntityBase {
         }
     }
 
+    // 实体名字
+    private string name;
+    public string Name {
+        get {
+            return name;
+        }
+
+        set {
+            name = value;
+        }
+    }
+
     // 当前战斗中的血量变化
     private int hp;
     public int HP {
@@ -37,17 +50,26 @@ public abstract class EntityBase {
         }
 
         set {
-            // 通知 UI 层 TODO
             PECommon.Log("hp change:" + hp + "  to " + value);
+            // 通知 UI 层
+            SetHPVal(hp, value);
             hp = value;
         }
     }
+
+    // 连招队列
+    public Queue<int> comboQue = new Queue<int>();
+    // 下一次的 攻击ID
+    public int nextSkillID = 0;
+    // 当前正在释放的技能的配置
+    public SkillCfg curtSkillCfg;
 
     public virtual void SetBattleProps(BattleProps props) {
         HP = props.hp;
         Props = props;
     }
 
+    #region 状态
     public void Born() {
         stateMgr.ChangeStatus(this, AniState.Born, null);
     }
@@ -66,6 +88,7 @@ public abstract class EntityBase {
     public void Hit() {
         stateMgr.ChangeStatus(this, AniState.Hit, null);
     }
+    #endregion
 
     /// <summary>
     /// 设置 Blend 值
@@ -124,11 +147,40 @@ public abstract class EntityBase {
     }
 
     /// <summary>
-    /// 攻击伤害
+    /// 攻击方向
     /// </summary>
-    //public virtual void AttackDamage(int skillID) {
-    //    skillMgr.AttackDamage(this, skillID);
-    //}
+    /// <param name="isCamoffset">是否需要计算摄像机偏移</param>
+    public virtual void SetAtkRotation(Vector2 dir, bool isCamoffset = false) {
+        if (controller != null) {
+            if (isCamoffset) {
+                controller.SetAtkRotationCam(dir);
+            }
+            else {
+                controller.SetAtkRotationLocal(dir);
+            }
+        }
+    }
+
+    public virtual void SetDodge() {
+        if (controller != null) {
+            GameRoot.Instance.dynamicWnd.SetDodge(Name);
+        }
+    }
+    public virtual void SetCritical(int critical) {
+        if (controller != null) {
+            GameRoot.Instance.dynamicWnd.SetCritical(Name, critical);
+        }
+    }
+    public virtual void SetHurt(int hurt) {
+        if (controller != null) {
+            GameRoot.Instance.dynamicWnd.SetHurt(Name, hurt);
+        }
+    }
+    public virtual void SetHPVal(int oldval, int newval) {
+        if (controller != null) {
+            GameRoot.Instance.dynamicWnd.SetHPVal(Name, oldval, newval);
+        }
+    }
 
     public virtual Vector2 GetDirInput() {
         return Vector2.zero;
@@ -138,7 +190,45 @@ public abstract class EntityBase {
         return controller.transform.position;
     }
 
+    public virtual Vector2 CalcTargetDir() {
+        return Vector2.zero;
+    }
+
     public virtual Transform GetTrans() {
         return controller.transform;
+    }
+
+    public AnimationClip[] GetAniClips() {
+        if (controller != null) {
+            return controller.ani.runtimeAnimatorController.animationClips;
+        }
+        return null;
+    }
+
+    public void SetController(Controller ctrl) {
+        controller = ctrl;
+    }
+
+    public void SetActive(bool active = true) {
+        if (controller != null) {
+            controller.gameObject.SetActive(active);
+        }
+    }
+
+    /// <summary>
+    /// 退出攻击状态的时候调用
+    /// </summary>
+    public void ExitCurtSkill() {
+        canControl = true;
+        // 连招数据更新
+        if (curtSkillCfg.isCombo) {
+            if (comboQue.Count > 0) {
+                nextSkillID = comboQue.Dequeue();
+            }
+            else {
+                nextSkillID = 0;
+            }
+        }
+        SetAction(Constants.ActionDefault);
     }
 }

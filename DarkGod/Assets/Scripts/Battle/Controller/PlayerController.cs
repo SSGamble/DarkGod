@@ -9,8 +9,20 @@ using System;
 using UnityEngine;
 
 public class PlayerController : Controller {
-    public GameObject daggeratk1fx; // 特效资源
-    private Transform camTrans; // 主摄像机位置
+
+    #region 特效资源
+    // 技能
+    public GameObject skillFx1; 
+    public GameObject skillFx2; 
+    public GameObject skillFx3;
+    // 普通攻击，连招
+    public GameObject atkFx1;
+    public GameObject atkFx2;
+    public GameObject atkFx3;
+    public GameObject atkFx4;
+    public GameObject atkFx5;
+    #endregion
+
     private Vector3 camOffset; // 相机偏移
 
     private float targetBlend; // 目标 Blend值
@@ -20,25 +32,50 @@ public class PlayerController : Controller {
         base.Init();
         camTrans = Camera.main.transform; // 获取主摄像机的位置
         camOffset = transform.position - camTrans.position; // 相机与玩家的偏移距离
-        if (daggeratk1fx != null) {
-            fxDic.Add(daggeratk1fx.name, daggeratk1fx);
+
+        // 技能
+        if (skillFx1 != null) {
+            fxDic.Add(skillFx1.name, skillFx1);
+        }
+        if (skillFx2 != null) {
+            fxDic.Add(skillFx2.name, skillFx2);
+        }
+        if (skillFx3 != null) {
+            fxDic.Add(skillFx3.name, skillFx3);
+        }
+        // 普攻
+        if (atkFx1 != null) {
+            fxDic.Add(atkFx1.name, atkFx1);
+        }
+        if (atkFx2 != null) {
+            fxDic.Add(atkFx2.name, atkFx2);
+        }
+        if (atkFx3 != null) {
+            fxDic.Add(atkFx3.name, atkFx3);
+        }
+        if (atkFx4 != null) {
+            fxDic.Add(atkFx4.name, atkFx4);
+        }
+        if (atkFx5 != null) {
+            fxDic.Add(atkFx5.name, atkFx5);
         }
     }
 
     private void Update() {
         #region Input 测试
-        //float h = Input.GetAxis("Horizontal");
-        //float v = Input.GetAxis("Vertical");
-        //Vector2 _dir = new Vector2(h, v).normalized; // 方向
-        //// 设置朝向
-        //if (_dir != Vector2.zero) {
-        //    Dir = _dir;
-        //    SetBlend(Constants.BlendMove);
-        //}
-        //else {
-        //    Dir = Vector2.zero;
-        //    SetBlend(Constants.BlendIdle);
-        //}
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        Vector2 _dir = new Vector2(h, v).normalized; // 方向
+        // 设置朝向
+        if (_dir != Vector2.zero) {
+            Dir = _dir;
+            SetBlend(Constants.BlendMove);
+        }
+        else {
+            Dir = Vector2.zero;
+            SetBlend(Constants.BlendIdle);
+        }
+
         #endregion
 
         if (currentBlend != targetBlend) {

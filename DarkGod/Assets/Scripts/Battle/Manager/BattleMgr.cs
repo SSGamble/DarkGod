@@ -82,12 +82,13 @@ public class BattleMgr : MonoBehaviour {
             skillMgr = skillMgr,
             battleMgr = this
         };
+        entitySelfPlayer.Name = "主角名";
         // 为逻辑实体设置战斗属性
         entitySelfPlayer.SetBattleProps(props);
         // 为逻辑实体注入控制器
         PlayerController playerCtrl = player.GetComponent<PlayerController>();
         playerCtrl.Init();
-        entitySelfPlayer.controller = playerCtrl;
+        entitySelfPlayer.SetController(playerCtrl);
     }
 
     /// <summary>
@@ -112,19 +113,21 @@ public class BattleMgr : MonoBehaviour {
                 // 设置初始属性
                 em.md = md;
                 em.SetBattleProps(md.mCfg.bps);
+                em.Name = m.name;
 
                 MonsterController mc = m.GetComponent<MonsterController>();
                 mc.Init();
-                em.controller = mc;
+                em.SetController(mc);
                 m.SetActive(false);
                 monsterDic.Add(m.name, em);
-                GameRoot.Instance.dynamicWnd.AddHpItemInfo(m.name, m.transform, em.HP); // 血条
+                // 血条
+                GameRoot.Instance.dynamicWnd.AddHpItemInfo(m.name, mc.hpRoot, em.HP);
             }
         }
     }
 
     /// <summary>
-    /// 场景里所有的怪物实体
+    /// 获取场景里所有的怪物实体
     /// </summary>
     public List<EntityMonster> GetEntityMonsters() {
         List<EntityMonster> monsterLst = new List<EntityMonster>();
@@ -140,7 +143,7 @@ public class BattleMgr : MonoBehaviour {
     public void ActiveCurrentBatchMonsters() {
         TimerSvc.Instance.AddTimeTask((int tid) => {
             foreach (var item in monsterDic) {
-                item.Value.controller.gameObject.SetActive(true);
+                item.Value.SetActive();
                 item.Value.Born();
                 TimerSvc.Instance.AddTimeTask((int id) => {
                     // 出生 1 秒钟后进入Idle
@@ -187,8 +190,33 @@ public class BattleMgr : MonoBehaviour {
         }
     }
 
+    public double lastAtkTime = 0; // 上一次攻击的时间
+    private int[] comboArr = new int[] { 111, 112, 113, 114, 115 }; // 连招数组
+    public int comboIndex = 0; // 当前连招的索引
     private void ReleaseNormalAtk() {
-        PECommon.Log("Click Normal Atk");
+        //PECommon.Log("Click Normal Atk");
+        // 开始连招
+        if (entitySelfPlayer.currentAniState == AniState.Attack) {
+            // 在 500ms 以内进行第二次点击，存数据到连招队列
+            double nowAtkTime = TimerSvc.Instance.GetNowTime(); // 当前攻击的时间
+            if (nowAtkTime - lastAtkTime < Constants.ComboSpace && lastAtkTime != 0) {
+                if (comboArr[comboIndex] != comboArr[comboArr.Length - 1]) { // 越界检查
+                    comboIndex += 1;
+                    entitySelfPlayer.comboQue.Enqueue(comboArr[comboIndex]);
+                    lastAtkTime = nowAtkTime;
+                }
+                else { // 重置连招
+                    lastAtkTime = 0;
+                    comboIndex = 0;
+                }
+            }
+        }
+        // 第一次进入
+        else if (entitySelfPlayer.currentAniState == AniState.Idle || entitySelfPlayer.currentAniState == AniState.Move) {
+            comboIndex = 0;
+            lastAtkTime = TimerSvc.Instance.GetNowTime();
+            entitySelfPlayer.Attack(comboArr[comboIndex]);
+        }
     }
 
     private void ReleaseSkill1() {
@@ -196,11 +224,11 @@ public class BattleMgr : MonoBehaviour {
     }
 
     private void ReleaseSkill2() {
-        PECommon.Log("Click Skill2");
+        entitySelfPlayer.Attack(102);
     }
 
     private void ReleaseSkill3() {
-        PECommon.Log("Click Skill3");
+        entitySelfPlayer.Attack(103);
     }
 
     public Vector2 GetDirInput() {
@@ -208,5 +236,15 @@ public class BattleMgr : MonoBehaviour {
     }
     #endregion
 
+    /// <summary>
+    /// 移除怪物
+    /// </summary>
+    public void RmvMonster(string key) {
+        EntityMonster entityMonster;
+        if (monsterDic.TryGetValue(key, out entityMonster)) {
+            monsterDic.Remove(key);
+            GameRoot.Instance.dynamicWnd.RmvHpItemInfo(key); // 移除血条
+        }
+    }
 
 }

@@ -93,7 +93,7 @@ public class Constants {
     public const int ActionDie = 100;
     public const int ActionHit = 101;
     // 死亡动画的长度
-    public const int DieAniLength = 5000;
+    public const int DieAniLength = 3000;
 
     // --------------- 其他 ----------------
     // 屏幕标准宽高
@@ -109,6 +109,9 @@ public class Constants {
     public const int NPCArtisan = 2;
     public const int NPCTrader = 3;
 
+    // 血条渐变
     public static float AccelerHPSpeed = 0.3F;
 
+    // 普攻连招有效间隔
+    public static int ComboSpace = 500;
 }

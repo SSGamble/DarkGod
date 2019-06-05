@@ -24,8 +24,8 @@ public class SkillMgr : MonoBehaviour {
     /// </summary>
     /// <param name="entity"></param>
     /// <param name="skillID"></param>
-    public void SkillAttack(EntityBase entity,int skillID) {
-        AttackDamage(entity,skillID);
+    public void SkillAttack(EntityBase entity, int skillID) {
+        AttackDamage(entity, skillID);
         AttackEffect(entity, skillID);
     }
 
@@ -34,6 +34,18 @@ public class SkillMgr : MonoBehaviour {
     /// </summary>
     public void AttackEffect(EntityBase entity, int skillID) {
         SkillCfg skillData = resSvc.GetSkillCfg(skillID);
+        // 没有方向输入
+        if (entity.GetDirInput() == Vector2.zero) {
+            // 搜索最近的怪物
+            Vector2 dir = entity.CalcTargetDir();
+            if (dir != Vector2.zero) {
+                entity.SetAtkRotation(dir);
+            }
+        }
+        // 有方向输入
+        else {
+            entity.SetAtkRotation(entity.GetDirInput(), true);
+        }
         entity.SetAction(skillData.aniAction);
         entity.SetFX(skillData.fx, skillData.skillTime);
 
@@ -131,6 +143,7 @@ public class SkillMgr : MonoBehaviour {
             if (dodgeNum <= target.Props.dodge) {
                 // UI 显示闪避 TODO
                 PECommon.Log("闪避Rate:" + dodgeNum + "/" + target.Props.dodge);
+                target.SetDodge();
                 return;
             }
             // 计算属性加成
@@ -141,6 +154,7 @@ public class SkillMgr : MonoBehaviour {
                 float criticalRate = 1 + (PETools.RanInt(1, 100, rd) / 100.0f); // 暴击率
                 dmgSum = (int)criticalRate * dmgSum;
                 PECommon.Log("暴击Rate:" + criticalNum + "/" + caster.Props.critical);
+                target.SetCritical(dmgSum);
             }
             // 计算穿甲 
             int addef = (int)((1 - caster.Props.pierce / 100.0f) * target.Props.addef);
@@ -161,9 +175,12 @@ public class SkillMgr : MonoBehaviour {
             return;
         }
 
+        target.SetHurt(dmgSum);
+
         if (target.HP < dmgSum) {
             target.HP = 0;
             target.Die(); // 目标死亡
+            target.battleMgr.RmvMonster(target.Name); // 移除
         }
         else {
             target.HP -= dmgSum;
@@ -184,7 +201,7 @@ public class SkillMgr : MonoBehaviour {
             SkillMoveCfg skillMoveCfg = resSvc.GetSkillMoveCfg(skillData.skillMoveLst[i]);
             float speed = skillMoveCfg.moveDis / (skillMoveCfg.moveTime / 1000f);
             sum += skillMoveCfg.delayTime; // 总的延迟时间
-            if (sum > 0) { 
+            if (sum > 0) {
                 timeSvc.AddTimeTask((int tid) => {
                     entity.SetSkillMoveState(true, speed);
                 }, sum);

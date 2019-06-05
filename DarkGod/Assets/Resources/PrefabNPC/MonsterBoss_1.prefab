@@ -1100,6 +1100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17ee510766b035448d968575dba9d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpRoot: {fileID: 400060}
   ctrl: {fileID: 143558789855640256}
   ani: {fileID: 9500000}
 --- !u!143 &143558789855640256

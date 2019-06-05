@@ -33,7 +33,7 @@ public class StateHit : IState {
     /// <param name="entity">受击实体</param>
     private float GetHitAniLen(EntityBase entity) {
         // 遍历指定实体所有的 Clip ，根据名字获得 Hit 动画的长度
-        AnimationClip[] clips = entity.controller.ani.runtimeAnimatorController.animationClips;
+        AnimationClip[] clips = entity.GetAniClips();
         for (int i = 0; i < clips.Length; i++) {
             string clipName = clips[i].name;
             if (clipName.Contains("hit") ||

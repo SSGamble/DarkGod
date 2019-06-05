@@ -91,7 +91,11 @@ public class DynamicWnd : WindowRoot {
     }
     #endregion
 
-    #region 血条
+    #region 血条相关信息
+
+    /// <summary>
+    /// 增加血条
+    /// </summary>
     public void AddHpItemInfo(string mName, Transform trans, int hp) {
         ItemEntityHP item = null;
         if (itemDic.TryGetValue(mName, out item)) {
@@ -107,6 +111,9 @@ public class DynamicWnd : WindowRoot {
         }
     }
 
+    /// <summary>
+    /// 移除血条
+    /// </summary>
     public void RmvHpItemInfo(string mName) {
         ItemEntityHP item = null;
         if (itemDic.TryGetValue(mName, out item)) {

@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Controller : MonoBehaviour {
+
+    protected Transform camTrans; // 主摄像机位置
+    public Transform hpRoot; // 血条位置
     public CharacterController ctrl;
     public Animator ani;
     protected bool isMove = false;
@@ -55,5 +58,23 @@ public abstract class Controller : MonoBehaviour {
     public void SetSkillMoveState(bool move, float skillSpeed = 0f) {
         skillMove = move;
         skillMoveSpeed = skillSpeed;
+    }
+
+    /// <summary>
+    /// 攻击方向，不计算摄像机偏移
+    /// </summary>
+    public virtual void SetAtkRotationLocal(Vector2 atkDir) {
+        float angle = Vector2.SignedAngle(atkDir, new Vector2(0, 1));
+        Vector3 eulerAngles = new Vector3(0, angle, 0);
+        transform.localEulerAngles = eulerAngles;
+    }
+
+    /// <summary>
+    /// 攻击方向，相机偏移
+    /// </summary>
+    public virtual void SetAtkRotationCam(Vector2 camDir) {
+        float angle = Vector2.SignedAngle(camDir, new Vector2(0, 1)) + camTrans.eulerAngles.y;
+        Vector3 eulerAngles = new Vector3(0, angle, 0);
+        transform.localEulerAngles = eulerAngles;
     }
 }

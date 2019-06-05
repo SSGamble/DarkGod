@@ -35,4 +35,10 @@ public class TimerSvc : SystemRoot {
         return pt.AddTimeTask(callback, delay, timeUnit, count);
     }
 
+    /// <summary>
+    /// 获取当前时间
+    /// </summary>
+    public double GetNowTime() {
+        return pt.GetMillisecondsTime();
+    }
 }
