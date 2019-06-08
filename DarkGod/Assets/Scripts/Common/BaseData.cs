@@ -111,7 +111,9 @@ public class SkillMoveCfg : BaseData<SkillMoveCfg> {
 /// </summary>
 public class MonsterCfg : BaseData<MonsterCfg> {
     public string mName;
-    public string resPath;
+    public string resPath; // 在地图中的位置
+    public int skillID; // 技能 id
+    public float atkDis; // 攻击距离
     public BattleProps bps; // 战斗属性
 }
 

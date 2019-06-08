@@ -17,7 +17,7 @@ public class BattleMgr : MonoBehaviour {
     private SkillMgr skillMgr;
     private MapMgr mapMgr;
 
-    private EntityPlayer entitySelfPlayer; // 玩家逻辑实体
+    public EntityPlayer entitySelfPlayer; // 玩家逻辑实体
     private MapCfg mapCfg;
 
     // 场景里所有的怪物实体
@@ -29,6 +29,7 @@ public class BattleMgr : MonoBehaviour {
 
         // 初始化各管理器
         stateMgr = gameObject.AddComponent<StateMgr>();
+
         stateMgr.Init();
         skillMgr = gameObject.AddComponent<SkillMgr>();
         skillMgr.Init();
@@ -52,6 +53,16 @@ public class BattleMgr : MonoBehaviour {
             ActiveCurrentBatchMonsters();
             audioSvc.PlayBGMusic(Constants.BGHuangYe);
         });
+    }
+
+    /// <summary>
+    /// 驱动 AI 逻辑
+    /// </summary>
+    public void Update() {
+        foreach (var item in monsterDic) {
+            EntityMonster em = item.Value;
+            em.TickAILogic();
+        }
     }
 
     /// <summary>

@@ -91,6 +91,13 @@ public abstract class EntityBase {
     #endregion
 
     /// <summary>
+    /// 处理 AI 逻辑
+    /// </summary>
+    public virtual void TickAILogic() {
+
+    }
+
+    /// <summary>
     /// 设置 Blend 值
     /// </summary>
     public virtual void SetBlend(float blend) {
@@ -231,4 +238,6 @@ public abstract class EntityBase {
         }
         SetAction(Constants.ActionDefault);
     }
+
+
 }
