@@ -172,12 +172,14 @@ public class BattleMgr : MonoBehaviour {
         if (entitySelfPlayer.canControl == false) {
             return;
         }
-        if (dir == Vector2.zero) {
-            entitySelfPlayer.Idle();
-        }
-        else {
-            entitySelfPlayer.Move();
-            entitySelfPlayer.SetDir(dir);
+        if (entitySelfPlayer.currentAniState == AniState.Idle || entitySelfPlayer.currentAniState == AniState.Move) {
+            if (dir == Vector2.zero) {
+                entitySelfPlayer.Idle();
+            }
+            else {
+                entitySelfPlayer.Move();
+                entitySelfPlayer.SetDir(dir);
+            }
         }
     }
 
@@ -256,6 +258,10 @@ public class BattleMgr : MonoBehaviour {
             monsterDic.Remove(key);
             GameRoot.Instance.dynamicWnd.RmvHpItemInfo(key); // 移除血条
         }
+    }
+
+    public bool GetCanRlsSkill() {
+        return entitySelfPlayer.canRlsSkill;
     }
 
 }

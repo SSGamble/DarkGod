@@ -41,4 +41,12 @@ public class TimerSvc : SystemRoot {
     public double GetNowTime() {
         return pt.GetMillisecondsTime();
     }
+
+    /// <summary>
+    /// 删除任务
+    /// </summary>
+    /// <param name="tid"></param>
+    public void DelTask(int tid) {
+        pt.DelTimeTask(tid);
+    }
 }

@@ -19,6 +19,10 @@ public class StateAttack : IState {
     }
 
     public void Process(EntityBase entity, params object[] args) {
+        // 玩家不能同时释放多个技能
+        if (entity.entityType == EntityType.Player) {
+            entity.canRlsSkill = false;
+        }
         entity.SkillAttack((int)args[0]);
         //PECommon.Log("Process StateAttack.");
     }

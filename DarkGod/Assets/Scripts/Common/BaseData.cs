@@ -82,6 +82,8 @@ public class SkillCfg : BaseData<SkillCfg> {
     public int aniAction; // 动画机控制参数
     public string fx; // 特效资源
     public bool isCombo; // 是否是连招
+    public bool isCollide; // 是否检测碰撞
+    public bool isBreak; // 是否可以打断
     public DamageType dmgType; // 伤害类型
     public List<int> skillMoveLst; // 技能位移分阶段
     public List<int> skillActionLst; // 伤害点计算，eg：范围伤害，持续伤害
@@ -111,6 +113,8 @@ public class SkillMoveCfg : BaseData<SkillMoveCfg> {
 /// </summary>
 public class MonsterCfg : BaseData<MonsterCfg> {
     public string mName;
+    public MonsterType mType; // 1:普通怪物，2：boss 怪物
+    public bool isStop; // 怪物是否能被攻击中断当前的状态
     public string resPath; // 在地图中的位置
     public int skillID; // 技能 id
     public float atkDis; // 攻击距离

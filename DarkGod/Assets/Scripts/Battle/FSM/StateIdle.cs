@@ -12,6 +12,7 @@ public class StateIdle : IState {
     public void Enter(EntityBase entity, params object[] args) {
         entity.currentAniState = AniState.Idle;
         entity.SetDir(Vector2.zero);
+        entity.skEndCB = -1;
         //PECommon.Log("Enter StateIdle.");
     }
 
@@ -24,6 +25,9 @@ public class StateIdle : IState {
             entity.Attack(entity.nextSkillID);
         }
         else {
+            if (entity.entityType == EntityType.Player) {
+                entity.canRlsSkill = true;
+            }
             // 轮盘一直处于移动状态时，释放了技能后，尽管没有动轮盘，但依然需要他按照之前的方向移动
             if (entity.GetDirInput() != Vector2.zero) {
                 entity.Move();

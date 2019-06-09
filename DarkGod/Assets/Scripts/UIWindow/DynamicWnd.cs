@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 public class DynamicWnd : WindowRoot {
 
-
+    public Animation selfDodgeAni; // 主角闪避动画
     #region Tip
     public Animation tipsAni;
     public Text txtTips;
@@ -150,4 +150,12 @@ public class DynamicWnd : WindowRoot {
         }
     }
     #endregion
+
+    /// <summary>
+    /// 主角闪避动画
+    /// </summary>
+    public void SetSelfDodge() {
+        selfDodgeAni.Stop();
+        selfDodgeAni.Play();
+    }
 }

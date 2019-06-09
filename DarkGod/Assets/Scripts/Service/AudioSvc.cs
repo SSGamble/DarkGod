@@ -44,4 +44,14 @@ public class AudioSvc : MonoBehaviour {
         uiAudio.Play();
     }
 
+    /// <summary>
+    /// 播放人物音效
+    /// </summary>
+    /// <param name="name">音效名</param>
+    /// <param name="audioSrc">播放组件</param>
+    public void PlayCharAudio(string name, AudioSource audioSrc) {
+        AudioClip audio = ResSvc.Instance.LoadAudio("ResAudio/" + name, true);
+        audioSrc.clip = audio;
+        audioSrc.Play();
+    }
 }

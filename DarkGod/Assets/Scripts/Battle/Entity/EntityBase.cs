@@ -17,6 +17,7 @@ public abstract class EntityBase {
 
     protected Controller controller = null; // 控制器
     public bool canControl = true; // 是否能控制角色
+    public bool canRlsSkill = true; // 是否可以放技能
     public AniState currentAniState = AniState.None; // 默认状态
 
     private BattleProps props;  // 战斗属性
@@ -29,6 +30,9 @@ public abstract class EntityBase {
             props = value;
         }
     }
+
+    public EntityType entityType = EntityType.None;
+    public EntityState entityState = EntityState.None;
 
     // 实体名字
     private string name;
@@ -68,6 +72,12 @@ public abstract class EntityBase {
         HP = props.hp;
         Props = props;
     }
+
+    // 技能位移的回调 ID
+    public List<int> skMoveCBLst = new List<int>();
+    // 技能伤害计算回调 ID
+    public List<int> skActionCBLst = new List<int>();
+    public int skEndCB = -1; // 技能结束时的回调
 
     #region 状态
     public void Born() {
@@ -168,6 +178,7 @@ public abstract class EntityBase {
         }
     }
 
+    #region 战斗信息的显示
     public virtual void SetDodge() {
         if (controller != null) {
             GameRoot.Instance.dynamicWnd.SetDodge(Name);
@@ -188,6 +199,7 @@ public abstract class EntityBase {
             GameRoot.Instance.dynamicWnd.SetHPVal(Name, oldval, newval);
         }
     }
+    #endregion
 
     public virtual Vector2 GetDirInput() {
         return Vector2.zero;
@@ -227,17 +239,63 @@ public abstract class EntityBase {
     /// </summary>
     public void ExitCurtSkill() {
         canControl = true;
-        // 连招数据更新
-        if (curtSkillCfg.isCombo) {
-            if (comboQue.Count > 0) {
-                nextSkillID = comboQue.Dequeue();
+        if (curtSkillCfg != null) {
+            if (!curtSkillCfg.isBreak) {
+                entityState = EntityState.None;
             }
-            else {
-                nextSkillID = 0;
+            // 连招数据更新
+            if (curtSkillCfg.isCombo) {
+                if (comboQue.Count > 0) {
+                    nextSkillID = comboQue.Dequeue();
+                }
+                else {
+                    nextSkillID = 0;
+                }
             }
+            curtSkillCfg = null;
         }
         SetAction(Constants.ActionDefault);
     }
 
+    public AudioSource GetAudio() {
+        return controller.GetComponent<AudioSource>();
+    }
 
+    public virtual bool GetBreakState() {
+        return true;
+    }
+
+    /// <summary>
+    /// 移除 技能位移的回调 ID
+    /// </summary>
+    /// <param name="tid">待移除的 id </param>
+    public void RmvMoveCB(int tid) {
+        int index = -1;
+        for (int i = 0; i < skMoveCBLst.Count; i++) {
+            if (skMoveCBLst[i] == tid) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            skMoveCBLst.RemoveAt(index);
+        }
+    }
+
+    /// <summary>
+    /// 移除 技能伤害的回调 ID
+    /// </summary>
+    /// <param name="tid">待移除的 id </param>
+    public void RmvActionCB(int tid) {
+        int index = -1;
+        for (int i = 0; i < skActionCBLst.Count; i++) {
+            if (skActionCBLst[i] == tid) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            skActionCBLst.RemoveAt(index);
+        }
+    }
 }

@@ -4,6 +4,7 @@
 	日期：2019/06/02 10:19   	
 	功能：技能管理器
 *****************************************************/
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,8 @@ public class SkillMgr : MonoBehaviour {
     /// <param name="entity"></param>
     /// <param name="skillID"></param>
     public void SkillAttack(EntityBase entity, int skillID) {
+        entity.skMoveCBLst.Clear();
+        entity.skActionCBLst.Clear();
         AttackDamage(entity, skillID);
         AttackEffect(entity, skillID);
     }
@@ -34,17 +37,29 @@ public class SkillMgr : MonoBehaviour {
     /// </summary>
     public void AttackEffect(EntityBase entity, int skillID) {
         SkillCfg skillData = resSvc.GetSkillCfg(skillID);
-        // 没有方向输入
-        if (entity.GetDirInput() == Vector2.zero) {
-            // 搜索最近的怪物
-            Vector2 dir = entity.CalcTargetDir();
-            if (dir != Vector2.zero) {
-                entity.SetAtkRotation(dir);
-            }
+        // 忽略掉刚体碰撞，只是角色间的环境碰撞
+        if (!skillData.isCollide) {
+            // 忽略 Player 和 Monster 层
+            Physics.IgnoreLayerCollision(9, 10);
+            // 释放完技能后，设置回来
+            timeSvc.AddTimeTask((int tid) => {
+                Physics.IgnoreLayerCollision(9, 10, false);
+            }, skillData.skillTime);
         }
-        // 有方向输入
-        else {
-            entity.SetAtkRotation(entity.GetDirInput(), true);
+        // 玩家，智能锁定最近的敌人
+        if (entity.entityType == EntityType.Player) {
+            // 没有方向输入
+            if (entity.GetDirInput() == Vector2.zero) {
+                // 搜索最近的怪物
+                Vector2 dir = entity.CalcTargetDir();
+                if (dir != Vector2.zero) {
+                    entity.SetAtkRotation(dir);
+                }
+            }
+            // 有方向输入
+            else {
+                entity.SetAtkRotation(entity.GetDirInput(), true);
+            }
         }
         entity.SetAction(skillData.aniAction);
         entity.SetFX(skillData.fx, skillData.skillTime);
@@ -53,8 +68,12 @@ public class SkillMgr : MonoBehaviour {
         entity.canControl = false; // 释放技能的时候，禁止操控角色
         entity.SetDir(Vector2.zero); // 防止移动对技能产生影响
 
+        if (!skillData.isBreak) {
+            entity.entityState = EntityState.BatiState;
+        }
+
         // 回到 Idel 状态
-        timeSvc.AddTimeTask((int tid) => {
+        entity.skEndCB = timeSvc.AddTimeTask((int tid) => {
             entity.Idle();
         }, skillData.skillTime);
     }
@@ -71,9 +90,12 @@ public class SkillMgr : MonoBehaviour {
             sum += skillAction.delayTime;
             int index = i;
             if (sum > 0) {
-                timeSvc.AddTimeTask((int tid) => {
+                int actID = timeSvc.AddTimeTask((int tid) => {
                     SkillAction(entity, skillData, index);
+                    entity.RmvActionCB(tid); // 移除技能伤害的回调 ID
                 }, sum);
+                // 添加技能伤害的回调 ID
+                entity.skActionCBLst.Add(actID);
             }
             else { // 瞬时技能，不需要延迟
                 SkillAction(entity, skillData, index);
@@ -87,15 +109,27 @@ public class SkillMgr : MonoBehaviour {
     public void SkillAction(EntityBase caster, SkillCfg skillCfg, int index) {
         SkillActionCfg skillActionCfg = resSvc.GetSkillActionCfg(skillCfg.skillActionLst[index]);
         int damage = skillCfg.skillDamageLst[index];
-        // 获取场景里所有的怪物实体，遍历运算，怪物很多的游戏 如 MMO 就不能这样运算
-        List<EntityMonster> monsterLst = caster.battleMgr.GetEntityMonsters();
-        for (int i = 0; i < monsterLst.Count; i++) {
-            EntityMonster target = monsterLst[i];
-            // 判断距离，判断角度
+        // 怪物攻击，目标是玩家
+        if (caster.entityType == EntityType.Monster) {
+            EntityPlayer target = caster.battleMgr.entitySelfPlayer;
+            //判断距离，判断角度
             if (InRange(caster.GetPos(), target.GetPos(), skillActionCfg.radius)
                 && InAngle(caster.GetTrans(), target.GetPos(), skillActionCfg.angle)) {
-                // 计算伤害
                 CalcDamage(caster, target, skillCfg, damage);
+            }
+        }
+        // 玩家攻击，目标是怪物
+        else if (caster.entityType == EntityType.Player) {
+            // 获取场景里所有的怪物实体，遍历运算，怪物很多的游戏 如 MMO 就不能这样运算
+            List<EntityMonster> monsterLst = caster.battleMgr.GetEntityMonsters();
+            for (int i = 0; i < monsterLst.Count; i++) {
+                EntityMonster target = monsterLst[i];
+                // 判断距离，判断角度
+                if (InRange(caster.GetPos(), target.GetPos(), skillActionCfg.radius)
+                    && InAngle(caster.GetTrans(), target.GetPos(), skillActionCfg.angle)) {
+                    // 计算伤害
+                    CalcDamage(caster, target, skillCfg, damage);
+                }
             }
         }
     }
@@ -184,7 +218,9 @@ public class SkillMgr : MonoBehaviour {
         }
         else {
             target.HP -= dmgSum;
-            target.Hit();
+            if (target.entityState == EntityState.None && target.GetBreakState()) {
+                target.Hit();
+            }
         }
     }
 
@@ -202,18 +238,24 @@ public class SkillMgr : MonoBehaviour {
             float speed = skillMoveCfg.moveDis / (skillMoveCfg.moveTime / 1000f);
             sum += skillMoveCfg.delayTime; // 总的延迟时间
             if (sum > 0) {
-                timeSvc.AddTimeTask((int tid) => {
+                int moveID = timeSvc.AddTimeTask((int tid) => {
                     entity.SetSkillMoveState(true, speed);
+                    entity.RmvMoveCB(tid); // 移除技能位移的回调 ID
                 }, sum);
+                // 添加技能位移的回调 ID
+                entity.skMoveCBLst.Add(moveID);
             }
             else {
                 entity.SetSkillMoveState(true, speed);
             }
 
             sum += skillMoveCfg.moveTime;
-            timeSvc.AddTimeTask((int tid) => {
+            int stopID = timeSvc.AddTimeTask((int tid) => {
                 entity.SetSkillMoveState(false);
+                entity.RmvMoveCB(tid); // 移除技能位移的回调 ID
             }, sum);
+            // 添加技能位移的回调 ID
+            entity.skMoveCBLst.Add(stopID);
         }
     }
 }

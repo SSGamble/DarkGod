@@ -41,6 +41,8 @@ public class ResSvc : MonoBehaviour {
         InitSkillCfg(PathDefine.SkillCfg);
         skillMoveDic.Clear();
         InitSkillMoveCfg(PathDefine.SkillMoveCfg);
+        skillActionDic.Clear();
+        InitSkillActionCfg(PathDefine.SkillActionCfg);
         PECommon.Log("Reset SkillCfgs...");
     }
 
@@ -583,6 +585,12 @@ public class ResSvc : MonoBehaviour {
                         case "isCombo":
                             sc.isCombo = e.InnerText.Equals("1");
                             break;
+                        case "isCollide":
+                            sc.isCollide = e.InnerText.Equals("1");
+                            break;
+                        case "isBreak":
+                            sc.isBreak = e.InnerText.Equals("1");
+                            break;
                         case "dmgType":
                             if (e.InnerText.Equals("1")) {
                                 sc.dmgType = DamageType.AD;
@@ -763,6 +771,17 @@ public class ResSvc : MonoBehaviour {
                     switch (e.Name) {
                         case "mName":
                             mc.mName = e.InnerText;
+                            break;
+                        case "mType":
+                            if (e.InnerText.Equals("1")) {
+                                mc.mType = MonsterType.Normal;
+                            }
+                            else if (e.InnerText.Equals("2")) {
+                                mc.mType = MonsterType.Boss;
+                            }
+                            break;
+                        case "isStop":
+                            mc.isStop = int.Parse(e.InnerText) == 1;
                             break;
                         case "resPath":
                             mc.resPath = e.InnerText;

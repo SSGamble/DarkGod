@@ -1107,6 +1107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e2c33598984f54eb34b3f2dc400fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtSelfHP: {fileID: 114587397811287566}
+  imgSelfHP: {fileID: 114746771112576446}
   imgTouch: {fileID: 114844986321979726}
   imgDirBg: {fileID: 114955393571287644}
   imgDirPoint: {fileID: 114790020089743506}
@@ -2590,11 +2592,11 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 35a3c292db0e2b54b91ef67de5b06b11, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 0
+  m_FillAmount: 0.572
   m_FillClockwise: 1
   m_FillOrigin: 0
 --- !u!114 &114771451163483888

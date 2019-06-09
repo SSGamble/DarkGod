@@ -12,6 +12,9 @@ using UnityEngine.UI;
 
 public class PlayerCtrlWnd : WindowRoot {
 
+    public Text txtSelfHP;
+    public Image imgSelfHP;
+    private int HPSum; // hp 的上限
     public Image imgTouch;
     public Image imgDirBg;
     public Image imgDirPoint;
@@ -31,6 +34,10 @@ public class PlayerCtrlWnd : WindowRoot {
         pointDis = Screen.height * 1.0f / Constants.ScreenStandardHeight * Constants.ScreenOPDis;
         defaultPos = imgDirBg.transform.position;
         SetActive(imgDirPoint, false);
+
+        HPSum = GameRoot.Instance.PlayerData.hp;
+        SetText(txtSelfHP, HPSum + "/" + HPSum);
+        imgSelfHP.fillAmount = 1;
 
         RegisterTouchEvts();
         sk1CDTime = resSvc.GetSkillCfg(101).cdTime / 1000.0f; // 单位:s
@@ -181,7 +188,7 @@ public class PlayerCtrlWnd : WindowRoot {
 
     public void ClickNormalAtk() {
         BattleSys.Instance.ReqReleaseSkill(0);
-    }
+    } 
 
     #region SK1
     public Image imgSk1CD;
@@ -192,7 +199,7 @@ public class PlayerCtrlWnd : WindowRoot {
     private float sk1FillCount = 0; // cd 填充进度
     private float sk1NumCount = 0; // cd 计时
     public void ClickSkill1Atk() {
-        if (isSk1CD == false) {
+        if (isSk1CD == false && GetCanRlsSkill()) {
             BattleSys.Instance.ReqReleaseSkill(1);
             isSk1CD = true;
             SetActive(imgSk1CD);
@@ -212,7 +219,7 @@ public class PlayerCtrlWnd : WindowRoot {
     private float sk2FillCount = 0;
     private float sk2NumCount = 0;
     public void ClickSkill2Atk() {
-        if (isSk2CD == false) {
+        if (isSk2CD == false && GetCanRlsSkill()) {
             BattleSys.Instance.ReqReleaseSkill(2);
             isSk2CD = true;
             SetActive(imgSk2CD);
@@ -232,7 +239,7 @@ public class PlayerCtrlWnd : WindowRoot {
     private float sk3FillCount = 0;
     private float sk3NumCount = 0;
     public void ClickSkill3Atk() {
-        if (isSk3CD == false) {
+        if (isSk3CD == false && GetCanRlsSkill()) {
             BattleSys.Instance.ReqReleaseSkill(3);
             isSk3CD = true;
             SetActive(imgSk3CD);
@@ -246,5 +253,17 @@ public class PlayerCtrlWnd : WindowRoot {
     // 更新技能的 Xml 配置文件
     public void ClickResetCfgs() {
         resSvc.ResetSkillCfgs();
+    }
+
+    /// <summary>
+    /// 设置当前 hp
+    /// </summary>
+    public void SetSelfHPBarVal(int val) {
+        SetText(txtSelfHP, val + "/" + HPSum);
+        imgSelfHP.fillAmount = val * 1.0f / HPSum;
+    }
+
+    public bool GetCanRlsSkill() {
+        return BattleSys.Instance.battleMgr.GetCanRlsSkill();
     }
 }

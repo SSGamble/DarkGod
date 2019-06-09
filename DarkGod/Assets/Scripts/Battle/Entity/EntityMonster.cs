@@ -11,6 +11,16 @@ public class EntityMonster : EntityBase {
 
     public MonsterData md;
 
+    private float checkTime = 2; // 检测时间间隔
+    private float checkCountTime = 0; // 检测计时
+    private float atkTime = 2;
+    private float atkCountTime = 0;
+    private bool runAI = true; // 是否运行 AI
+
+    public EntityMonster() {
+        entityType = EntityType.Monster;
+    }
+
     /// <summary>
     /// 等级影响
     /// </summary>
@@ -31,12 +41,6 @@ public class EntityMonster : EntityBase {
         HP = p.hp;
     }
 
-    private float checkTime = 2; // 检测时间间隔
-    private float checkCountTime = 0; // 检测计时
-    private float atkTime = 2;
-    private float atkCountTime = 0;
-    private bool runAI = true; // 是否运行 AI
-
     /// <summary>
     /// 怪物的 AI 逻辑
     /// </summary>
@@ -44,7 +48,7 @@ public class EntityMonster : EntityBase {
         if (!runAI) {
             return;
         }
-
+        // 防止还在 出生状态 就开始移动，从而出现滑动效果
         if (currentAniState == AniState.Idle || currentAniState == AniState.Move) {
             // 检测时间间隔计算
             float delta = Time.deltaTime;
@@ -74,7 +78,7 @@ public class EntityMonster : EntityBase {
                     }
                 }
                 checkCountTime = 0;
-                checkTime = PETools.RDInt(1, 5) * 1.0f / 10;
+                checkTime = PETools.RanInt(1, 5) * 1.0f / 10; // 第一次 2 s，之后随机检测时间间隔
             }
         }
     }
@@ -122,13 +126,13 @@ public class EntityMonster : EntityBase {
     }
 
     /// <summary>
-    /// 
+    /// 是否能被中断
     /// </summary>
     /// <returns></returns>
     public override bool GetBreakState() {
-        if (md.mCfg.isStop) {
+        if (md.mCfg.isStop) { // isStop 全局的
             if (curtSkillCfg != null) {
-                return curtSkillCfg.isBreak;
+                return curtSkillCfg.isBreak; // isBreak 局部的，针对技能
             }
             else {
                 return true;

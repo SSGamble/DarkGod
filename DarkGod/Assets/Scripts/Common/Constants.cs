@@ -26,6 +26,33 @@ public enum DamageType {
     AP = 2
 }
 
+/// <summary>
+/// 实体类型
+/// </summary>
+public enum EntityType {
+    None,
+    Player,
+    Monster
+}
+
+/// <summary>
+/// 实体状态
+/// </summary>
+public enum EntityState {
+    None,
+    BatiState, // 霸体状态：不可控制，可受伤害，不会有受击效果，释放技能时根据 isBreak 判断霸体
+    // TODO
+}
+
+/// <summary>
+/// 怪物类型
+/// </summary>
+public enum MonsterType {
+    None,
+    Normal = 1,
+    Boss = 2
+}
+
 public class Constants {
 
     #region 颜色
@@ -76,10 +103,11 @@ public class Constants {
     public const string UIExtenBtn = "uiExtenBtn"; // 主界面菜单
     public const string UIOpenPage = "uiOpenPage"; // 打开窗口
     public const string FBItemEnter = "fbitem";
+    public const string AssassinHit = "assassin_Hit"; // 角色受击
 
     // --------------- 移动速度 ----------------
     public const int PlayerMoveSpeed = 8; // 角色
-    public const int MonsterMoveSpeed = 8; // 怪物
+    public const int MonsterMoveSpeed = 3; // 怪物
 
     // --------------- 角色 ----------------
     // 角色运动平滑加速度
