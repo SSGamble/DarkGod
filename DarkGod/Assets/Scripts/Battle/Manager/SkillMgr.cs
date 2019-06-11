@@ -91,8 +91,10 @@ public class SkillMgr : MonoBehaviour {
             int index = i;
             if (sum > 0) {
                 int actID = timeSvc.AddTimeTask((int tid) => {
-                    SkillAction(entity, skillData, index);
-                    entity.RmvActionCB(tid); // 移除技能伤害的回调 ID
+                    if (entity != null) {
+                        SkillAction(entity, skillData, index);
+                        entity.RmvActionCB(tid); // 移除技能伤害的回调 ID
+                    }
                 }, sum);
                 // 添加技能伤害的回调 ID
                 entity.skActionCBLst.Add(actID);
@@ -112,6 +114,9 @@ public class SkillMgr : MonoBehaviour {
         // 怪物攻击，目标是玩家
         if (caster.entityType == EntityType.Monster) {
             EntityPlayer target = caster.battleMgr.entitySelfPlayer;
+            if (target == null) {
+                return;
+            }
             //判断距离，判断角度
             if (InRange(caster.GetPos(), target.GetPos(), skillActionCfg.radius)
                 && InAngle(caster.GetTrans(), target.GetPos(), skillActionCfg.angle)) {
@@ -214,7 +219,14 @@ public class SkillMgr : MonoBehaviour {
         if (target.HP < dmgSum) {
             target.HP = 0;
             target.Die(); // 目标死亡
-            target.battleMgr.RmvMonster(target.Name); // 移除
+
+            if (target.entityType == EntityType.Monster) {
+                target.battleMgr.RmvMonster(target.Name); // 移除
+            }
+            else if (target.entityType == EntityType.Player) {
+                target.battleMgr.EndBattle(false, 0); // 结束战斗
+                target.battleMgr.entitySelfPlayer = null;
+            }
         }
         else {
             target.HP -= dmgSum;

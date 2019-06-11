@@ -14,6 +14,7 @@ namespace PEProtocol {
     /// </summary>
     public class SrvCfg {
         public const string srvIP = "127.0.0.1";
+        //public const string srvIP = "192.168.43.239";
         public const int srvPort = 17666;
     }
 
@@ -51,6 +52,8 @@ namespace PEProtocol {
         // 副本
         ReqDungeonFight = 301,
         RspDungeonFight = 302,
+        ReqDungeonFightEnd = 303,
+        RspDungeonFightEnd = 304,
     }
 
     /// <summary>
@@ -103,6 +106,9 @@ namespace PEProtocol {
 
         public ReqDungeonFight reqDungeonFight;
         public RspDungeonFight rspDungeonFight;
+
+        public ReqDungeonFightEnd reqDungeonFightEnd;
+        public RspDungeonFightEnd rspDungeonFightEnd;
     }
 
     /// <summary>
@@ -275,6 +281,29 @@ namespace PEProtocol {
     public class RspDungeonFight {
         public int dungeonId;
         public int power;
+    }
+
+    [Serializable]
+    public class ReqDungeonFightEnd {
+        public bool win;
+        public int dungeonId;
+        public int restHp; // 剩余血量
+        public int costTime; // 消耗时间
+    }
+
+    [Serializable]
+    public class RspDungeonFightEnd {
+        public bool win;
+        public int dungeonId;
+        public int restHp;
+        public int costTime;
+
+        // 副本奖励
+        public int coin;
+        public int lv;
+        public int exp;
+        public int crystal;
+        public int dungeon;
     }
     #endregion
 }

@@ -40,6 +40,8 @@ public class MainCitySys : SystemRoot {
             LoadPlayer(mapData);
             // 打开主城界面
             mainCityWnd.SetWndState(true);
+            // 使用主角身上的 listener
+            GameRoot.Instance.GetComponent<AudioListener>().enabled = false;
             // 播放主城背景音乐
             audioSvc.PlayBGMusic(Constants.BGMainCity);
             // 获取主城地图中的 npc 位置

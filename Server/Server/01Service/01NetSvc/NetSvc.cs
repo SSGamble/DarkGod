@@ -110,6 +110,9 @@ public class NetSvc {
             case CMD.ReqDungeonFight:
                 DungeonSys.Instance.ReqDungeonFight(pack);
                 break;
+            case CMD.ReqDungeonFightEnd:
+                DungeonSys.Instance.ReqDungeonFightEnd(pack);
+                break;
             default:
                 break;
         }

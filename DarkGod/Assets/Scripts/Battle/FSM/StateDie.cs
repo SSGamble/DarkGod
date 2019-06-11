@@ -9,6 +9,7 @@ public class StateDie : IState {
 
     public void Enter(EntityBase entity, params object[] args) {
         entity.currentAniState = AniState.Die;
+        entity.RmvSkillCB();
     }
 
     public void Exit(EntityBase entity, params object[] args) {
@@ -17,8 +18,11 @@ public class StateDie : IState {
 
     public void Process(EntityBase entity, params object[] args) {
         entity.SetAction(Constants.ActionDie);
-        TimerSvc.Instance.AddTimeTask((int tid) => {
-            entity.SetActive(false);
-        }, Constants.DieAniLength);
+        if (entity.entityType == EntityType.Monster) {
+            entity.GetCC().enabled = false;
+            TimerSvc.Instance.AddTimeTask((int tid) => {
+                entity.SetActive(false);
+            }, Constants.DieAniLength);
+        }
     }
 }

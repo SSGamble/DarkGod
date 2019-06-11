@@ -5,6 +5,7 @@
 	功能：战场管理器，管理具体的某一场战斗
 *****************************************************/
 
+using System;
 using System.Collections.Generic;
 using PEProtocol;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class BattleMgr : MonoBehaviour {
     // 场景里所有的怪物实体
     private Dictionary<string, EntityMonster> monsterDic = new Dictionary<string, EntityMonster>();
 
-    public void Init(int mapid) {
+    public void Init(int mapid, Action cb = null) {
         resSvc = ResSvc.Instance;
         audioSvc = AudioSvc.Instance;
 
@@ -52,9 +53,14 @@ public class BattleMgr : MonoBehaviour {
             // 激活第一批怪物
             ActiveCurrentBatchMonsters();
             audioSvc.PlayBGMusic(Constants.BGHuangYe);
+            if (cb != null) {
+                cb();
+            }
         });
     }
 
+    public bool triggerCheck = true; // 防止怪物还未生成，又触发 SetNextTriggerOn
+    public bool isPauseGame = false;
     /// <summary>
     /// 驱动 AI 逻辑
     /// </summary>
@@ -63,6 +69,29 @@ public class BattleMgr : MonoBehaviour {
             EntityMonster em = item.Value;
             em.TickAILogic();
         }
+
+        // 检测当前批次的怪物是否全部死亡
+        if (mapMgr != null) {
+            if (triggerCheck && monsterDic.Count == 0) {
+                bool isExist = mapMgr.SetNextTriggerOn();
+                triggerCheck = false;
+                if (!isExist) {
+                    // 关卡结束，战斗胜利
+                    EndBattle(true, entitySelfPlayer.HP);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 关卡结束
+    /// </summary>
+    /// <param name="isWin"></param>
+    /// <param name="restHP"></param>
+    public void EndBattle(bool isWin, int restHP) {
+        isPauseGame = true;
+        AudioSvc.Instance.StopBGMusic();
+        BattleSys.Instance.EndBattle(isWin, restHP);
     }
 
     /// <summary>
@@ -131,8 +160,14 @@ public class BattleMgr : MonoBehaviour {
                 em.SetController(mc);
                 m.SetActive(false);
                 monsterDic.Add(m.name, em);
+
                 // 血条
-                GameRoot.Instance.dynamicWnd.AddHpItemInfo(m.name, mc.hpRoot, em.HP);
+                if (md.mCfg.mType == MonsterType.Normal) {
+                    GameRoot.Instance.dynamicWnd.AddHpItemInfo(m.name, mc.hpRoot, em.HP);
+                }
+                else if (md.mCfg.mType == MonsterType.Boss) {
+                    BattleSys.Instance.playerCtrlWnd.SetBossHPBarState(true);
+                }
             }
         }
     }

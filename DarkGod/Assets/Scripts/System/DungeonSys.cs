@@ -34,4 +34,5 @@ public class DungeonSys : SystemRoot {
         SetDungeonWndState(false);
         BattleSys.Instance.StartBattle(msg.rspDungeonFight.dungeonId);
     }
+
 }

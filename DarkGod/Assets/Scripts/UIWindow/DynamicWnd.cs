@@ -114,6 +114,14 @@ public class DynamicWnd : WindowRoot {
     /// <summary>
     /// 移除血条
     /// </summary>
+
+    public void RmvAllHpItemInfo() {
+        foreach (var item in itemDic) {
+            Destroy(item.Value.gameObject);
+        }
+        itemDic.Clear();
+    }
+
     public void RmvHpItemInfo(string mName) {
         ItemEntityHP item = null;
         if (itemDic.TryGetValue(mName, out item)) {
@@ -158,4 +166,6 @@ public class DynamicWnd : WindowRoot {
         selfDodgeAni.Stop();
         selfDodgeAni.Play();
     }
+
+
 }

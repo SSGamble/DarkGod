@@ -48,19 +48,21 @@ public class PlayerCtrlWnd : WindowRoot {
     }
 
     private void Update() {
-        // Test 键盘测试
-        if (Input.GetKeyDown(KeyCode.KeypadEnter)) {
-            ClickNormalAtk();
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad1)) {
-            ClickSkill1Atk();
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad2)) {
-            ClickSkill2Atk();
-        }
-        if (Input.GetKeyDown(KeyCode.Keypad3)) {
-            ClickSkill3Atk();
-        }
+
+        #region Test 键盘测试
+        //if (Input.GetKeyDown(KeyCode.KeypadEnter)) {
+        //    ClickNormalAtk();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Keypad1)) {
+        //    ClickSkill1Atk();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Keypad2)) {
+        //    ClickSkill2Atk();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Keypad3)) {
+        //    ClickSkill3Atk();
+        //}
+        #endregion
 
         float delta = Time.deltaTime;
         if (isSk1CD) {
@@ -118,6 +120,12 @@ public class PlayerCtrlWnd : WindowRoot {
                 sk3Num -= 1;
                 SetText(txtSk3CD, sk3Num);
             }
+        }
+
+        // Boss 血条
+        if (transBossHPBar.gameObject.activeSelf) {
+            BlendBossHP();
+            imgYellow.fillAmount = currentPrg;
         }
     }
 
@@ -188,8 +196,9 @@ public class PlayerCtrlWnd : WindowRoot {
 
     public void ClickNormalAtk() {
         BattleSys.Instance.ReqReleaseSkill(0);
-    } 
+    }
 
+    #region skill
     #region SK1
     public Image imgSk1CD;
     public Text txtSk1CD;
@@ -249,6 +258,7 @@ public class PlayerCtrlWnd : WindowRoot {
         }
     }
     #endregion
+    #endregion
 
     // 更新技能的 Xml 配置文件
     public void ClickResetCfgs() {
@@ -263,7 +273,50 @@ public class PlayerCtrlWnd : WindowRoot {
         imgSelfHP.fillAmount = val * 1.0f / HPSum;
     }
 
+    /// <summary>
+    /// 是否能释放技能
+    /// </summary>
     public bool GetCanRlsSkill() {
         return BattleSys.Instance.battleMgr.GetCanRlsSkill();
     }
+
+    public void ClickHeadBtn() {
+        BattleSys.Instance.battleMgr.isPauseGame = true;
+        BattleSys.Instance.SetBattleEndWndState(FBEndType.Pause);
+    }
+
+    #region Boss 血条
+    public Transform transBossHPBar;
+    public Image imgRed;
+    public Image imgYellow;
+    private float currentPrg = 1f; // 当前进度
+    private float targetPrg = 1f; // 目标进度
+
+    public void SetBossHPBarState(bool state, float prg = 1) {
+        SetActive(transBossHPBar, state);
+        imgRed.fillAmount = prg;
+        imgYellow.fillAmount = prg;
+    }
+
+    public void SetBossHPBarVal(int oldVal, int newVal, int sumVal) {
+        currentPrg = oldVal * 1.0f / sumVal;
+        targetPrg = newVal * 1.0f / sumVal;
+        imgRed.fillAmount = targetPrg;
+    }
+
+    /// <summary>
+    /// 血条渐变
+    /// </summary>
+    private void BlendBossHP() {
+        if (Mathf.Abs(currentPrg - targetPrg) < Constants.AccelerHPSpeed * Time.deltaTime) {
+            currentPrg = targetPrg;
+        }
+        else if (currentPrg > targetPrg) {
+            currentPrg -= Constants.AccelerHPSpeed * Time.deltaTime;
+        }
+        else {
+            currentPrg += Constants.AccelerHPSpeed * Time.deltaTime;
+        }
+    }
+    #endregion
 }

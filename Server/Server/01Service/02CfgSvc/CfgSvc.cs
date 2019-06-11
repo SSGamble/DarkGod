@@ -51,6 +51,9 @@ public class TaskRewardData : BaseData<TaskRewardData> {
 /// </summary>
 public class MapCfg : BaseData<MapCfg> {
     public int power;
+    public int coin;
+    public int crystal;
+    public int exp;
 }
 #endregion
 
@@ -269,6 +272,15 @@ public class CfgSvc {
                 switch (e.Name) {
                     case "power":
                         mc.power = int.Parse(e.InnerText);
+                        break;
+                    case "coin":
+                        mc.coin = int.Parse(e.InnerText);
+                        break;
+                    case "exp":
+                        mc.exp = int.Parse(e.InnerText);
+                        break;
+                    case "crystal":
+                        mc.crystal = int.Parse(e.InnerText);
                         break;
                 }
             }

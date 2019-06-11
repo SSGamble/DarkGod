@@ -260,6 +260,9 @@ public abstract class EntityBase {
     public AudioSource GetAudio() {
         return controller.GetComponent<AudioSource>();
     }
+    public CharacterController GetCC() {
+        return controller.GetComponent<CharacterController>();
+    }
 
     public virtual bool GetBreakState() {
         return true;
@@ -296,6 +299,40 @@ public abstract class EntityBase {
         }
         if (index != -1) {
             skActionCBLst.RemoveAt(index);
+        }
+    }
+
+    /// <summary>
+    /// 删除技能回调
+    /// </summary>
+    public void RmvSkillCB() {
+        SetDir(Vector2.zero);
+        SetSkillMoveState(false);
+
+        // 删除定时回调任务
+        for (int i = 0; i < skMoveCBLst.Count; i++) {
+            int tid = skMoveCBLst[i];
+            TimerSvc.Instance.DelTask(tid);
+        }
+        for (int i = 0; i < skActionCBLst.Count; i++) {
+            int tid = skActionCBLst[i];
+            TimerSvc.Instance.DelTask(tid);
+        }
+
+        // 攻击被中断，删除技能结束回到 idel 状态的定时回调
+        if (skEndCB != -1) {
+            TimerSvc.Instance.DelTask(skEndCB);
+            skEndCB = -1;
+        }
+        skMoveCBLst.Clear();
+        skActionCBLst.Clear();
+
+        // 清空连招
+        if (nextSkillID != 0 || comboQue.Count > 0) {
+            nextSkillID = 0;
+            comboQue.Clear();
+            battleMgr.lastAtkTime = 0;
+            battleMgr.comboIndex = 0;
         }
     }
 }

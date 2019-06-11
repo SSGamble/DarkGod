@@ -22,6 +22,9 @@ public class MapCfg : BaseData<MapCfg> {
     public string mapName;
     public string sceneName;
     public int power;
+    public int coin;
+    public int exp;
+    public int crystal;
     public Vector3 mainCamPos;
     public Vector3 mainCamRote;
     public Vector3 playerBornPos;

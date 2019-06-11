@@ -11,34 +11,7 @@ public class StateHit : IState {
 
     public void Enter(EntityBase entity, params object[] args) {
         entity.currentAniState = AniState.Hit;
-        entity.SetDir(Vector2.zero);
-        entity.SetSkillMoveState(false);
-
-        // 删除定时回调任务
-        for (int i = 0; i < entity.skMoveCBLst.Count; i++) {
-            int tid = entity.skMoveCBLst[i];
-            TimerSvc.Instance.DelTask(tid);
-        }
-        for (int i = 0; i < entity.skActionCBLst.Count; i++) {
-            int tid = entity.skActionCBLst[i];
-            TimerSvc.Instance.DelTask(tid);
-        }
-
-        // 攻击被中断，删除技能结束回到 idel 状态的定时回调
-        if (entity.skEndCB != -1) {
-            TimerSvc.Instance.DelTask(entity.skEndCB);
-            entity.skEndCB = -1;
-        }
-        entity.skMoveCBLst.Clear();
-        entity.skActionCBLst.Clear();
-
-        // 清空连招
-        if (entity.nextSkillID != 0 || entity.comboQue.Count > 0) {
-            entity.nextSkillID = 0;
-            entity.comboQue.Clear();
-            entity.battleMgr.lastAtkTime = 0;
-            entity.battleMgr.comboIndex = 0;
-        }
+        entity.RmvSkillCB();
     }
 
     public void Exit(EntityBase entity, params object[] args) {

@@ -257,6 +257,15 @@ public class ResSvc : MonoBehaviour {
                         case "power":
                             mc.power = int.Parse(e.InnerText);
                             break;
+                        case "coin":
+                            mc.coin = int.Parse(e.InnerText);
+                            break;
+                        case "exp":
+                            mc.exp = int.Parse(e.InnerText);
+                            break;
+                        case "crystal":
+                            mc.crystal = int.Parse(e.InnerText);
+                            break;
                         case "mainCamPos": {
                                 string[] valArr = e.InnerText.Split(',');
                                 mc.mainCamPos = new Vector3(float.Parse(valArr[0]), float.Parse(valArr[1]), float.Parse(valArr[2]));

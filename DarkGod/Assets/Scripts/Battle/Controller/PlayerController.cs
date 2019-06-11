@@ -63,18 +63,18 @@ public class PlayerController : Controller {
 
     private void Update() {
         #region Input 测试
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        Vector2 _dir = new Vector2(h, v).normalized; // 方向
-        // 设置朝向
-        if (_dir != Vector2.zero) {
-            Dir = _dir;
-            SetBlend(Constants.BlendMove);
-        }
-        else {
-            Dir = Vector2.zero;
-            SetBlend(Constants.BlendIdle);
-        }
+        //float h = Input.GetAxis("Horizontal");
+        //float v = Input.GetAxis("Vertical");
+        //Vector2 _dir = new Vector2(h, v).normalized; // 方向
+        //// 设置朝向
+        //if (_dir != Vector2.zero) {
+        //    Dir = _dir;
+        //    SetBlend(Constants.BlendMove);
+        //}
+        //else {
+        //    Dir = Vector2.zero;
+        //    SetBlend(Constants.BlendIdle);
+        //}
 
         #endregion
 

@@ -54,4 +54,10 @@ public class AudioSvc : MonoBehaviour {
         audioSrc.clip = audio;
         audioSrc.Play();
     }
+
+    public void StopBGMusic() {
+        if (bgAudio != null) {
+            bgAudio.Stop();
+        }
+    }
 }

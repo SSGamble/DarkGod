@@ -50,6 +50,11 @@ public class EntityMonster : EntityBase {
         }
         // 防止还在 出生状态 就开始移动，从而出现滑动效果
         if (currentAniState == AniState.Idle || currentAniState == AniState.Move) {
+            // 暂停游戏
+            if (battleMgr.isPauseGame) {
+                Idle();
+                return;
+            }
             // 检测时间间隔计算
             float delta = Time.deltaTime;
             checkCountTime += delta;
@@ -140,6 +145,18 @@ public class EntityMonster : EntityBase {
         }
         else {
             return false;
+        }
+    }
+
+    /// <summary>
+    /// 更新血条
+    /// </summary>
+    public override void SetHPVal(int oldVal, int newVal) {
+        if (md.mCfg.mType == MonsterType.Boss) {
+            BattleSys.Instance.playerCtrlWnd.SetBossHPBarVal(oldVal, newVal, Props.hp);
+        }
+        else {
+            base.SetHPVal(oldVal, newVal);
         }
     }
 }

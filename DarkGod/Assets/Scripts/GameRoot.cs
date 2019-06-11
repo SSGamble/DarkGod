@@ -163,6 +163,18 @@ public class GameRoot : MonoBehaviour {
     public void SetPlayerDataByDungeonStart(RspDungeonFight data) {
         PlayerData.power = data.power;
     }
+
+    /// <summary>
+    /// 副本结束后奖励
+    /// </summary>
+    /// <param name="data"></param>
+    public void SetPlayerDataByDungeonEnd(RspDungeonFightEnd data) {
+        PlayerData.coin = data.coin;
+        PlayerData.lv = data.lv;
+        PlayerData.exp = data.exp;
+        PlayerData.crystal = data.crystal;
+        PlayerData.dungeon = data.dungeon;
+    }
     #endregion
 
 }

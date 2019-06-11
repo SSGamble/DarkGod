@@ -5,6 +5,7 @@
 	功能：副本战斗业务
 *****************************************************/
 
+using System;
 using PEProtocol;
 
 public class DungeonSys {
@@ -54,6 +55,50 @@ public class DungeonSys {
             else {
                 msg.err = (int)ErrorCode.UpdateDBError;
             }
+        }
+        pack.session.SendMsg(msg);
+    }
+
+    public void ReqDungeonFightEnd(MsgPack pack) {
+        ReqDungeonFightEnd data = pack.msg.reqDungeonFightEnd;
+        GameMsg msg = new GameMsg {
+            cmd = (int)CMD.RspDungeonFightEnd
+        };
+        // 校验战斗是否合法
+        if (data.win) {
+            if (data.costTime > 0 && data.restHp > 0) {
+                // 根据 副本 ID 获取相应奖励
+                MapCfg rd = cfgSvc.GetMapCfg(data.dungeonId);
+                PlayerData pd = cacheSvc.GetPlayerDataBySession(pack.session);
+                // 任务进度数据更新
+                TaskSys.Instance.CalcTaskPrgs(pd, 2);
+                pd.coin += rd.coin;
+                pd.crystal += rd.crystal;
+                PECommon.CalcExp(pd, rd.exp);
+                if (pd.dungeon == data.dungeonId) {
+                    pd.dungeon += 1;
+                }
+                if (!cacheSvc.UpdatePlayerData(pd.id, pd)) {
+                    msg.err = (int)ErrorCode.UpdateDBError;
+                }
+                else {
+                    RspDungeonFightEnd rspDungeonFight = new RspDungeonFightEnd {
+                        win = data.win,
+                        dungeonId = data.dungeonId,
+                        restHp = data.restHp,
+                        costTime = data.costTime,
+                        coin = pd.coin,
+                        lv = pd.lv,
+                        exp = pd.exp,
+                        crystal = pd.crystal,
+                        dungeon = pd.dungeon
+                    };
+                    msg.rspDungeonFightEnd = rspDungeonFight;
+                }
+            }
+        }
+        else {
+            msg.err = (int)ErrorCode.ClientDataError;
         }
         pack.session.SendMsg(msg);
     }

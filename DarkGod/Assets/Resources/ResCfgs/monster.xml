@@ -7,7 +7,7 @@
     <resPath>PrefabNPC/MonsterSoldier_1</resPath>
     <skillID>201</skillID>
     <atkDis>2</atkDis>
-    <hp>2000</hp>
+    <hp>200</hp>
     <ad>100</ad>
     <ap>80</ap>
     <addef>5</addef>
@@ -23,7 +23,7 @@
     <resPath>PrefabNPC/MonsterBoss_1</resPath>
     <skillID>301</skillID>
     <atkDis>4.5</atkDis>
-    <hp>8000</hp>
+    <hp>800</hp>
     <ad>250</ad>
     <ap>180</ap>
     <addef>55</addef>

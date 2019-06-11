@@ -179,6 +179,9 @@ public class NetSvc : MonoBehaviour {
             case CMD.RspDungeonFight:
                 DungeonSys.Instance.RspDungeonFight(msg);
                 break;
+            case CMD.RspDungeonFightEnd:
+                BattleSys.Instance.RspFightEnd(msg);
+                break;
             default:
                 break;
         }
