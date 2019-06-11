@@ -171,6 +171,4 @@ public class PlayerController : Controller {
             }, destroy);
         }
     }
-
-
 }

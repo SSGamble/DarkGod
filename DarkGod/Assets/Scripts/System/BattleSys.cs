@@ -25,6 +25,10 @@ public class BattleSys : SystemRoot {
         PECommon.Log("Init BattleSys...");
     }
 
+    /// <summary>
+    /// 开始战斗
+    /// </summary>
+    /// <param name="mapId"></param>
     public void StartBattle(int mapId) {
         dungeonId = mapId;
         GameObject go = new GameObject {
